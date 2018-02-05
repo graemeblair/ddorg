@@ -69,12 +69,12 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [[menu.main]]
     name = "The Idea"
-    url = "page/about/"
+    url = "page/idea/"
     weight = 2
     
 [[menu.main]]
     name = "Design Library"
-    url = "page/about/"
+    url = "page/design_library/"
     weight = 3
     
 [[menu.main]]
@@ -84,27 +84,27 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     parent = "using_declare_design"
     name = "Getting Started"
-    url = "post/2017-03-07-bigimg-sample"
+    url = "page/DeclareDesign/"
     weight = 1
 [[menu.main]]
     parent = "using_declare_design"
     name = "Custom Functions"
-    url = "post/2017-03-05-math-sample"
+    url = "page/custom_functions/"
     weight = 2
 [[menu.main]]
     parent = "using_declare_design"
     name = "Advanced Features"
-    url = "post/2016-03-08-code-sample"
+    url = "page/advanced_features/"
     weight = 3
 [[menu.main]]
     parent = "using_declare_design"
     name = "Companion Packages"
-    url = "post/2016-03-08-code-sample"
+    url = "page/companion_packages/"
     weight = 4
 
 [[menu.main]]
     name = "Ask for Help"
-    url = "page/about/"
+    url = "http://discuss.declaredesign.org"
     weight = 5
 
 [[menu.main]]
@@ -112,20 +112,24 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     name = "Packages"
     weight = 6
 [[menu.main]]
-    identifier = "packages"
+    parent = "packages"
     name = "Declare Design"
+    url = ""
     weight = 1
 [[menu.main]]
-    identifier = "packages"
+    parent = "packages"
     name = "randomizr"
+    url = "http://randomizr.declaredesign.org"
     weight = 2
 [[menu.main]]
-    identifier = "packages"
+    parent = "packages"
     name = "fabricatr"
+    url = "http://fabricatr.declaredesign.org"
     weight = 3
 [[menu.main]]
-    identifier = "packages"
+    parent = "packages"
     name = "estimatr"
+    url = "http://estimatr.declaredesign.org"
     weight = 4
 
 [[menu.main]]

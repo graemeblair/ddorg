@@ -1,0 +1,202 @@
+---
+title: "The Idea"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Key Idea}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+<p>The idea motivating <strong>DeclareDesign</strong> is that the core analytic features of research designs can be declared in a complete manner and saved as an object. Once properly declared, a design can easily be shared, modified, improved, and used. A design contains the information needed to implement key parts of data generation and subsequent analysis. It also contains enough information to allow researchers or third parties to query it and determine whether it can support the claims it makes. We describe this framework in greater detail in <a href="http://declaredesign.org/paper.pdf">our paper</a>.</p>
+<div id="components-of-a-research-design" class="section level2">
+<h2>Components of a research design</h2>
+<p>A research design characterized in words or in code should include four components:</p>
+<ul>
+<li><p>A <strong>model</strong>, <em>M</em>, of how the world works. The model specifies the moving parts — the variables — and how these are causally related to each other. In this sense the model provides the context of a study, but also a speculation about the world.</p></li>
+<li><p>An <strong>inquiry</strong>, <em>I</em>, about the distribution of variables, perhaps given interventions on some variables. In many applications <em>I</em> might be thought of as the “estimand.” Some inquiries are statements about the values of variables, others about the causal relations between variables. In all cases however the inquiry should be answerable given the model.</p></li>
+<li><p>A <strong>data strategy</strong>, <em>D</em>, generates data on variables. Note that implicitly the data strategy includes case selection, or sampling decisions, but it also represents interventions such as assignment of treatments or measurement strategies. A model <em>M</em> tells you what sort of data you might observe if you employ data strategy <em>D</em>.</p></li>
+<li><p>An <strong>answer strategy</strong>, <em>A</em>, that uses data to generate an answer.</p></li>
+</ul>
+</div>
+<div id="a-simple-design-declaration" class="section level2">
+<h2>A simple design declaration</h2>
+<p>Here is an illustration using a very simple two arm trial.</p>
+<pre class="r"><code># M -- Model: Speculation on variables and relations between them
+population &lt;- declare_population(N = 100, u = rnorm(N))
+potential_outcomes &lt;- declare_potential_outcomes(Y_Z_0 = 0, 
+                                                 Y_Z_1 = 1 + u)
+
+# I -- Inquiry: A query defined in terms of potential outcomes
+estimand &lt;- declare_estimand(ATE = mean(Y_Z_1 - Y_Z_0))
+
+# D -- Data Strategy: Researcher interventions on the world
+assignment &lt;- declare_assignment(m = 50) 
+
+# A -- Answer Strategy: Conclusions to be drawn from data
+estimator &lt;- declare_estimator(Y ~ Z, estimand = estimand)
+
+# Design: Putting it all together
+design &lt;- declare_design(population, 
+                         potential_outcomes, 
+                         estimand, 
+                         assignment, 
+                         reveal_outcomes, 
+                         estimator,
+                         declare_citation(description = &quot;A very simple design&quot;))</code></pre>
+</div>
+<div id="making-use-of-a-design" class="section level2">
+<h2>Making Use of A Design</h2>
+<p>Use the design object to simulate data, including treatment assignments:</p>
+<pre class="r"><code>data &lt;- draw_data(design)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="right">u</th>
+<th align="left">fab_ID_1</th>
+<th align="right">Y_Z_0</th>
+<th align="right">Y_Z_1</th>
+<th align="right">Z</th>
+<th align="right">Z_cond_prob</th>
+<th align="right">Y</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">001</td>
+<td align="right">1.37</td>
+<td align="left">001</td>
+<td align="right">0</td>
+<td align="right">2.37</td>
+<td align="right">1</td>
+<td align="right">0.5</td>
+<td align="right">2.37</td>
+</tr>
+<tr class="even">
+<td align="left">002</td>
+<td align="right">-0.56</td>
+<td align="left">002</td>
+<td align="right">0</td>
+<td align="right">0.44</td>
+<td align="right">1</td>
+<td align="right">0.5</td>
+<td align="right">0.44</td>
+</tr>
+<tr class="odd">
+<td align="left">003</td>
+<td align="right">0.36</td>
+<td align="left">003</td>
+<td align="right">0</td>
+<td align="right">1.36</td>
+<td align="right">1</td>
+<td align="right">0.5</td>
+<td align="right">1.36</td>
+</tr>
+<tr class="even">
+<td align="left">004</td>
+<td align="right">0.63</td>
+<td align="left">004</td>
+<td align="right">0</td>
+<td align="right">1.63</td>
+<td align="right">0</td>
+<td align="right">0.5</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">005</td>
+<td align="right">0.40</td>
+<td align="left">005</td>
+<td align="right">0</td>
+<td align="right">1.40</td>
+<td align="right">0</td>
+<td align="right">0.5</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">006</td>
+<td align="right">-0.11</td>
+<td align="left">006</td>
+<td align="right">0</td>
+<td align="right">0.89</td>
+<td align="right">1</td>
+<td align="right">0.5</td>
+<td align="right">0.89</td>
+</tr>
+</tbody>
+</table>
+<p>Use the design object to implement analysis:</p>
+<pre class="r"><code>estimates &lt;- get_estimates(design)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">estimator_label</th>
+<th align="left">coefficient_name</th>
+<th align="right">est</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="left">estimand_label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">my_estimator</td>
+<td align="left">Z</td>
+<td align="right">0.96</td>
+<td align="right">0.13</td>
+<td align="right">0</td>
+<td align="right">0.7</td>
+<td align="right">1.2</td>
+<td align="left">ATE</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="diagnosing-a-design" class="section level2">
+<h2>Diagnosing a design</h2>
+<p>The fully declared design contains the information needed to diagnose it.</p>
+<pre class="r"><code>diagnosis &lt;- diagnose_design(design, sims = 10000, bootstrap_sims = 500)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">Bias</th>
+<th align="center">RMSE</th>
+<th align="center">Power</th>
+<th align="center">Coverage</th>
+<th align="center">Mean Estimand</th>
+<th align="center">Mean Estimate</th>
+<th align="center">SD Estimate</th>
+<th align="center">Type S-Rate</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Diagnosand</td>
+<td align="center">0</td>
+<td align="center">0.1</td>
+<td align="center">1</td>
+<td align="center">0.99</td>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">0.14</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td>Boostrapped SE</td>
+<td align="center">0</td>
+<td align="center">0.0</td>
+<td align="center">0</td>
+<td align="center">0.00</td>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">0.00</td>
+<td align="center">0</td>
+</tr>
+</tbody>
+</table>
+<p>The diagnosis here confirms the fact that random assignment to treatment allows for unbiased estimates of treatment effects. We can also observe that under the current design, coverage is higher than the nominal 95% rate. This reflects the fact that the typical standard error estimators are conservative.</p>
+</div>

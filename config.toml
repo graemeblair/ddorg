@@ -1,7 +1,6 @@
 baseurl = "https://username.github.io"
 DefaultContentLanguage = "en"
-#DefaultContentLanguage = "ja"
-title = "Beautiful Hugo"
+title = "Declare Design"
 theme = "beautifulhugo"
 metaDataFormat = "yaml"
 pygmentsStyle = "trac"
@@ -15,7 +14,7 @@ pygmentOptions = "linenos=table"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [Params]
-  subtitle = "Build a beautiful and simple website in minutes"
+  subtitle = "Declare and diagnose research designs to understand and improve them"
   logo = "img/avatar-icon.png"
   favicon = "img/favicon.ico"
   dateFormat = "January 2, 2006"
@@ -60,41 +59,77 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   vk = "username"
   paypal = "username"
   telegram = "username"
-
+  
+############################################
+# Main Menu
+############################################
 [[menu.main]]
     name = "Blog"
     url = ""
     weight = 1
 
 [[menu.main]]
-    name = "About"
+    name = "The Idea"
+    url = "page/about/"
+    weight = 2
+    
+[[menu.main]]
+    name = "Design Library"
     url = "page/about/"
     weight = 3
-
+    
 [[menu.main]]
-    identifier = "samples"
-    name = "Samples"
-    weight = 2
-
+    identifier = "using_declare_design"
+    name = "Using Declare Design"
+    weight = 4
 [[menu.main]]
-    parent = "samples"
-    name = "Big Image Sample"
+    parent = "using_declare_design"
+    name = "Getting Started"
     url = "post/2017-03-07-bigimg-sample"
     weight = 1
-
 [[menu.main]]
-    parent = "samples"
-    name = "Math Sample"
+    parent = "using_declare_design"
+    name = "Custom Functions"
     url = "post/2017-03-05-math-sample"
     weight = 2
-
 [[menu.main]]
-    parent = "samples"
-    name = "Code Sample"
+    parent = "using_declare_design"
+    name = "Advanced Features"
     url = "post/2016-03-08-code-sample"
     weight = 3
+[[menu.main]]
+    parent = "using_declare_design"
+    name = "Companion Packages"
+    url = "post/2016-03-08-code-sample"
+    weight = 4
+
+[[menu.main]]
+    name = "Ask for Help"
+    url = "page/about/"
+    weight = 5
+
+[[menu.main]]
+    identifier = "packages"
+    name = "Packages"
+    weight = 6
+[[menu.main]]
+    identifier = "packages"
+    name = "Declare Design"
+    weight = 1
+[[menu.main]]
+    identifier = "packages"
+    name = "randomizr"
+    weight = 2
+[[menu.main]]
+    identifier = "packages"
+    name = "fabricatr"
+    weight = 3
+[[menu.main]]
+    identifier = "packages"
+    name = "estimatr"
+    weight = 4
 
 [[menu.main]]
     name = "Tags"
     url = "tags"
-    weight = 3
+    weight = 7

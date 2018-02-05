@@ -1,7 +1,6 @@
 baseurl = "https://username.github.io"
 DefaultContentLanguage = "en"
-#DefaultContentLanguage = "ja"
-title = "Beautiful Hugo"
+title = "Declare Design"
 theme = "beautifulhugo"
 metaDataFormat = "yaml"
 pygmentsStyle = "trac"
@@ -15,8 +14,7 @@ pygmentOptions = "linenos=table"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [Params]
-  subtitle = "Build a beautiful and simple website in minutes"
-  logo = "img/avatar-icon.png"
+  subtitle = "Declare and diagnose research designs to understand and improve them"
   favicon = "img/favicon.ico"
   dateFormat = "January 2, 2006"
   commit = false
@@ -60,41 +58,81 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
   vk = "username"
   paypal = "username"
   telegram = "username"
-
+  
+############################################
+# Main Menu
+############################################
 [[menu.main]]
     name = "Blog"
+    url = "post/"
+    weight = 1
+
+[[menu.main]]
+    name = "The Idea"
+    url = "page/idea/"
+    weight = 2
+    
+[[menu.main]]
+    name = "Design Library"
+    url = "page/design_library/"
+    weight = 3
+    
+[[menu.main]]
+    identifier = "using_declare_design"
+    name = "Using Declare Design"
+    weight = 4
+[[menu.main]]
+    parent = "using_declare_design"
+    name = "Getting Started"
+    url = "page/DeclareDesign/"
+    weight = 1
+[[menu.main]]
+    parent = "using_declare_design"
+    name = "Custom Functions"
+    url = "page/custom_functions/"
+    weight = 2
+[[menu.main]]
+    parent = "using_declare_design"
+    name = "Advanced Features"
+    url = "page/advanced_features/"
+    weight = 3
+[[menu.main]]
+    parent = "using_declare_design"
+    name = "Companion Packages"
+    url = "page/companion_packages/"
+    weight = 4
+
+[[menu.main]]
+    name = "Ask for Help"
+    url = "http://discuss.declaredesign.org"
+    weight = 5
+
+[[menu.main]]
+    identifier = "packages"
+    name = "Packages"
+    weight = 6
+[[menu.main]]
+    parent = "packages"
+    name = "Declare Design"
     url = ""
     weight = 1
-
 [[menu.main]]
-    name = "About"
-    url = "page/about/"
-    weight = 3
-
-[[menu.main]]
-    identifier = "samples"
-    name = "Samples"
+    parent = "packages"
+    name = "randomizr"
+    url = "http://randomizr.declaredesign.org"
     weight = 2
-
 [[menu.main]]
-    parent = "samples"
-    name = "Big Image Sample"
-    url = "post/2017-03-07-bigimg-sample"
-    weight = 1
-
-[[menu.main]]
-    parent = "samples"
-    name = "Math Sample"
-    url = "post/2017-03-05-math-sample"
-    weight = 2
-
-[[menu.main]]
-    parent = "samples"
-    name = "Code Sample"
-    url = "post/2016-03-08-code-sample"
+    parent = "packages"
+    name = "fabricatr"
+    url = "http://fabricatr.declaredesign.org"
     weight = 3
+[[menu.main]]
+    parent = "packages"
+    name = "estimatr"
+    url = "http://estimatr.declaredesign.org"
+    weight = 4
 
 [[menu.main]]
     name = "Tags"
     url = "tags"
-    weight = 3
+    weight = 7

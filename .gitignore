@@ -35,3 +35,6 @@ vignettes/*.pdf
 
 # OSX Metadata
 .DS_Store
+
+# public Folder
+public

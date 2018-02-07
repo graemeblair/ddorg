@@ -1,5 +1,5 @@
 /* If this is not here, then the content will overflow the window when the window gets too small. This will make sure that the text is reflowed properly to account for a smaller window size.  */
-.container{
+div[role="main"]{
     max-width: 100%;
 }
 

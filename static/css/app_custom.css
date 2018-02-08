@@ -8,6 +8,8 @@ pre, table{
     overflow: auto;
     max-width: 100%;
     display: block;
+    margin-top: 1.8rem;
+    margin-bottom: 1.8rem;
 }
 
 /* We don’t want our code to get word wrapped in any way. That just looks dumb. */

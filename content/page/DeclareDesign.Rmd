@@ -304,6 +304,6 @@ knitr::kable(get_estimands(design))
 
 # Next steps
 
-Next, we recommend you read the [Custom functions](/articles/custom_functions.html) tutorial to learn how to provide custom functions to replace any step of `declare_design()`. You can also read about [`quick_design()` and other advanced features](/articles/advanced_featurs.html) in our Advanced features tutorial.
+Next, we recommend you read the [Custom functions](/page/custom_functions/) tutorial to learn how to provide custom functions to replace any step of `declare_design()`. You can also read about [`quick_design()` and other advanced features](/page/advanced_features/) in our Advanced features tutorial.
 
-Finally, you can [learn about DeclareDesign’s companion packages](/articles/companion_packages.html).
+Finally, you can [learn about DeclareDesign’s companion packages](/page/companion_packages/).

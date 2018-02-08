@@ -15,12 +15,13 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [Params]
   subtitle = "Declare and diagnose research designs to understand and improve them"
+# logo = "img/avatar-icon.png"
   favicon = "img/favicon.ico"
   dateFormat = "January 2, 2006"
   commit = false
   rss = true
-  comments = true
-  readingTime = true
+  comments = false
+  readingTime = false
 #  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
 
 #[[Params.bigimg]]
@@ -36,45 +37,28 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 #  desc = "Hexagon"
 
 [Author]
-  name = "Some Person"
-  website = "yourwebsite.com"
-  email = "youremail@domain.com"
-  facebook = "username"
-  googleplus = "+username" # or xxxxxxxxxxxxxxxxxxxxx
-  github = "username"
-  gitlab = "username"
-  twitter = "username"
-  reddit = "username"
-  linkedin = "username"
-  xing = "username"
-  stackoverflow = "users/XXXXXXX/username"
-  snapchat = "username"
-  instagram = "username"
-  youtube = "user/username" # or channel/channelname
-  soundcloud = "username"
-  spotify = "username"
-  bandcamp = "username"
-  itchio = "username"
-  vk = "username"
-  paypal = "username"
-  telegram = "username"
+  name = "Graeme Blair • Jasper Cooper • Alexander Coppock • Macartan Humphreys"
+# website = "yourwebsite.com"
+  email = "contribute@declaredesign.org"
+  github = "DeclareDesign"
+  stackoverflow = "questions/tagged/declaredesign"
   
 ############################################
 # Main Menu
 ############################################
 [[menu.main]]
     name = "Blog"
-    url = "post/"
+    url = "/post/"
     weight = 1
 
 [[menu.main]]
     name = "The Idea"
-    url = "page/idea/"
+    url = "/page/idea/"
     weight = 2
     
 [[menu.main]]
     name = "Design Library"
-    url = "page/design_library/"
+    url = "/page/design_library/"
     weight = 3
     
 [[menu.main]]
@@ -84,22 +68,22 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     parent = "using_declare_design"
     name = "Getting Started"
-    url = "page/DeclareDesign/"
+    url = "/page/DeclareDesign/"
     weight = 1
 [[menu.main]]
     parent = "using_declare_design"
     name = "Custom Functions"
-    url = "page/custom_functions/"
+    url = "/page/custom_functions/"
     weight = 2
 [[menu.main]]
     parent = "using_declare_design"
     name = "Advanced Features"
-    url = "page/advanced_features/"
+    url = "/page/advanced_features/"
     weight = 3
 [[menu.main]]
     parent = "using_declare_design"
     name = "Companion Packages"
-    url = "page/companion_packages/"
+    url = "/page/companion_packages/"
     weight = 4
 
 [[menu.main]]

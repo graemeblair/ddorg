@@ -1,4 +1,4 @@
-baseurl = "https://username.github.io"
+baseurl = "https://thirsty-morse-aa29ed.netlify.com"
 DefaultContentLanguage = "en"
 title = "Declare Design"
 theme = "beautifulhugo"

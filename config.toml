@@ -52,11 +52,6 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     weight = 1
 
 [[menu.main]]
-    name = "Packages2"
-    url = "/packages/"
-    weight = 1
-
-[[menu.main]]
     name = "The Idea"
     url = "/page/idea/"
     weight = 2
@@ -103,25 +98,20 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     parent = "packages"
     name = "Declare Design"
-    url = ""
+    url = "/page/package/declaredesign/home/"
     weight = 1
 [[menu.main]]
     parent = "packages"
     name = "randomizr"
-    url = "http://randomizr.declaredesign.org"
+    url = "/page/package/randomizr/home/"
     weight = 2
 [[menu.main]]
     parent = "packages"
     name = "fabricatr"
-    url = "http://fabricatr.declaredesign.org"
+    url = "/page/package/fabricatr/home/"
     weight = 3
 [[menu.main]]
     parent = "packages"
     name = "estimatr"
-    url = "http://estimatr.declaredesign.org"
+    url = "/page/package/estimatr/home/"
     weight = 4
-
-[[menu.main]]
-    name = "Tags"
-    url = "tags"
-    weight = 7

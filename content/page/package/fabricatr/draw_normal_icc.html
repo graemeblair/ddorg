@@ -1,0 +1,127 @@
+---
+title: "Draw normal data with fixed intra-cluster correlation. — draw_normal_icc • fabricatr"
+---
+
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Draw normal data with fixed intra-cluster correlation.</h1>
+    </div>
+
+    
+    <p>Data is generated to ensure inter-cluster correlation 0, intra-cluster
+correlation in expectation ICC. The data generating process
+used in this function is specified at the following URL:
+<a href='https://stats.stackexchange.com/questions/263451/create-synthetic-data-with-a-given-intraclass-correlation-coefficient-icc'>https://stats.stackexchange.com/questions/263451/create-synthetic-data-with-a-given-intraclass-correlation-coefficient-icc</a></p>
+    
+
+    <pre class="usage"><span class='fu'>draw_normal_icc</span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>clusters</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>sd_between</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ICC</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>mean</th>
+      <td><p>A number or vector of numbers, one mean per cluster. If none is
+provided, will default to 0.</p></td>
+    </tr>
+    <tr>
+      <th>N</th>
+      <td><p>(Optional) A number indicating the number of observations to be
+generated. Must be equal to length(clusters) if provided.</p></td>
+    </tr>
+    <tr>
+      <th>clusters</th>
+      <td><p>A vector of factors or items that can be coerced to
+clusters; the length will determine the length of the generated data.</p></td>
+    </tr>
+    <tr>
+      <th>sd</th>
+      <td><p>A number or vector of numbers, indicating the standard deviation of
+each cluster's error terms -- standard deviation within a cluster (default 1)</p></td>
+    </tr>
+    <tr>
+      <th>sd_between</th>
+      <td><p>A number or vector of numbers, indicating the standard deviation
+between clusters.</p></td>
+    </tr>
+    <tr>
+      <th>ICC</th>
+      <td><p>A number indicating the desired ICC.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A vector of numbers corresponding to the observations from
+the supplied cluster IDs.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>The typical use for this function is for a user to provide an <code>ICC</code> and,
+optionally, a set of within-cluster standard deviations, <code>sd</code>. If the
+user does not provide <code>sd</code>, the default value is 1. These arguments
+imply a fixed between-cluster standard deviation.</p>
+<p>An alternate mode for the function is to provide between-cluster standard
+deviations, <code>sd_between</code>, and an <code>ICC</code>. These arguments imply
+a fixed within-cluster standard deviation.</p>
+<p>If users provide all three of <code>ICC</code>, <code>sd_between</code>, and
+<code>sd</code>, the function will warn the user and use the provided standard
+deviations for generating the data.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># Divide observations into clusters</span>
+<span class='no'>clusters</span> <span class='kw'>=</span> <span class='fu'>rep</span>(<span class='fl'>1</span>:<span class='fl'>5</span>, <span class='fl'>10</span>)
+
+<span class='co'># Default: unit variance within each cluster</span>
+<span class='fu'>draw_normal_icc</span>(<span class='kw'>clusters</span> <span class='kw'>=</span> <span class='no'>clusters</span>, <span class='kw'>ICC</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)</div><div class='output co'>#&gt;  [1] -0.23212417 -0.35467923  1.56273598 -0.33557914 -0.89346452 -1.70738594
+#&gt;  [7] -1.25237385 -0.01748144  0.63606994 -0.48558683 -0.76368293  0.44496960
+#&gt; [13] -1.06439398 -1.06756861 -0.17588060 -1.59909953  0.80382839  0.70824656
+#&gt; [19] -0.30285867 -1.25685960 -1.00428466 -1.15710582 -0.73219743 -0.57228137
+#&gt; [25]  0.26528632  0.36563273  0.14231940  0.75085794  0.88293871  0.44697276
+#&gt; [31] -0.04661159 -2.24227722 -0.48897564  0.34702208 -1.50050998  0.26288772
+#&gt; [37] -1.81101533  1.13305316 -0.63584601 -1.08558445  1.01161575 -0.08757872
+#&gt; [43] -0.32887202  0.88544231  0.43282091 -0.17104443 -1.00370567  1.20393301
+#&gt; [49]  0.95419580  0.15748684</div><div class='input'>
+<span class='co'># Alternatively, you can specify characteristics:</span>
+<span class='fu'>draw_normal_icc</span>(<span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>clusters</span> <span class='kw'>=</span> <span class='no'>clusters</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>ICC</span> <span class='kw'>=</span> <span class='fl'>0.3</span>)</div><div class='output co'>#&gt;  [1] 11.538917 10.226129 14.326168 17.575313 10.223361 13.488423  6.896725
+#&gt;  [8]  9.031702 10.250518  6.642878 15.553113  7.838950 12.880430 20.532807
+#&gt; [15] 10.805751 10.460371  2.127998  9.776364 15.381775  8.949532 16.627286
+#&gt; [22]  9.608988  5.455146 10.827753  5.953737 12.067267  7.482787  9.087050
+#&gt; [29] 15.223127 15.373699 13.121228 12.110538  6.224100 11.691975  9.779446
+#&gt; [36]  8.357458  4.310639  5.051116 10.797143  6.889433  9.484464  6.923942
+#&gt; [43] 11.821694 14.462604  9.556262 15.633591  4.401083 15.409579  8.172898
+#&gt; [50] 13.093437</div><div class='input'>
+<span class='co'># Can specify between-cluster standard deviation instead:</span>
+<span class='fu'>draw_normal_icc</span>(<span class='kw'>clusters</span> <span class='kw'>=</span> <span class='no'>clusters</span>, <span class='kw'>sd_between</span> <span class='kw'>=</span> <span class='fl'>4</span>, <span class='kw'>ICC</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</div><div class='output co'>#&gt;  [1]  -3.5062996  -3.7482251  10.7672794  -6.8274165  -1.1680209  -3.6289907
+#&gt;  [7]  -0.5567950   4.2967125  -7.0408913   7.2174347  -1.0831634   3.8041080
+#&gt; [13]  17.3626380 -10.5669106   6.9613176   3.2682528 -17.5102334   4.7168249
+#&gt; [19]   5.0676564  10.8825838  -4.0946878  -3.1235913   2.2065740   2.8850245
+#&gt; [25]  -3.4838020  12.0831475   0.4927259  -2.2965696  -1.4049501   4.9530792
+#&gt; [31]  -1.0210824   3.0464000  -4.1537907  -7.4559247  -7.4219206  12.4706862
+#&gt; [37]   3.5799197   4.8358276  -3.1789330  10.9335253  -4.1700617  -6.1807566
+#&gt; [43]  10.4265491  -7.6840077  -1.4019942  17.7040480  -3.5276668  11.7022522
+#&gt; [49]  -9.1591727   8.1769995</div><div class='input'>
+<span class='co'># Verify that ICC generated is accurate</span>
+<span class='no'>corr_draw</span> <span class='kw'>=</span> <span class='fu'>draw_normal_icc</span>(<span class='kw'>clusters</span> <span class='kw'>=</span> <span class='no'>clusters</span>, <span class='kw'>ICC</span> <span class='kw'>=</span> <span class='fl'>0.4</span>)
+<span class='fu'>summary</span>(<span class='fu'>lm</span>(<span class='no'>corr_draw</span> ~ <span class='fu'>as.factor</span>(<span class='no'>clusters</span>)))$<span class='no'>r.squared</span></div><div class='output co'>#&gt; [1] 0.1944716</div><div class='input'>
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

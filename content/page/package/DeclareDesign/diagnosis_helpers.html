@@ -1,0 +1,74 @@
+---
+title: "Explore your design diagnosis — diagnosis_helpers • DeclareDesign"
+---
+
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Explore your design diagnosis</h1>
+    </div>
+
+    
+    <p>Explore your design diagnosis</p>
+    
+
+    <pre class="usage"><span class='fu'>get_diagnosands</span>(<span class='no'>diagnosis</span>)
+
+<span class='fu'>get_simulations</span>(<span class='no'>diagnosis</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>diagnosis</th>
+      <td><p>A design diagnosis created by <code><a href='diagnose_design.html'>diagnose_design</a></code>.</p></td>
+    </tr>
+    </table>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>my_population</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_population.html'>declare_population</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>500</span>, <span class='kw'>noise</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span>))
+
+<span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_potential_outcomes.html'>declare_potential_outcomes</a></span>(
+  <span class='kw'>Y_Z_0</span> <span class='kw'>=</span> <span class='no'>noise</span>, <span class='kw'>Y_Z_1</span> <span class='kw'>=</span> <span class='no'>noise</span> +
+  <span class='fu'>rnorm</span>(<span class='no'>N</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>2</span>))
+
+<span class='no'>my_assignment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_assignment.html'>declare_assignment</a></span>()
+
+<span class='no'>my_estimand</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_estimand.html'>declare_estimand</a></span>(<span class='kw'>ATE</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>Y_Z_1</span> - <span class='no'>Y_Z_0</span>))
+
+<span class='no'>my_estimator</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_estimator.html'>declare_estimator</a></span>(<span class='no'>Y</span> ~ <span class='no'>Z</span>, <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='no'>my_estimand</span>)
+
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_design.html'>declare_design</a></span>(<span class='no'>my_population</span>,
+                         <span class='no'>my_potential_outcomes</span>,
+                         <span class='no'>my_estimand</span>,
+                         <span class='no'>my_assignment</span>,
+                         <span class='no'>reveal_outcomes</span>,
+                         <span class='no'>my_estimator</span>)</div><span class='co'># NOT RUN {</span>
+<span class='co'># using built-in defaults:</span>
+<span class='no'>diagnosis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='diagnose_design.html'>diagnose_design</a></span>(<span class='no'>design</span>)
+<span class='no'>diagnosis</span>
+<span class='co'># }</span><div class='input'>
+<span class='co'># using a user-defined diagnosand</span>
+<span class='no'>my_diagnosand</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_diagnosands.html'>declare_diagnosands</a></span>(<span class='kw'>absolute_error</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='fu'>abs</span>(<span class='no'>est</span> - <span class='no'>estimand</span>)))</div><span class='co'># NOT RUN {</span>
+<span class='no'>diagnosis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='diagnose_design.html'>diagnose_design</a></span>(<span class='no'>design</span>, <span class='kw'>diagnosands</span> <span class='kw'>=</span> <span class='no'>my_diagnosand</span>)
+<span class='no'>diagnosis</span>
+
+<span class='fu'>get_diagnosands</span>(<span class='no'>diagnosis</span>)
+
+<span class='fu'>get_simulations</span>(<span class='no'>diagnosis</span>)
+
+<span class='co'># }</span><div class='input'>
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+            
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

@@ -1,0 +1,285 @@
+---
+title: "Modify a design after the fact — modify_design • DeclareDesign"
+---
+
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Modify a design after the fact</h1>
+    </div>
+
+    
+    <p>Insert, delete and replace steps in an (already declared) design object.</p>
+    
+
+    <pre class="usage"><span class='fu'>insert_step</span>(<span class='no'>design</span>, <span class='no'>new_step</span>, <span class='kw'>before</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>after</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)
+
+<span class='fu'>delete_step</span>(<span class='no'>design</span>, <span class='no'>step</span>)
+
+<span class='fu'>replace_step</span>(<span class='no'>design</span>, <span class='no'>step</span>, <span class='no'>new_step</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>design</th>
+      <td><p>a design object, usually created by <code><a href='declare_design.html'>declare_design</a></code>, <code><a href='quick_design.html'>quick_design</a></code>, or <code><a href='download_design.html'>download_design</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>new_step</th>
+      <td><p>the new step - either a function or a partial call</p></td>
+    </tr>
+    <tr>
+      <th>before</th>
+      <td><p>the step before which to add steps</p></td>
+    </tr>
+    <tr>
+      <th>after</th>
+      <td><p>same</p></td>
+    </tr>
+    <tr>
+      <th>step</th>
+      <td><p>the step to be deleted or replaced</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A new design object. See <code><a href='declare_design.html'>declare_design</a></code> for details.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>see <code>modify_design</code> for details.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+ <span class='no'>my_population</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_population.html'>declare_population</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>noise</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span>))
+
+ <span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span>
+   <span class='fu'><a href='declare_potential_outcomes.html'>declare_potential_outcomes</a></span>(<span class='kw'>Y_Z_0</span> <span class='kw'>=</span> <span class='no'>noise</span>,
+                              <span class='kw'>Y_Z_1</span> <span class='kw'>=</span> <span class='no'>noise</span> + <span class='fu'>rnorm</span>(<span class='no'>N</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>2</span>))
+
+ <span class='no'>my_assignment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_assignment.html'>declare_assignment</a></span>(<span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+ <span class='no'>my_assignment_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_assignment.html'>declare_assignment</a></span>(<span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>25</span>)
+
+ <span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_design.html'>declare_design</a></span>(<span class='no'>my_population</span>,
+                          <span class='no'>my_potential_outcomes</span>,
+                          <span class='no'>my_assignment</span>)
+
+ <span class='no'>design</span></div><div class='output co'>#&gt; 
+#&gt; Design Summary
+#&gt; 
+#&gt; Step 1 (): declare_population(N = 100, noise = rnorm(N)) 
+#&gt; 
+#&gt; N = 100 
+#&gt; 
+#&gt; Added variable: ID 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: noise 
+#&gt;    min median  mean  max   sd N_missing N_unique
+#&gt;  -1.91  -0.12 -0.06 1.89 0.84         0      100
+#&gt; 
+#&gt; Step 2 (): declare_potential_outcomes(Y_Z_0 = noise, Y_Z_1 = noise + rnorm(N,     mean = 2, sd = 2)) 
+#&gt; 
+#&gt; Added variable: fab_ID_1 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: Y_Z_0 
+#&gt;    min median  mean  max   sd N_missing N_unique
+#&gt;  -1.91  -0.12 -0.06 1.89 0.84         0      100
+#&gt; 
+#&gt; Added variable: Y_Z_1 
+#&gt;    min median mean max   sd N_missing N_unique
+#&gt;  -3.68   2.13 2.21   7 2.18         0      100
+#&gt; 
+#&gt; Step 3 (): declare_assignment(m = 50) 
+#&gt; 
+#&gt; Added variable: Z 
+#&gt;     0    1
+#&gt;    50   50
+#&gt;  0.50 0.50
+#&gt; 
+#&gt; Added variable: Z_cond_prob 
+#&gt;   0.5
+#&gt;   100
+#&gt;  1.00
+#&gt; </div><div class='input'>
+
+ <span class='fu'>insert_step</span>(<span class='no'>design</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>income</span> <span class='kw'>=</span> <span class='no'>noise</span>^<span class='fl'>2</span>), <span class='kw'>after</span> <span class='kw'>=</span> <span class='no'>my_assignment</span>)</div><div class='output co'>#&gt; 
+#&gt; Design Summary
+#&gt; 
+#&gt; Step 1 (): declare_population(N = 100, noise = rnorm(N)) 
+#&gt; 
+#&gt; N = 100 
+#&gt; 
+#&gt; Added variable: ID 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: noise 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -2.77    0.1 0.02 2.69 1.03         0      100
+#&gt; 
+#&gt; Step 2 (): declare_potential_outcomes(Y_Z_0 = noise, Y_Z_1 = noise + rnorm(N,     mean = 2, sd = 2)) 
+#&gt; 
+#&gt; Added variable: fab_ID_1 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: Y_Z_0 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -2.77    0.1 0.02 2.69 1.03         0      100
+#&gt; 
+#&gt; Added variable: Y_Z_1 
+#&gt;  min median mean  max   sd N_missing N_unique
+#&gt;   -4    1.7 1.83 7.47 2.33         0      100
+#&gt; 
+#&gt; Step 3 (): declare_assignment(m = 50) 
+#&gt; 
+#&gt; Added variable: Z 
+#&gt;     0    1
+#&gt;    50   50
+#&gt;  0.50 0.50
+#&gt; 
+#&gt; Added variable: Z_cond_prob 
+#&gt;   0.5
+#&gt;   100
+#&gt;  1.00
+#&gt; 
+#&gt; Step 4 (): dplyr::mutate(income = noise^2) 
+#&gt; 
+#&gt; Added variable: income 
+#&gt;  min median mean  max  sd N_missing N_unique
+#&gt;    0   0.32 1.04 7.69 1.5         0      100
+#&gt; </div><div class='input'> <span class='fu'>insert_step</span>(<span class='no'>design</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>income</span> <span class='kw'>=</span> <span class='no'>noise</span>^<span class='fl'>2</span>), <span class='kw'>before</span> <span class='kw'>=</span> <span class='no'>my_assignment</span>)</div><div class='output co'>#&gt; 
+#&gt; Design Summary
+#&gt; 
+#&gt; Step 1 (): declare_population(N = 100, noise = rnorm(N)) 
+#&gt; 
+#&gt; N = 100 
+#&gt; 
+#&gt; Added variable: ID 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: noise 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -2.76   0.09 0.07 3.45 1.13         0      100
+#&gt; 
+#&gt; Step 2 (): declare_potential_outcomes(Y_Z_0 = noise, Y_Z_1 = noise + rnorm(N,     mean = 2, sd = 2)) 
+#&gt; 
+#&gt; Added variable: fab_ID_1 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: Y_Z_0 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -2.76   0.09 0.07 3.45 1.13         0      100
+#&gt; 
+#&gt; Added variable: Y_Z_1 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -1.61   2.11 2.01 6.69 1.93         0      100
+#&gt; 
+#&gt; Step 3 (): dplyr::mutate(income = noise^2) 
+#&gt; 
+#&gt; Added variable: income 
+#&gt;  min median mean   max   sd N_missing N_unique
+#&gt;    0   0.77 1.26 11.92 1.82         0      100
+#&gt; 
+#&gt; Step 4 (): declare_assignment(m = 50) 
+#&gt; 
+#&gt; Added variable: Z 
+#&gt;     0    1
+#&gt;    50   50
+#&gt;  0.50 0.50
+#&gt; 
+#&gt; Added variable: Z_cond_prob 
+#&gt;   0.5
+#&gt;   100
+#&gt;  1.00
+#&gt; </div><div class='input'>
+
+ <span class='fu'>delete_step</span>(<span class='no'>design</span>, <span class='no'>my_assignment</span>)</div><div class='output co'>#&gt; 
+#&gt; Design Summary
+#&gt; 
+#&gt; Step 1 (): declare_population(N = 100, noise = rnorm(N)) 
+#&gt; 
+#&gt; N = 100 
+#&gt; 
+#&gt; Added variable: ID 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: noise 
+#&gt;   min median  mean  max   sd N_missing N_unique
+#&gt;  -2.8   0.07 -0.03 1.84 0.91         0      100
+#&gt; 
+#&gt; Step 2 (): declare_potential_outcomes(Y_Z_0 = noise, Y_Z_1 = noise + rnorm(N,     mean = 2, sd = 2)) 
+#&gt; 
+#&gt; Added variable: fab_ID_1 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: Y_Z_0 
+#&gt;   min median  mean  max   sd N_missing N_unique
+#&gt;  -2.8   0.07 -0.03 1.84 0.91         0      100
+#&gt; 
+#&gt; Added variable: Y_Z_1 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -3.84   2.13 2.08 8.32 2.35         0      100
+#&gt; </div><div class='input'> <span class='fu'>replace_step</span>(<span class='no'>design</span>, <span class='no'>my_assignment</span>, <span class='kw pkg'>dplyr</span><span class='kw ns'>::</span><span class='fu'><a href='http://dplyr.tidyverse.org/reference/mutate.html'>mutate</a></span>(<span class='kw'>words</span><span class='kw'>=</span><span class='st'>"HIARYLAH"</span>))</div><div class='output co'>#&gt; 
+#&gt; Design Summary
+#&gt; 
+#&gt; Step 1 (): declare_population(N = 100, noise = rnorm(N)) 
+#&gt; 
+#&gt; N = 100 
+#&gt; 
+#&gt; Added variable: ID 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: noise 
+#&gt;    min median  mean  max   sd N_missing N_unique
+#&gt;  -2.49  -0.07 -0.16 2.07 0.99         0      100
+#&gt; 
+#&gt; Step 2 (): declare_potential_outcomes(Y_Z_0 = noise, Y_Z_1 = noise + rnorm(N,     mean = 2, sd = 2)) 
+#&gt; 
+#&gt; Added variable: fab_ID_1 
+#&gt;  N_missing N_unique     class
+#&gt;          0      100 character
+#&gt; 
+#&gt; Added variable: Y_Z_0 
+#&gt;    min median  mean  max   sd N_missing N_unique
+#&gt;  -2.49  -0.07 -0.16 2.07 0.99         0      100
+#&gt; 
+#&gt; Added variable: Y_Z_1 
+#&gt;    min median mean  max   sd N_missing N_unique
+#&gt;  -2.44    1.9 2.13 5.95 1.86         0      100
+#&gt; 
+#&gt; Step 3 (): dplyr::mutate(words = "HIARYLAH") 
+#&gt; 
+#&gt; Added variable: words 
+#&gt;  HIARYLAH
+#&gt;       100
+#&gt;      1.00
+#&gt; </div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

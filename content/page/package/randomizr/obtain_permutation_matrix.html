@@ -1,0 +1,74 @@
+---
+title: "Obtain Permutation Matrix from a Random Assignment Declaration — obtain_permutation_matrix • randomizr"
+---
+
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Obtain Permutation Matrix from a Random Assignment Declaration</h1>
+    </div>
+
+    
+    <p>Obtain Permutation Matrix from a Random Assignment Declaration</p>
+    
+
+    <pre class="usage"><span class='fu'>obtain_permutation_matrix</span>(<span class='no'>declaration</span>, <span class='kw'>maximum_permutations</span> <span class='kw'>=</span> <span class='fl'>10000</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>declaration</th>
+      <td><p>A random assignment declaration, created by <code><a href='declare_ra.html'>declare_ra</a></code>.</p></td>
+    </tr>
+    <tr>
+      <th>maximum_permutations</th>
+      <td><p>If the number of possible random assignments exceeds maximum_permutations, obtain_permutation_matrix will return a random sample of maximum_permutations permutations. Defaults to 10,000.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a matrix of all possible (or a random sample of all possible) random assignments consistent with a declaration.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># complete</span>
+
+<span class='no'>declaration</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_ra.html'>declare_ra</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>4</span>)
+<span class='no'>perms</span> <span class='kw'>&lt;-</span> <span class='fu'>obtain_permutation_matrix</span>(<span class='no'>declaration</span>)
+<span class='fu'>dim</span>(<span class='no'>perms</span>)</div><div class='output co'>#&gt; [1] 4 6</div><div class='input'><span class='fu'><a href='obtain_num_permutations.html'>obtain_num_permutations</a></span>(<span class='no'>declaration</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
+<span class='co'># blocked</span>
+
+<span class='no'>blocks</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>)
+<span class='no'>declaration</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_ra.html'>declare_ra</a></span>(<span class='kw'>blocks</span> <span class='kw'>=</span> <span class='no'>blocks</span>)
+<span class='no'>perms</span> <span class='kw'>&lt;-</span> <span class='fu'>obtain_permutation_matrix</span>(<span class='no'>declaration</span>)
+<span class='fu'>dim</span>(<span class='no'>perms</span>)</div><div class='output co'>#&gt; [1]  7 24</div><div class='input'><span class='fu'><a href='obtain_num_permutations.html'>obtain_num_permutations</a></span>(<span class='no'>declaration</span>)</div><div class='output co'>#&gt; [1] 24</div><div class='input'>
+<span class='co'># clustered</span>
+
+<span class='no'>clusters</span> <span class='kw'>&lt;-</span> <span class='fu'>c</span>(<span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"A"</span>, <span class='st'>"B"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>, <span class='st'>"C"</span>)
+<span class='no'>declaration</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_ra.html'>declare_ra</a></span>(<span class='kw'>clusters</span> <span class='kw'>=</span> <span class='no'>clusters</span>)
+<span class='no'>perms</span> <span class='kw'>&lt;-</span> <span class='fu'>obtain_permutation_matrix</span>(<span class='no'>declaration</span>)
+<span class='fu'>dim</span>(<span class='no'>perms</span>)</div><div class='output co'>#&gt; [1] 7 6</div><div class='input'><span class='fu'><a href='obtain_num_permutations.html'>obtain_num_permutations</a></span>(<span class='no'>declaration</span>)</div><div class='output co'>#&gt; [1] 6</div><div class='input'>
+<span class='co'># large</span>
+
+<span class='no'>declaration</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_ra.html'>declare_ra</a></span>(<span class='fl'>20</span>)
+<span class='fu'>choose</span>(<span class='fl'>20</span>, <span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] 184756</div><div class='input'><span class='no'>perms</span> <span class='kw'>&lt;-</span> <span class='fu'>obtain_permutation_matrix</span>(<span class='no'>declaration</span>)
+<span class='fu'>dim</span>(<span class='no'>perms</span>)</div><div class='output co'>#&gt; [1]    20 10000</div><div class='input'>
+
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

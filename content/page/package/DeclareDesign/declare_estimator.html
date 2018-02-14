@@ -1,0 +1,147 @@
+---
+title: "Declare an Estimator — declare_estimator • DeclareDesign"
+---
+
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Declare an Estimator</h1>
+    </div>
+
+    
+    <p>Declare an Estimator</p>
+    
+
+    <pre class="usage"><span class='fu'>declare_estimator</span>(<span class='no'>...</span>, <span class='kw'>handler</span> <span class='kw'>=</span> <span class='no'>estimator_handler</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='st'>"my_estimator"</span>)
+
+<span class='fu'>estimator_handler</span>(<span class='no'>data</span>, <span class='no'>...</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw pkg'>estimatr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/estimatr/topics/difference_in_means'>difference_in_means</a></span>,
+  <span class='kw'>estimator_function</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>coefficient_name</span> <span class='kw'>=</span> <span class='no'>Z</span>, <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>label</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments to the estimand function. For example, you could specify the formula for your estimator, i.e., formula = Y ~ Z + age.</p></td>
+    </tr>
+    <tr>
+      <th>handler</th>
+      <td><p>the handler function</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>An optional label to name the estimator, such as DIM.</p></td>
+    </tr>
+    <tr>
+      <th>data</th>
+      <td><p>a data.frame</p></td>
+    </tr>
+    <tr>
+      <th>model</th>
+      <td><p>A model function, e.g. lm or glm. If model is specified, the estimator_function argument is ignored.By default, the model is the <code>difference_in_means</code> function from the estimatr package.</p></td>
+    </tr>
+    <tr>
+      <th>estimator_function</th>
+      <td><p>A function that takes a data.frame as an argument and returns a data.frame with the estimates, summary statistics (i.e., standard error, p-value, and confidence interval) and a label.</p></td>
+    </tr>
+    <tr>
+      <th>coefficient_name</th>
+      <td><p>A character vector of coefficients that represent quantities of interest, i.e. Z. Only relevant when a <code>model</code> is chosen or for some <code>estimator_function</code>'s such as <code>difference_in_means</code> and <code>lm_robust</code>.</p></td>
+    </tr>
+    <tr>
+      <th>estimand</th>
+      <td><p>An estimand object created using <code><a href='declare_estimand.html'>declare_estimand</a></code>. Estimates from this estimator function will be associated with the estimand, for example for calculating the bias and coverage of the estimator.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a function that accepts a data.frame as an argument and returns a data.frame containing the value of the estimator and associated statistics.</p>
+    
+    <h2 class="hasAnchor" id="custom-estimators"><a class="anchor" href="#custom-estimators"></a>Custom Estimators</h2>
+
+    
+    <p><code>estimator_functions</code> implementations should be tidy (accept and return a data.frame)
+    <code>model</code> implementations should at the miminum provide S3 methods for <code>summary</code> and <code>confint</code>.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>my_population</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_population.html'>declare_population</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+
+<span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_potential_outcomes.html'>declare_potential_outcomes</a></span>(
+  <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>Y</span> ~ <span class='fl'>.25</span> * <span class='no'>Z</span>,
+  <span class='kw'>condition_names</span> <span class='kw'>=</span> <span class='fu'>c</span>(<span class='fl'>0</span>, <span class='fl'>1</span>))
+
+<span class='no'>my_estimand</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_estimand.html'>declare_estimand</a></span>(<span class='kw'>ATE</span> <span class='kw'>=</span> <span class='fu'>mean</span>(<span class='no'>Y_Z_1</span> - <span class='no'>Y_Z_0</span>))
+
+<span class='no'>my_assignment</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_assignment.html'>declare_assignment</a></span>(<span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+
+<span class='no'>design</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_design.html'>declare_design</a></span>(
+ <span class='no'>my_population</span>, <span class='no'>my_potential_outcomes</span>,
+ <span class='no'>my_estimand</span>, <span class='no'>my_assignment</span>, <span class='no'>reveal_outcomes</span>
+)
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='post_design.html'>draw_data</a></span>(<span class='no'>design</span>)
+
+<span class='no'>my_estimator_dim</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_estimator</span>(<span class='no'>Y</span> ~ <span class='no'>Z</span>, <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='no'>my_estimand</span>)
+
+<span class='fu'>my_estimator_dim</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;   estimator_label coefficient_name  est se   p ci_lower ci_upper estimand_label
+#&gt; 1    my_estimator                Z 0.25  0 NaN      NaN      NaN            ATE</div><div class='input'>
+<span class='co'># Use the linear regression (lm) function</span>
+<span class='co'># with robust standard errors from the estimatr package</span>
+
+<span class='no'>my_estimator_lm</span> <span class='kw'>&lt;-</span>
+ <span class='fu'>declare_estimator</span>(<span class='no'>Y</span> ~ <span class='no'>Z</span>,
+                   <span class='kw'>model</span> <span class='kw'>=</span> <span class='kw pkg'>estimatr</span><span class='kw ns'>::</span><span class='no'><a href='http://www.rdocumentation.org/packages/estimatr/topics/lm_robust'>lm_robust</a></span>,
+                   <span class='kw'>coefficient_name</span> <span class='kw'>=</span> <span class='st'>"Z"</span>,
+                   <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='no'>my_estimand</span>)
+
+<span class='fu'>my_estimator_lm</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;   estimator_label coefficient_name  est           se p ci_lower ci_upper
+#&gt; 2    my_estimator                Z 0.25 2.021803e-17 0     0.25     0.25
+#&gt;   estimand_label
+#&gt; 2            ATE</div><div class='input'>
+<span class='co'># Use R's built-in lm function via model</span>
+
+<span class='no'>estimator_lm</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_estimator</span>(<span class='no'>Y</span> ~ <span class='no'>Z</span>, <span class='kw'>model</span> <span class='kw'>=</span> <span class='no'>lm</span>)
+
+<span class='co'># Run a probit regression using glm via model</span>
+
+<span class='no'>estimator_probit</span> <span class='kw'>&lt;-</span>
+  <span class='fu'>declare_estimator</span>(
+    <span class='no'>Y</span> ~ <span class='no'>Z</span>,
+    <span class='kw'>model</span> <span class='kw'>=</span> <span class='no'>glm</span>,
+    <span class='kw'>family</span> <span class='kw'>=</span> <span class='fu'>binomial</span>(<span class='kw'>link</span> <span class='kw'>=</span> <span class='st'>"probit"</span>),
+    <span class='kw'>coefficient_name</span> <span class='kw'>=</span> <span class='st'>"Z"</span>
+ )
+
+<span class='co'># Use a custom estimator function</span>
+
+<span class='no'>my_estimator_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>formula</span>, <span class='no'>data</span>){
+  <span class='fu'>data.frame</span>(<span class='kw'>est</span> <span class='kw'>=</span> <span class='fu'>with</span>(<span class='no'>data</span>, <span class='fu'>mean</span>(<span class='no'>Y</span>)))
+}
+
+<span class='no'>my_estimator_custom</span> <span class='kw'>&lt;-</span>
+  <span class='fu'>declare_estimator</span>(<span class='no'>Y</span> ~ <span class='no'>Z</span>,
+                    <span class='kw'>estimator_function</span> <span class='kw'>=</span> <span class='no'>my_estimator_function</span>,
+                    <span class='kw'>estimand</span> <span class='kw'>=</span> <span class='no'>my_estimand</span>)
+
+<span class='fu'>my_estimator_custom</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;   estimator_label   est estimand_label
+#&gt; 1    my_estimator 0.125            ATE</div><div class='input'>
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#custom-estimators">Custom Estimators</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

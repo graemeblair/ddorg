@@ -10,6 +10,7 @@ pygmentsCodefencesGuessSyntax = true
 pygmentOptions = "linenos=table"
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
+uglyurls = true
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
@@ -48,17 +49,17 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 ############################################
 [[menu.main]]
     name = "Blog"
-    url = "/post/"
+    url = "/post.html"
     weight = 1
 
 [[menu.main]]
     name = "The Idea"
-    url = "/page/idea/"
+    url = "/page/idea.html"
     weight = 2
     
 [[menu.main]]
     name = "Design Library"
-    url = "/page/design_library/"
+    url = "/page/design_library.html"
     weight = 3
     
 [[menu.main]]
@@ -68,22 +69,22 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     parent = "using_declare_design"
     name = "Getting Started"
-    url = "/page/DeclareDesign/"
+    url = "/page/DeclareDesign.html"
     weight = 1
 [[menu.main]]
     parent = "using_declare_design"
     name = "Custom Functions"
-    url = "/page/custom_functions/"
+    url = "/page/custom_functions.html"
     weight = 2
 [[menu.main]]
     parent = "using_declare_design"
     name = "Advanced Features"
-    url = "/page/advanced_features/"
+    url = "/page/advanced_features.html"
     weight = 3
 [[menu.main]]
     parent = "using_declare_design"
     name = "Companion Packages"
-    url = "/page/companion_packages/"
+    url = "/page/companion_packages.html"
     weight = 4
 
 [[menu.main]]
@@ -93,25 +94,51 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [[menu.main]]
     identifier = "packages"
-    name = "Packages"
+    name = "Package"
     weight = 6
 [[menu.main]]
     parent = "packages"
     name = "Declare Design"
-    url = "/page/package/declaredesign/home/"
+    url = "/page/package/declaredesign/home.html"
     weight = 1
 [[menu.main]]
     parent = "packages"
     name = "randomizr"
-    url = "/page/package/randomizr/home/"
+    url = "/page/package/randomizr/home.html"
     weight = 2
 [[menu.main]]
     parent = "packages"
     name = "fabricatr"
-    url = "/page/package/fabricatr/home/"
+    url = "/page/package/fabricatr/home.html"
     weight = 3
 [[menu.main]]
     parent = "packages"
     name = "estimatr"
-    url = "/page/package/estimatr/home/"
+    url = "/page/package/estimatr/home.html"
     weight = 4
+    
+[[menu.main]]
+    identifier = "vignettes"
+    name = "Test Vignettes"
+    weight = 7
+[[menu.main]]
+    parent = "vignettes"
+    name = "Declare Design"
+    url = "/page/package/declaredesign/vignettes.html"
+    weight = 1
+[[menu.main]]
+    parent = "vignettes"
+    name = "randomizr"
+    url = "/page/package/randomizr/vignettes.html"
+    weight = 2
+[[menu.main]]
+    parent = "vignettes"
+    name = "fabricatr"
+    url = "page/package/fabricatr/vignettes.html"
+    weight = 3
+[[menu.main]]
+    parent = "vignettes"
+    name = "estimatr"
+    url = "page/package/estimatr/vignettes.html"
+    weight = 4
+

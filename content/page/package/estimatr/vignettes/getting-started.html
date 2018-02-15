@@ -1,0 +1,678 @@
+---
+title: "Getting started using estimatr"
+author: "Luke Sonnet"
+output:
+  html_document:
+    df_print: paged
+link-citations: yes
+bibliography: estimatr.bib
+vignette: |
+  %\VignetteIndexEntry{Getting started using estimatr} 
+  \usepackage[utf8]{inputenc}
+  %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<p><strong>estimatr</strong> is a package in R dedicated to providing <a href="http://estimatr.declaredesign.org/articles/benchmarking-estimatr.html">fast</a> estimators that take into consideration designs often used by social scientists. Estimators are statistical methods for estimating quantities of interest like treatment effects or regression parameters. Many of the estimators included with the R programming language or popular R packages are slow and have default settings that lead to statistically inappropriate estimates. Certain estimators that reflect cutting-edge advances in statistics are not yet implemented in R packages for convenient use. <strong>estimatr</strong> is designed to solve these problems and provide estimators tuned for design-based inference.</p>
+<p>The most up-to-date version of this vignette can be found on the <a href="http://estimatr.declaredesign.org/articles/getting-started.html">DeclareDesign website here</a>.</p>
+<div id="estimators" class="section level1">
+<h1>Estimators</h1>
+<p>The current estimators we provide are:</p>
+<ul>
+<li><a href="#lm_robust"><code>lm_robust</code></a> - for fitting linear models with heteroskedasticity/cluster-robust standard errors</li>
+<li><a href="#lm_lin"><code>lm_lin</code></a> - a wrapper for <code>lm_robust()</code> to simplify interacting centered pre-treatment covariates with a treatment variable</li>
+<li><a href="#difference_in_means"><code>difference_in_means</code></a> - for estimating differences in means with appropriate standard errors for unit-randomized, cluster-randomized, block-randomized, matched-pair randomized, and matched-pair clustered designs</li>
+<li><a href="#horvitz_thompson"><code>horvitz_thompson</code></a> - for estimating average treatment effects taking into consideration treatment probabilities or sampling probabilities for simple and cluster randomized designs</li>
+</ul>
+<p>I first create some sample data to demonstrate how to use each of these estimators.</p>
+<pre class="r"><code>library(estimatr)
+
+# Example dataset to be used throughout built using fabricatr and randomizr
+library(fabricatr)
+library(randomizr)
+dat &lt;- fabricate(
+  N = 100,                        # sample size
+  x = runif(N, 0, 1),             # pre-treatment covariate
+  y0 = rnorm(N, mean = x),        # control potential outcome
+  y1 = y0 + 0.35,                 # treatment potential outcome
+  z = complete_ra(N),             # complete random assignment to treatment
+  y = ifelse(z, y1, y0),          # observed outcome
+
+  # We will also consider clustered data
+  clust = sample(rep(letters[1:20], each = 5)),
+  z_clust = cluster_ra(clust),
+  y_clust = ifelse(z_clust, y1, y0)
+)
+
+head(dat)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">ID</th>
+<th align="right">x</th>
+<th align="right">y0</th>
+<th align="right">y1</th>
+<th align="right">z</th>
+<th align="right">y</th>
+<th align="left">clust</th>
+<th align="right">z_clust</th>
+<th align="right">y_clust</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">001</td>
+<td align="right">0.91</td>
+<td align="right">1.24</td>
+<td align="right">1.6</td>
+<td align="right">0</td>
+<td align="right">1.24</td>
+<td align="left">k</td>
+<td align="right">1</td>
+<td align="right">1.59</td>
+</tr>
+<tr class="even">
+<td align="left">002</td>
+<td align="right">0.94</td>
+<td align="right">0.15</td>
+<td align="right">0.5</td>
+<td align="right">0</td>
+<td align="right">0.15</td>
+<td align="left">m</td>
+<td align="right">0</td>
+<td align="right">0.15</td>
+</tr>
+<tr class="odd">
+<td align="left">003</td>
+<td align="right">0.29</td>
+<td align="right">1.86</td>
+<td align="right">2.2</td>
+<td align="right">0</td>
+<td align="right">1.86</td>
+<td align="left">i</td>
+<td align="right">0</td>
+<td align="right">1.86</td>
+</tr>
+<tr class="even">
+<td align="left">004</td>
+<td align="right">0.83</td>
+<td align="right">1.47</td>
+<td align="right">1.8</td>
+<td align="right">1</td>
+<td align="right">1.82</td>
+<td align="left">r</td>
+<td align="right">1</td>
+<td align="right">1.82</td>
+</tr>
+<tr class="odd">
+<td align="left">005</td>
+<td align="right">0.64</td>
+<td align="right">0.73</td>
+<td align="right">1.1</td>
+<td align="right">1</td>
+<td align="right">1.08</td>
+<td align="left">c</td>
+<td align="right">0</td>
+<td align="right">0.73</td>
+</tr>
+<tr class="even">
+<td align="left">006</td>
+<td align="right">0.52</td>
+<td align="right">0.80</td>
+<td align="right">1.1</td>
+<td align="right">0</td>
+<td align="right">0.80</td>
+<td align="left">s</td>
+<td align="right">0</td>
+<td align="right">0.80</td>
+</tr>
+</tbody>
+</table>
+<div id="lm_robust" class="section level2">
+<h2><code>lm_robust</code></h2>
+<p>The <code>estimatr</code> package provides <code>lm_robust()</code> to quickly fit linear models with the most common variance estimators and degrees of freedom corrections used in social science. You can easily estimate heteroskedastic standard errors, clustered standard errors, and classical standard errors.</p>
+<p>Usage largely mimics <code>lm()</code>, although it defaults to using Eicker-Huber-White robust standard errors, specifically “HC2” standard errors. More about the exact specifications used can be found in the <a href="http://estimatr.declaredesign.org/articles/mathematical-notes.html#lm_robust-notes">mathematical notes</a> and more about the estimator can be found on its reference page: <code>lm_robust()</code>.</p>
+<pre class="r"><code>lmout &lt;- lm_robust(y ~ z + x, data = dat)
+summary(lmout)
+#&gt; 
+#&gt; Call:
+#&gt; lm_robust(formula = y ~ z + x, data = dat)
+#&gt; 
+#&gt; Standard error type =  HC2 
+#&gt; 
+#&gt; Coefficients:
+#&gt;             Estimate Std. Error Pr(&gt;|t|) CI Lower CI Upper DF
+#&gt; (Intercept)   -0.187      0.207 3.69e-01   -0.598    0.224 97
+#&gt; z              0.235      0.187 2.11e-01   -0.135    0.605 97
+#&gt; x              1.418      0.286 2.97e-06    0.851    1.985 97
+#&gt; 
+#&gt; Multiple R-squared:  0.182 , Adjusted R-squared:  0.165 
+#&gt; F-statistic: 10.8 on 2 and 97 DF,  p-value: 5.83e-05</code></pre>
+<p>Users can also easily get the output as a data.frame by using <code>tidy()</code>.</p>
+<pre class="r"><code>tidy(lmout)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.19</td>
+<td align="right">0.21</td>
+<td align="right">0.37</td>
+<td align="right">-0.60</td>
+<td align="right">0.22</td>
+<td align="right">97</td>
+<td align="left">y</td>
+</tr>
+<tr class="even">
+<td align="left">z</td>
+<td align="right">0.23</td>
+<td align="right">0.19</td>
+<td align="right">0.21</td>
+<td align="right">-0.14</td>
+<td align="right">0.60</td>
+<td align="right">97</td>
+<td align="left">y</td>
+</tr>
+<tr class="odd">
+<td align="left">x</td>
+<td align="right">1.42</td>
+<td align="right">0.29</td>
+<td align="right">0.00</td>
+<td align="right">0.85</td>
+<td align="right">1.99</td>
+<td align="right">97</td>
+<td align="left">y</td>
+</tr>
+</tbody>
+</table>
+<p>It is straightforward to do cluster-robust inference, by passing the name of your cluster variable to the <code>clusters =</code> argument. The default variance estimator with clusters is dubbed ‘CR2’ because it is analogous to ‘HC2’ for the clustered case, and utilizes recent advances proposed by <span class="citation">Pustejovsky and Tipton (<a href="#ref-pustejovskytipton2016">2016</a>)</span> to correct hypotheses tests for small samples and work with commonly specified fixed effects and weights. Note that <code>lm_robust()</code> is quicker if your cluster variable is a factor!</p>
+<pre class="r"><code># Standard estimator with clustered assignment &#39;z_clust&#39;
+lmout &lt;- lm_robust(
+  y_clust ~ z_clust + x,
+  data = dat
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.48</td>
+<td align="right">0.21</td>
+<td align="right">0.02</td>
+<td align="right">-0.89</td>
+<td align="right">-0.07</td>
+<td align="right">97</td>
+<td align="left">y_clust</td>
+</tr>
+<tr class="even">
+<td align="left">z_clust</td>
+<td align="right">0.81</td>
+<td align="right">0.18</td>
+<td align="right">0.00</td>
+<td align="right">0.46</td>
+<td align="right">1.17</td>
+<td align="right">97</td>
+<td align="left">y_clust</td>
+</tr>
+<tr class="odd">
+<td align="left">x</td>
+<td align="right">1.43</td>
+<td align="right">0.29</td>
+<td align="right">0.00</td>
+<td align="right">0.86</td>
+<td align="right">2.00</td>
+<td align="right">97</td>
+<td align="left">y_clust</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># With clustered standard errors
+lmout_cl &lt;- lm_robust(
+  y_clust ~ z_clust + x,
+  data = dat,
+  clusters = clust
+)
+tidy(lmout_cl)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.48</td>
+<td align="right">0.22</td>
+<td align="right">0.05</td>
+<td align="right">-0.97</td>
+<td align="right">0.0</td>
+<td align="right">12</td>
+<td align="left">y_clust</td>
+</tr>
+<tr class="even">
+<td align="left">z_clust</td>
+<td align="right">0.81</td>
+<td align="right">0.17</td>
+<td align="right">0.00</td>
+<td align="right">0.45</td>
+<td align="right">1.2</td>
+<td align="right">18</td>
+<td align="left">y_clust</td>
+</tr>
+<tr class="odd">
+<td align="left">x</td>
+<td align="right">1.43</td>
+<td align="right">0.34</td>
+<td align="right">0.00</td>
+<td align="right">0.72</td>
+<td align="right">2.1</td>
+<td align="right">17</td>
+<td align="left">y_clust</td>
+</tr>
+</tbody>
+</table>
+<p>Researchers can also replicate Stata’s standard errors by using the <code>se_type =</code> argument both with and without clusters:</p>
+<pre class="r"><code>lmout_stata &lt;- lm_robust(
+  y_clust ~ z_clust + x,
+  data = dat,
+  clusters = clust,
+  se_type = &quot;stata&quot;
+)
+tidy(lmout_stata)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">-0.48</td>
+<td align="right">0.22</td>
+<td align="right">0.04</td>
+<td align="right">-0.95</td>
+<td align="right">-0.02</td>
+<td align="right">19</td>
+<td align="left">y_clust</td>
+</tr>
+<tr class="even">
+<td align="left">z_clust</td>
+<td align="right">0.81</td>
+<td align="right">0.17</td>
+<td align="right">0.00</td>
+<td align="right">0.46</td>
+<td align="right">1.16</td>
+<td align="right">19</td>
+<td align="left">y_clust</td>
+</tr>
+<tr class="odd">
+<td align="left">x</td>
+<td align="right">1.43</td>
+<td align="right">0.33</td>
+<td align="right">0.00</td>
+<td align="right">0.73</td>
+<td align="right">2.13</td>
+<td align="right">19</td>
+<td align="left">y_clust</td>
+</tr>
+</tbody>
+</table>
+<p>Furthermore, users can take advantage of the <a href="https://github.com/leeper/margins"><code>margins</code></a> package to get marginal effects, average marginal effects and their standard errors, and more. Similarly, the <a href="https://github.com/leeper/prediction"><code>prediction</code></a> package from the same author also provides a suite of software for different kinds of predictions.</p>
+<pre class="r"><code>library(margins)
+
+lmout_int &lt;- lm_robust(y ~ x * z, data = dat)
+mar_int &lt;- margins(lmout_int, vce = &quot;delta&quot;)
+summary(mar_int)
+#&gt;  factor    AME     SE      z      p   lower  upper
+#&gt;       x 1.4319 0.2894 4.9468 0.0000  0.8645 1.9992
+#&gt;       z 0.2355 0.1864 1.2633 0.2065 -0.1298 0.6008
+
+library(prediction)
+prediction(lmout_int)
+#&gt; Average prediction for 100 observations: 0.6742
+prediction(lmout_int, at = list(x = c(-0.5, 0.5)))
+#&gt; Warning in check_values(data, at): A &#39;at&#39; value for &#39;x&#39; is outside observed
+#&gt; data range (0.000238896580412984,0.988891728920862)!
+#&gt; Average predictions for 100 observations:
+#&gt;  value   value
+#&gt;   -0.5 -0.8006
+#&gt;    0.5  0.6313</code></pre>
+<p>Users who want their regression output in LaTeX or HTML can use the <a href="https://github.com/leifeld/texreg"><code>texreg</code></a> package, which we extend for the output of both the <code>lm_robust()</code> and <code>lm_lin()</code> functions.</p>
+<pre class="r"><code>library(texreg)
+
+tex_int &lt;- extract(res_int)
+texreg(tex_int, file = &quot;ex.tex&quot;)</code></pre>
+</div>
+<div id="lm_lin" class="section level2">
+<h2><code>lm_lin</code></h2>
+<p>Adjusting for pre-treatment covariates when using regression to estimate treatment effects is common practice across scientific disciplines. However, <span class="citation">Freedman (<a href="#ref-freedman2008">2008</a>)</span> demonstrated that pre-treatment covariate adjustment biases estimates of average treatment effects. In response, <span class="citation">Lin (<a href="#ref-lin2013">2013</a>)</span> proposed an alternative estimator that would reduce this bias and improve precision. <span class="citation">Lin (<a href="#ref-lin2013">2013</a>)</span> proposes centering all pre-treatment covariates, interacting them with the treatment variable, and regressing the outcome on the treatment, the centered pre-treatment covariates, and all of the interaction terms. This can require a non-trivial amount of data pre-processing.</p>
+<p>To facilitate this, we provide a wrapper that processes the data and estimates the model. We dub this estimator the Lin estimator and it can be accessed using <code>lm_lin()</code>. This function is a wrapper for <code>lm_robust()</code>, and all arguments that work for <code>lm_robust()</code> work here. The only difference is in the second argument <code>covariates</code>, where one specifies a right-sided formula with all of your pre-treatment covariates. Below is an example, and more can be seen on the function reference page <a href="#lm_lin"><code>lm_lin</code></a> and some formal notation can be seen in the <a href="http://estimatr.declaredesign.org/articles/mathematical-notes.html#lm_lin-notes">mathematical notes</a>.</p>
+<pre class="r"><code>lml_out &lt;- lm_lin(
+  y ~ z,
+  covariates = ~ x,
+  data = dat
+)
+tidy(lml_out)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">(Intercept)</td>
+<td align="right">0.55</td>
+<td align="right">0.15</td>
+<td align="right">0.00</td>
+<td align="right">0.25</td>
+<td align="right">0.84</td>
+<td align="right">96</td>
+<td align="left">y</td>
+</tr>
+<tr class="even">
+<td align="left">z</td>
+<td align="right">0.24</td>
+<td align="right">0.19</td>
+<td align="right">0.21</td>
+<td align="right">-0.13</td>
+<td align="right">0.61</td>
+<td align="right">96</td>
+<td align="left">y</td>
+</tr>
+<tr class="odd">
+<td align="left">x_bar</td>
+<td align="right">1.72</td>
+<td align="right">0.47</td>
+<td align="right">0.00</td>
+<td align="right">0.79</td>
+<td align="right">2.65</td>
+<td align="right">96</td>
+<td align="left">y</td>
+</tr>
+<tr class="even">
+<td align="left">z:x_bar</td>
+<td align="right">-0.58</td>
+<td align="right">0.58</td>
+<td align="right">0.32</td>
+<td align="right">-1.73</td>
+<td align="right">0.57</td>
+<td align="right">96</td>
+<td align="left">y</td>
+</tr>
+</tbody>
+</table>
+<p>The output of a <code>lm_lin()</code> call can be used with the same methods as <code>lm_robust()</code>, including the <a href="https://github.com/leeper/margins"><code>margins</code></a> package.</p>
+</div>
+<div id="difference_in_means" class="section level2">
+<h2><code>difference_in_means</code></h2>
+<p>While estimating differences in means may seem straightforward, it can become more complicated in designs with blocks or clusters. In these cases, estimators need to average over within-block effects and estimates of variance have to appropriately adjust for features of a design. We provide support for unit-randomized, cluster-randomized, block-randomized, matched-pair randomized, and matched-pair clustered designs. Usage is similar to usage in regression functions. More examples can be seen on the function reference page, <code>difference_in_means()</code>, and the actual estimators used can be found in the <a href="http://estimatr.declaredesign.org/articles/mathematical-notes.html#lm_robust-notes">mathematical notes</a>.</p>
+<pre class="r"><code># Simple version
+dim_out &lt;- difference_in_means(
+  y ~ z,
+  data = dat
+)
+tidy(dim_out)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">z</td>
+<td align="right">0.16</td>
+<td align="right">0.2</td>
+<td align="right">0.44</td>
+<td align="right">-0.25</td>
+<td align="right">0.56</td>
+<td align="right">90</td>
+<td align="left">y</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code># Clustered version
+dim_out_cl &lt;- difference_in_means(
+  y_clust ~ z_clust,
+  data = dat,
+  clusters = clust
+)
+tidy(dim_out_cl)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="right">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">z_clust</td>
+<td align="right">0.82</td>
+<td align="right">0.17</td>
+<td align="right">0</td>
+<td align="right">0.45</td>
+<td align="right">1.2</td>
+<td align="right">18</td>
+<td align="left">y_clust</td>
+</tr>
+</tbody>
+</table>
+<p>You can check which design was learned and which kind of estimator used by examining the <code>design</code> in the output.</p>
+<pre class="r"><code>data(sleep)
+dim_mps &lt;- difference_in_means(extra ~ group, data = sleep, blocks = ID)
+dim_mps$design
+#&gt; [1] &quot;Matched-pair&quot;</code></pre>
+</div>
+<div id="horvitz_thompson" class="section level2">
+<h2><code>horvitz_thompson</code></h2>
+<p>Horvitz-Thompson estimators can be used to estimate unbiased treatment effects when the randomization is known. This is particularly useful when there are clusters of different sizes being randomized into treatment or when the treatment assignment is complex and there are dependencies across units in the probability of being treated. Horvitz-Thompson estimators require information about the probability each unit is in treatment and control, as well as the joint probability each unit is in the treatment, in the control, and in opposite treatment conditions.</p>
+<p>The estimator we implement here, <code>horvitz_thompson()</code> estimates treatment effects for two-armed trials. The easiest way to specify your design and recover the full set of joint and marginal probabilities is to declare your randomization scheme by using <a href="http://randomizr.declaredesign.org/reference/declare_ra.html"><code>declare_ra()</code></a> from the <a href="http://randomizr.declaredesign.org"><code>randomizr</code></a> package. I show some examples of how to do that below. Again, the technical details for this estimator can be found <a href="http://estimatr.declaredesign.org/articles/mathematical-notes.html#horvitz_thompson-notes">here</a> and in references in those notes.</p>
+<pre class="r"><code># Complete random assignment declaration
+crs_decl &lt;- declare_ra(
+  N = nrow(dat),
+  prob = 0.5,
+  simple = FALSE
+)
+
+ht_comp &lt;- horvitz_thompson(
+  y ~ z,
+  data = dat,
+  declaration = crs_decl
+)
+tidy(ht_comp)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="left">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">z</td>
+<td align="right">0.16</td>
+<td align="right">0.2</td>
+<td align="right">0.44</td>
+<td align="right">-0.24</td>
+<td align="right">0.56</td>
+<td align="left">NA</td>
+<td align="left">y</td>
+</tr>
+</tbody>
+</table>
+<p>We can also easily estimate treatment effects from a cluster randomized experiment. Letting <code>horvitz_thompson</code> know that the design is clustered means it uses a collapsed estimator for the variance, described in <span class="citation">Aronow and Middleton (<a href="#ref-aronowmiddleton2013">2013</a>)</span>.</p>
+<pre class="r"><code># Clustered random assignment declaration
+crs_clust_decl &lt;- declare_ra(
+  N = nrow(dat),
+  clusters = dat$clust,
+  prob = 0.5,
+  simple = FALSE
+)
+
+ht_clust &lt;- horvitz_thompson(
+  y_clust ~ z_clust,
+  data = dat,
+  declaration = crs_clust_decl
+)
+tidy(ht_clust)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="left">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">z_clust</td>
+<td align="right">0.82</td>
+<td align="right">0.25</td>
+<td align="right">0</td>
+<td align="right">0.33</td>
+<td align="right">1.3</td>
+<td align="left">NA</td>
+<td align="left">y_clust</td>
+</tr>
+</tbody>
+</table>
+<p>You can also build the condition probability matrix (<code>condition_prob_mat =</code>) that <code>horvitz_thompson()</code> needs from a declaration from the <a href="randomizr.declaredesign.org"><code>randomizr</code></a> package—using <code>declaration_to_conditional_pr_mat()</code>—or from a matrix of permutations of the treatment vector—using <code>permutations_to_conditional_pr_mat()</code>. <strong>This is largely intended for use by experienced users. Note, that if one passes a <code>condition_prob_mat</code> that indicates clustering, but does not specify the <code>clusters</code> argument, then the collapsed estimator will not be used.</strong></p>
+<pre class="r"><code># arbitrary permutation matrix
+possible_treats &lt;- cbind(
+  c(1, 1, 0, 1, 0, 0, 0, 1, 1, 0),
+  c(0, 1, 1, 0, 1, 1, 0, 1, 0, 1),
+  c(1, 0, 1, 1, 1, 1, 1, 0, 0, 0)
+)
+arb_pr_mat &lt;- permutations_to_condition_pr_mat(possible_treats)
+
+# Simulating a column to be realized treatment
+dat &lt;- data.frame(
+  z = possible_treats[, sample(ncol(possible_treats), size = 1)],
+  y = rnorm(nrow(possible_treats))
+)
+
+ht_arb &lt;- horvitz_thompson(
+  y ~ z,
+  data = dat,
+  condition_pr_mat = arb_pr_mat
+)
+tidy(ht_arb)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">coefficient_name</th>
+<th align="right">coefficients</th>
+<th align="right">se</th>
+<th align="right">p</th>
+<th align="right">ci_lower</th>
+<th align="right">ci_upper</th>
+<th align="left">df</th>
+<th align="left">outcome</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">z</td>
+<td align="right">-0.82</td>
+<td align="right">0.84</td>
+<td align="right">0.33</td>
+<td align="right">-2.5</td>
+<td align="right">0.83</td>
+<td align="left">NA</td>
+<td align="left">y</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1>References</h1>
+<div id="refs" class="references">
+<div id="ref-aronowmiddleton2013">
+<p>Aronow, Peter M, and Joel A Middleton. 2013. “A Class of Unbiased Estimators of the Average Treatment Effect in Randomized Experiments.” <em>Journal of Causal Inference</em> 1 (1):135–54. <a href="https://doi.org/10.1515/jci-2012-0009" class="uri">https://doi.org/10.1515/jci-2012-0009</a>.</p>
+</div>
+<div id="ref-freedman2008">
+<p>Freedman, David A. 2008. “On Regression Adjustments in Experiments with Several Treatments.” <em>The Annals of Applied Statistics</em>. JSTOR, 176–96. <a href="https://doi.org/10.1214/07-AOAS143" class="uri">https://doi.org/10.1214/07-AOAS143</a>.</p>
+</div>
+<div id="ref-lin2013">
+<p>Lin, Winston. 2013. “Agnostic Notes on Regression Adjustments to Experimental Data: Reexamining Freedman’s Critique.” <em>The Annals of Applied Statistics</em> 7 (1). Institute of Mathematical Statistics:295–318. <a href="https://doi.org/10.1214/12-AOAS583" class="uri">https://doi.org/10.1214/12-AOAS583</a>.</p>
+</div>
+<div id="ref-pustejovskytipton2016">
+<p>Pustejovsky, James E, and Elizabeth Tipton. 2016. “Small Sample Methods for Cluster-Robust Variance Estimation and Hypothesis Testing in Fixed Effects Models.” <em>Journal of Business &amp; Economic Statistics</em>. Taylor &amp; Francis. <a href="https://doi.org/10.1080/07350015.2016.1247004" class="uri">https://doi.org/10.1080/07350015.2016.1247004</a>.</p>
+</div>
+</div>
+</div>

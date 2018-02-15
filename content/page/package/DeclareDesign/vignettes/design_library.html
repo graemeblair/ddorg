@@ -1,0 +1,65 @@
+---
+title: "Design Library"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Design Library}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+<p>Our design library characterizes designs informally and in code using the MIDA framework, described in <a href="../articles/idea.html">The Idea</a>.</p>
+<hr />
+<div id="designs" class="section level2">
+<h2>Designs</h2>
+<table>
+<colgroup>
+<col width="19%" />
+<col width="9%" />
+<col width="49%" />
+<col width="21%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">Goal</th>
+<th align="left">Strategy</th>
+<th align="left">Design</th>
+<th align="left">Download</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Causal inference</td>
+<td align="left">Experimental</td>
+<td align="left"><a href="../articles/two_arm.html">Two-Arm Experiment</a></td>
+<td align="left"><a class="btn btn-default" href="http://declaredesign.org/articles/two_arm.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="http://declaredesign.org/articles/two_arm_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a></td>
+</tr>
+<tr class="even">
+<td align="left">Causal inference</td>
+<td align="left">Experimental</td>
+<td align="left"><a href="../articles/two_way_factorial.html">Two-Way Factorial Experiment</a></td>
+<td align="left"><a class="btn btn-default" href="http://declaredesign.org/articles/two_way_factorial.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="http://declaredesign.org/articles/two_way_factorial_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a></td>
+</tr>
+<tr class="odd">
+<td align="left">Causal inference</td>
+<td align="left">Observational</td>
+<td align="left"><a href="../articles/regression_discontinuity.html">Regression Discontinuity</a></td>
+<td align="left"><a class="btn btn-default" href="http://declaredesign.org/articles/regression_discontinuity.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="http://declaredesign.org/articles/regression_discontinuity_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="using-the-design-library" class="section level2">
+<h2>Using the design library</h2>
+<p>There are two main ways you can learn about the designs in the library:</p>
+<ol style="list-style-type: decimal">
+<li>Read through the vignettes (click the links under “Design” in the table above).</li>
+<li>If you have <a href="http://declaredesign.org/#installing-declaredesign">installed DeclareDesign</a>, download the code for the design or the design template and create your own, modified versions of the designs. Diagnose them on your own computer using <code>diagnose_design()</code> (click on the buttons under “Download” in the table above).
+<!--  3. Import designs from the library into the [Design Inspector <i class="fa fa-area-chart" title = "Go to the design inspector" fa-2x></i>](http://shiny.declaredesign.org/inspector/) and investigate their properties. You can also download the code for the designs, modify it, and upload the design back into the inspector again. --></li>
+</ol>
+</div>
+<div id="contribute" class="section level2">
+<h2>Contribute</h2>
+<p>We encourage you to contribute your research design declaration to the library so that it can be used by other scholars. <a href="mailto:contribute@declaredesign.org">Contact us</a> for instructions.</p>
+</div>

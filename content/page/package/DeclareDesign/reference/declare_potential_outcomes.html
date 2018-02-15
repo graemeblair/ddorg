@@ -60,13 +60,13 @@ title: "Potential Outcomes — declare_potential_outcomes • DeclareDesign"
         <span class='kw'>Y_Z_0</span> <span class='kw'>=</span> <span class='fl'>.05</span>,
         <span class='kw'>Y_Z_1</span> <span class='kw'>=</span> <span class='fl'>.30</span> + <span class='fl'>.01</span> * <span class='no'>age</span>)
 
-<span class='fu'>head</span>(<span class='fu'>my_potential_outcomes</span>(<span class='no'>pop</span>))</div><div class='output co'>#&gt;     ID     income age fab_ID_1 Y_Z_0 Y_Z_1
-#&gt; 1 0001 -0.4349032  30     0001  0.05  0.60
-#&gt; 2 0002  0.4989009  85     0002  0.05  1.15
-#&gt; 3 0003  1.1979224  65     0003  0.05  0.95
-#&gt; 4 0004 -0.1707637  71     0004  0.05  1.01
-#&gt; 5 0005  0.5745204  40     0005  0.05  0.70
-#&gt; 6 0006 -0.5342050  44     0006  0.05  0.74</div><div class='input'>
+<span class='fu'>head</span>(<span class='fu'>my_potential_outcomes</span>(<span class='no'>pop</span>))</div><div class='output co'>#&gt;     ID     income age Y_Z_0 Y_Z_1
+#&gt; 1 0001 -0.4349032  30  0.05  0.60
+#&gt; 2 0002  0.4989009  85  0.05  1.15
+#&gt; 3 0003  1.1979224  65  0.05  0.95
+#&gt; 4 0004 -0.1707637  71  0.05  1.01
+#&gt; 5 0005  0.5745204  40  0.05  0.70
+#&gt; 6 0006 -0.5342050  44  0.05  0.74</div><div class='input'>
 <span class='co'># Using a formula</span>
  <span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_potential_outcomes</span>(
  <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>Y</span> ~ <span class='fl'>.25</span> * <span class='no'>Z</span> + <span class='fl'>.01</span> * <span class='no'>age</span> * <span class='no'>Z</span>)

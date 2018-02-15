@@ -1,5 +1,7 @@
 source("R/hackdown.R")
 
+unlink("public", recursive = TRUE)
+
 get_package_reference_files()
 
 index_pages <-
@@ -8,18 +10,12 @@ index_pages <-
              full.names = TRUE,
              recursive = TRUE)
 
-for (index_page in index_pages)
-{
-  package_name <- gsub("content/page/package/(.*)/index.html", "\\1", index_page)
-  contents <- readLines(index_page)
-  fixed_contents <- gsub('href="(.*?)\\.html"', paste0('href="/page/package/', package_name, '/\\1/"'), contents)
-  cat(fixed_contents, file = index_page, sep = "\n")
-
-}
-
+# Rename the reference index pages because right now they are named index.html.
+# index.html files have a special meaning to Hugo. Leaving reference index pages
+# as index.html will mess up Hugo's build process.
 sapply(index_pages, function(file_name)
 {
-  file.rename(
+ file.rename(
     from = file_name,
     to = sub(pattern = "index.html", replacement = "home.html", file_name)
   )

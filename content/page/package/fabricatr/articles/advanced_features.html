@@ -1,0 +1,290 @@
+---
+title: "Advanced features"
+author: "Aaron Rudkin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Advanced features}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+<div id="more-complicated-level-creation-with-variable-numbers-of-observations" class="section level1">
+<h1>More complicated level creation with variable numbers of observations</h1>
+<p><code>add_level()</code> can be used to create more complicated patterns of nesting. For example, when creating lower level data, it is possible to use a different <code>N</code> for each of the values of the higher level data:</p>
+<pre class="r"><code>variable_data &lt;-
+  fabricate(
+    cities = add_level(N = 2, elevation = runif(n = N, min = 1000, max = 2000)),
+    citizens = add_level(N = c(2, 4), age = runif(N, 18, 70))
+  )
+variable_data</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">cities</th>
+<th align="right">elevation</th>
+<th align="left">citizens</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">1778</td>
+<td align="left">1</td>
+<td align="right">46</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">1778</td>
+<td align="left">2</td>
+<td align="right">50</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1499</td>
+<td align="left">3</td>
+<td align="right">35</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1499</td>
+<td align="left">4</td>
+<td align="right">65</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1499</td>
+<td align="left">5</td>
+<td align="right">34</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1499</td>
+<td align="left">6</td>
+<td align="right">23</td>
+</tr>
+</tbody>
+</table>
+<p>Here, each city has a different number of citizens. And the value of <code>N</code> used to create the age variable automatically updates as needed. The result is a dataset with 6 citizens, 2 in the first city and 4 in the second. As long as N is either a number, or a vector of the same length of the current lowest level of the data, <code>add_level()</code> will know what to do.</p>
+<p>It is also possible to provide a function to N, enabling a <em>random</em> number of citizens per city:</p>
+<pre class="r"><code>my_data &lt;-
+  fabricate(
+    cities = add_level(N = 2, elevation = runif(n = N, min = 1000, max = 2000)),
+    citizens = add_level(N = sample(1:6, size = 2, replace = TRUE), age = runif(N, 18, 70))
+  )
+my_data</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">cities</th>
+<th align="right">elevation</th>
+<th align="left">citizens</th>
+<th align="right">age</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">1850</td>
+<td align="left">1</td>
+<td align="right">53</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1128</td>
+<td align="left">2</td>
+<td align="right">55</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1128</td>
+<td align="left">3</td>
+<td align="right">45</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1128</td>
+<td align="left">4</td>
+<td align="right">42</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1128</td>
+<td align="left">5</td>
+<td align="right">47</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1128</td>
+<td align="left">6</td>
+<td align="right">69</td>
+</tr>
+</tbody>
+</table>
+<p>Here, each city is given a random number of citizens between 1 and 6. Since the <code>sample()</code> function returns a vector of length 2, this is like specifying 2 separate <code>N</code>s as in the example above.</p>
+<p>It is also possible to define <code>N</code> on the basis of higher level variables themselves. Consider the following example:</p>
+<pre class="r"><code>variable_n &lt;- fabricate(
+  cities = add_level(N = 5, population = runif(N, 10, 200)),
+  citizens = add_level(N = round(population * 0.3))
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">cities</th>
+<th align="right">population</th>
+<th align="left">citizens</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">90</td>
+<td align="left">001</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">90</td>
+<td align="left">002</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">90</td>
+<td align="left">003</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">90</td>
+<td align="left">004</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">90</td>
+<td align="left">005</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">90</td>
+<td align="left">006</td>
+</tr>
+</tbody>
+</table>
+<p>Here, the city has a defined population, and the number of citizens in our simulated data reflects a sample of 30% of that population. Although we only display the first 6 rows for brevity’s sake, the first city would have 27 rows in total.</p>
+<p>Finally, it is possible to define <code>N</code> on the basis of higher level <code>N</code>:</p>
+<pre class="r"><code>n_inherit &lt;- fabricate(
+  cities = add_level(N = 5, population = runif(N, 10, 200)),
+  citizens = add_level(N = sample(1:10, N, replace=TRUE))
+)</code></pre>
+<p>Here, each city has a random number of citizens from 1 to 10, but we need to supply N
+to the sample function to ensure that one draw is made per city.</p>
+</div>
+<div id="tidyverse-integration" class="section level1">
+<h1>Tidyverse integration</h1>
+<p>Because the functions in <strong>fabricatr</strong> take data and return data, they are cross-compatible with a <code>tidyverse</code> workflow. Here is an example of using <strong>magrittr</strong>’s pipe operator (<code>%&gt;%</code>) and <strong>dplyr</strong>’s <code>group_by</code> and <code>mutate</code> verbs to add new data.</p>
+<pre class="r"><code>library(dplyr)
+
+my_data &lt;-
+  fabricate(
+    cities = add_level(N = 2, elevation = runif(n = N, min = 1000, max = 2000)),
+    citizens = add_level(N = c(2, 3), age = runif(N, 18, 70))
+  ) %&gt;%
+  group_by(cities) %&gt;%
+  mutate(pop = n())
+
+my_data</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">cities</th>
+<th align="right">elevation</th>
+<th align="left">citizens</th>
+<th align="right">age</th>
+<th align="right">pop</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">1895</td>
+<td align="left">1</td>
+<td align="right">61</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">1895</td>
+<td align="left">2</td>
+<td align="right">46</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1451</td>
+<td align="left">3</td>
+<td align="right">62</td>
+<td align="right">3</td>
+</tr>
+<tr class="even">
+<td align="left">2</td>
+<td align="right">1451</td>
+<td align="left">4</td>
+<td align="right">55</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="left">2</td>
+<td align="right">1451</td>
+<td align="left">5</td>
+<td align="right">42</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>It is also possible to use the pipe operator (<code>%&gt;%</code>) to direct the flow of data between <code>fabricate()</code> calls. Remember that every <code>fabricate()</code> call can import existing data frames, and every call returns a single data frame.</p>
+<pre class="r"><code>my_data &lt;-
+  data_frame(Y = sample(1:10, 2)) %&gt;%
+  fabricate(lower_level = add_level(N = 3, Y2 = Y + rnorm(N)))
+my_data</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Y</th>
+<th align="left">lower_level</th>
+<th align="right">Y2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">1</td>
+<td align="right">3.3</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="left">2</td>
+<td align="right">3.8</td>
+</tr>
+<tr class="odd">
+<td align="right">4</td>
+<td align="left">3</td>
+<td align="right">4.6</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="left">4</td>
+<td align="right">10.0</td>
+</tr>
+<tr class="odd">
+<td align="right">10</td>
+<td align="left">5</td>
+<td align="right">10.0</td>
+</tr>
+<tr class="even">
+<td align="right">10</td>
+<td align="left">6</td>
+<td align="right">10.3</td>
+</tr>
+</tbody>
+</table>
+</div>

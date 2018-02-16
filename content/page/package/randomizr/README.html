@@ -1,0 +1,152 @@
+---
+output: github_document
+---
+
+
+
+<div id="randomizr-easy-to-use-tools-for-common-forms-of-random-assignment-and-sampling" class="section level1">
+<h1>randomizr: Easy to use tools for common forms of random assignment and sampling</h1>
+<p><a href="https://cran.r-project.org/package=randomizr"><img src="http://www.r-pkg.org/badges/version/randomizr" alt="CRAN Status" /></a>
+<a href="https://travis-ci.org/DeclareDesign/randomizr"><img src="https://travis-ci.org/DeclareDesign/randomizr.svg?branch=master" alt="Travis-CI Build Status" /></a>
+<a href="https://ci.appveyor.com/project/DeclareDesign/randomizr"><img src="https://ci.appveyor.com/api/projects/status/github/DeclareDesign/randomizr?branch=master&amp;svg=true" alt="AppVeyor Build Status" /></a>
+<a href="https://coveralls.io/github/DeclareDesign/randomizr?branch=master"><img src="https://coveralls.io/repos/github/DeclareDesign/randomizr/badge.svg?branch=master" alt="Coverage Status" /></a>
+<img src="http://cranlogs.r-pkg.org/badges/grand-total/randomizr" alt="CRAN downloads" /></p>
+<p><strong>randomizr</strong> is designed to make conducting field, lab, survey, or online experiments easier by automating the random assignment process. Social and lab scientists conducting experiments need a process to assign individuals or units of observation to treatment or control wings. Common designs include simple random assignment, complete randomization, block randomization, cluster randomization, and blocked cluster randomization. <strong>randomizr</strong> automates all of these processes and assists scientists in doing transparent, replicable science. We offer <strong>randomizr</strong> for both <code>R</code> and <code>Stata</code>.</p>
+<div id="randomizr-for-r" class="section level2">
+<h2>randomizr for R</h2>
+<div id="installing-randomizr-for-r" class="section level3">
+<h3>Installing randomizr for R</h3>
+<p>Installing the latest stable version of <strong>randomizr</strong> in <code>R</code>:.</p>
+<pre class="r"><code>install.packages(&quot;randomizr&quot;)</code></pre>
+<p>If you would like to use the current development release of <strong>randomizr</strong> (please be aware that development releases may include bugs or syntax changes), run the following:</p>
+<pre class="r"><code>install.packages(&quot;randomizr&quot;, repos=&quot;http://r.declaredesign.org&quot;)</code></pre>
+</div>
+<div id="getting-started-with-randomizr-for-r" class="section level3">
+<h3>Getting started with randomizr for R</h3>
+<p><strong>randomizr</strong> has five main random assignment functions, corresponding to the common experimental designs listed above. You can read more about using each of these functions in our <a href="http://randomizr.declaredesign.org/reference/index.html">reference library</a> or by clicking on the function names: <code>simple_ra()</code>, <code>complete_ra()</code>, <code>block_ra()</code>, <code>cluster_ra()</code>, and <code>block_and_cluster_ra()</code>.</p>
+<p><code>complete_ra()</code> (Complete randomization) is the function that will be most appropriate for a large number of experimental situations: when you want to assign a fixed <code>m</code> units out of a population of <code>N</code> units to treatment:</p>
+<pre class="r"><code>library(randomizr)
+Z &lt;- complete_ra(N = 100, m = 50)
+table(Z)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">0</th>
+<th align="right">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">50</td>
+<td align="right">50</td>
+</tr>
+</tbody>
+</table>
+<p>A more complicated design that, for example, assigns different numbers of clusters to three different treatments, makes use of <code>cluster_ra()</code> (Cluster randomization):</p>
+<pre class="r"><code># This makes a cluster variable: one unit in cluster &quot;a&quot;, two in &quot;b&quot;...
+clust_var &lt;- rep(letters[1:15], times = 1:15)
+
+Z &lt;- cluster_ra(
+  clusters = clust_var,
+  m_each = c(4, 4, 7),
+  conditions = c(&quot;control&quot;, &quot;placebo&quot;, &quot;treatment&quot;)
+  )
+table(Z, clust_var)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">a</th>
+<th align="right">b</th>
+<th align="right">c</th>
+<th align="right">d</th>
+<th align="right">e</th>
+<th align="right">f</th>
+<th align="right">g</th>
+<th align="right">h</th>
+<th align="right">i</th>
+<th align="right">j</th>
+<th align="right">k</th>
+<th align="right">l</th>
+<th align="right">m</th>
+<th align="right">n</th>
+<th align="right">o</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>control</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">7</td>
+<td align="right">8</td>
+<td align="right">9</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>placebo</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">5</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">13</td>
+<td align="right">14</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>treatment</td>
+<td align="right">1</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">4</td>
+<td align="right">0</td>
+<td align="right">6</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">10</td>
+<td align="right">11</td>
+<td align="right">12</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">15</td>
+</tr>
+</tbody>
+</table>
+<p>For more information about all of <strong>randomizr</strong>’s functionality, please see our <a href="http://randomizr.declaredesign.org/articles/randomizr_vignette.html">online tutorial</a></p>
+</div>
+</div>
+<div id="randomizr-for-stata" class="section level2">
+<h2>randomizr for Stata</h2>
+<p>Installing the latest stable version of <strong>randomizr</strong> from ssc is easy:</p>
+<pre class="r"><code>ssc install randomizr</code></pre>
+<p>If you would like to install the latest development release directly from GitHub, run the following code:</p>
+<pre class="r"><code>net install randomizr, from(https://raw.githubusercontent.com/DeclareDesign/strandomizr/master/) replace</code></pre>
+</div>
+<div id="getting-started-with-randomizr-for-stata" class="section level2">
+<h2>Getting started with randomizr for Stata</h2>
+<p><code>complete_ra</code> (complete randomization) is the workhorse function that will be most appropriate for a large number of experimental situations: it assigns m of N units to treatment:</p>
+<pre class="r"><code>ssc install randomizr
+set obs 100
+complete_ra, m(50)</code></pre>
+<p>A Stata version of our <a href="http://randomizr.declaredesign.org/articles/srandomizr_vignette.html">online tutorial</a> is also available.</p>
+<p>Happy randomizing!</p>
+</div>
+</div>

@@ -91,54 +91,83 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     name = "Ask for Help"
     url = "http://discuss.declaredesign.org"
     weight = 5
-
-[[menu.main]]
-    identifier = "packages"
-    name = "Package"
-    weight = 6
-[[menu.main]]
-    parent = "packages"
-    name = "Declare Design"
-    url = "/page/package/declaredesign/home.html"
-    weight = 1
-[[menu.main]]
-    parent = "packages"
-    name = "randomizr"
-    url = "/page/package/randomizr/home.html"
-    weight = 2
-[[menu.main]]
-    parent = "packages"
-    name = "fabricatr"
-    url = "/page/package/fabricatr/home.html"
-    weight = 3
-[[menu.main]]
-    parent = "packages"
-    name = "estimatr"
-    url = "/page/package/estimatr/home.html"
-    weight = 4
     
 [[menu.main]]
-    identifier = "vignettes"
-    name = "Test Vignettes"
-    weight = 7
-[[menu.main]]
-    parent = "vignettes"
+    identifier = "declaredesign"
     name = "Declare Design"
-    url = "/page/package/declaredesign/vignettes.html"
+    weight = "6"
+[[menu.main]]
+    parent = "declaredesign"
+    name = "Declare Design Home"
+    url = "page/package/declaredesign/readme.html"
     weight = 1
 [[menu.main]]
-    parent = "vignettes"
-    name = "randomizr"
-    url = "/page/package/randomizr/vignettes.html"
+    parent = "declaredesign"
+    name = "Declare Design Articles"
+    url = "page/package/declaredesign/articles.html"
     weight = 2
 [[menu.main]]
-    parent = "vignettes"
-    name = "fabricatr"
-    url = "page/package/fabricatr/vignettes.html"
+    parent = "declaredesign"
+    name = "Declare Design Reference"
+    url = "page/package/declaredesign/reference/home.html"
     weight = 3
+  
 [[menu.main]]
-    parent = "vignettes"
+    identifier = "randomizr"
+    name = "randomizr"
+    weight = "7"
+[[menu.main]]
+    parent = "randomizr"
+    name = "randomizr Home"
+    url = "page/package/randomizr/readme.html"
+    weight = 1
+[[menu.main]]
+    parent = "randomizr"
+    name = "randomizr Articles"
+    url = "page/package/randomizr/articles.html"
+    weight = 2
+[[menu.main]]
+    parent = "randomizr"
+    name = "randomizr Reference"
+    url = "page/package/randomizr/reference/home.html"
+    weight = 3
+    
+[[menu.main]]
+    identifier = "estimatr"
     name = "estimatr"
-    url = "page/package/estimatr/vignettes.html"
-    weight = 4
+    weight = "8"
+[[menu.main]]
+    parent = "estimatr"
+    name = "estimatr Home"
+    url = "page/package/estimatr/readme.html"
+    weight = 1
+[[menu.main]]
+    parent = "estimatr"
+    name = "estimatr Articles"
+    url = "page/package/estimatr/articles.html"
+    weight = 2
+[[menu.main]]
+    parent = "estimatr"
+    name = "estimatr Reference"
+    url = "page/package/estimatr/reference/home.html"
+    weight = 3
 
+[[menu.main]]
+    identifier = "fabricatr"
+    name = "fabricatr"
+    weight = "9"
+[[menu.main]]
+    parent = "fabricatr"
+    name = "fabricatr Home"
+    url = "page/package/fabricatr/readme.html"
+    weight = 1
+[[menu.main]]
+    parent = "fabricatr"
+    name = "fabricatr Articles"
+    url = "page/package/fabricatr/articles.html"
+    weight = 2
+[[menu.main]]
+    parent = "fabricatr"
+    name = "fabricatr Reference"
+    url = "page/package/fabricatr/reference/home.html"
+    weight = 3

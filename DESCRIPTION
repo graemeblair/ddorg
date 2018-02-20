@@ -3,15 +3,6 @@ Type: Website
 Title: Declare Design Website.
 Version: 1.1.7
 
-Imports:
-  blogdown
+Imports: blogdown
 
-Depends:
-    DeclareDesign,
-    randomizr,
-    fabricatr,
-    estimatr,
-
-Remotes:
-  rstudio/blogdown,
-  DeclareDesign/DeclareDesign
+Remotes: rstudio/blogdown

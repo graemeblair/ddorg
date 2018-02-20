@@ -1,0 +1,7 @@
+language: r
+
+before_script:
+  - Rscript -e 'blogdown::install_hugo()'
+
+script:
+  - Rscript 'R/superBuild.R'

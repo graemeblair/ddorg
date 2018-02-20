@@ -4,4 +4,4 @@ before_script:
   - Rscript -e 'blogdown::install_hugo()'
 
 script:
-  - Rscript -e 'blogdown::build_site()'
+  - Rscript 'R/superBuild.R'

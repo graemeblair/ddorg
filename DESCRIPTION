@@ -1,8 +1,6 @@
-Package: declare_design_website
+Package: stuff
 Type: Website
-Title: Declare Design Website.
+Title: Cool stuff.
 Version: 1.1.7
-
 Imports: blogdown
-
 Remotes: rstudio/blogdown

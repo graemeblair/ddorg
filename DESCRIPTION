@@ -2,5 +2,5 @@ Package: stuff
 Type: Website
 Title: Cool stuff.
 Version: 1.1.7
-Imports: blogdown, DeclareDesign, randomizr, fabricatr, estimatr
-Remotes: rstudio/blogdown, DeclareDesign/DeclareDesign
+Imports: blogdown, randomizr, fabricatr, estimatr, DeclareDesign
+Remotes: rstudio/blogdown, DeclareDesign/randomizr, DeclareDesign/fabricatr, DeclareDesign/estimatr, DeclareDesign/DeclareDesign

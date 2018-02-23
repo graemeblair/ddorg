@@ -2,5 +2,5 @@ Package: stuff
 Type: Website
 Title: Cool stuff.
 Version: 1.1.7
-Imports: pkgdown, blogdown, randomizr, fabricatr, estimatr, DeclareDesign, doParallel
+Imports: pkgdown, blogdown, randomizr, fabricatr, estimatr, DeclareDesign
 Remotes: r-lib/pkgdown, rstudio/blogdown, DeclareDesign/randomizr, DeclareDesign/fabricatr, DeclareDesign/estimatr, DeclareDesign/DeclareDesign

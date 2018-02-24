@@ -14,7 +14,7 @@ vignette: >
 <div id="panel-data-construction" class="section level2">
 <h2>Panel Data Construction</h2>
 <p>Let’s begin by visualizing an example of panel data, where we have data for each of several countries in each of several years.</p>
-<p><img src="/page/package/fabricatr/articles/cross_classified_files/figure-html/unnamed-chunk-2-1.png" width="480" /></p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-2-1.png" width="480" /></p>
 <p>This data arrangement is somewhat more complex than traditional nested, hierarchical data. Each observation draws from a common pool of countries and years. In other words, the year-specific variables attached to Country A’s 1997 observation are also attached to Country B’s 1997 observation.</p>
 <p>The steps for generating a panel in <strong>fabricatr</strong> are as follows:</p>
 <ol style="list-style-type: decimal">
@@ -60,7 +60,7 @@ vignette: >
 <h2>Cross-Classified or Correlated Data Joins:</h2>
 <p>Another type of data <strong>fabricatr</strong> excels at enabling is cross-classified data. In a cross-classified dataset, just like in a panel, observations draw from a combination of multiple existing data sets. Our example in this vignette will be students. Students attend a primary school and a secondary school. Unlike in a panel, not every student attends every school; and not every combination of schools has exactly one student. Student outcomes depend both on primary and secondary school education.</p>
 <p>Let’s begin by visualizing how our data will be laid out:</p>
-<p><img src="/page/package/fabricatr/articles/cross_classified_files/figure-html/unnamed-chunk-6-1.png" width="480" /></p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-6-1.png" width="480" /></p>
 <p>The main steps involved in generating cross-classified data are as follows:</p>
 <ol style="list-style-type: decimal">
 <li>Generate multiple non-nested data frames (Primary and Secondary Schools)</li>

@@ -1,0 +1,4 @@
+url: http://pkgdown.r-lib.org
+
+template:
+    path: "pkgdown_templates"

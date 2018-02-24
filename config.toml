@@ -10,6 +10,7 @@ pygmentsCodefencesGuessSyntax = true
 pygmentOptions = "linenos=table"
 #disqusShortname = "XXX"
 #googleAnalytics = "XXX"
+uglyurls = true
 
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
@@ -38,29 +39,33 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 
 [Author]
   name = "Graeme Blair • Jasper Cooper • Alexander Coppock • Macartan Humphreys"
-# website = "yourwebsite.com"
   email = "contribute@declaredesign.org"
   github = "DeclareDesign"
   stackoverflow = "questions/tagged/declaredesign"
-  
+
 ############################################
 # Main Menu
 ############################################
+# Important! No two menu items can have the same name (even two submenu items from two different menus)
+###########################################
+
+# Declare Design
+#################
 [[menu.main]]
     name = "Blog"
-    url = "/post/"
+    url = "/post.html"
     weight = 1
 
 [[menu.main]]
     name = "The Idea"
-    url = "/page/idea/"
+    url = "/page/package/DeclareDesign/articles/idea.html"
     weight = 2
-    
+
 [[menu.main]]
     name = "Design Library"
-    url = "/page/design_library/"
+    url = "/page/package/DeclareDesign/articles/design_library.html"
     weight = 3
-    
+
 [[menu.main]]
     identifier = "using_declare_design"
     name = "Using Declare Design"
@@ -68,22 +73,22 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 [[menu.main]]
     parent = "using_declare_design"
     name = "Getting Started"
-    url = "/page/DeclareDesign/"
+    url = "/page/package/DeclareDesign/articles/DeclareDesign.html"
     weight = 1
 [[menu.main]]
     parent = "using_declare_design"
     name = "Custom Functions"
-    url = "/page/custom_functions/"
+    url = "/page/package/DeclareDesign/articles/custom_functions.html"
     weight = 2
 [[menu.main]]
     parent = "using_declare_design"
     name = "Advanced Features"
-    url = "/page/advanced_features/"
+    url = "/page/package/DeclareDesign/articles/advanced_features.html"
     weight = 3
 [[menu.main]]
     parent = "using_declare_design"
     name = "Companion Packages"
-    url = "/page/companion_packages/"
+    url = "/page/package/DeclareDesign/articles/companion_packages.html"
     weight = 4
 
 [[menu.main]]
@@ -91,32 +96,138 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
     url = "http://discuss.declaredesign.org"
     weight = 5
 
+# randomizr
+#################
 [[menu.main]]
-    identifier = "packages"
-    name = "Packages"
+    identifier = "randomizr"
+    name = "randomizr"
     weight = 6
 [[menu.main]]
-    parent = "packages"
-    name = "Declare Design"
-    url = ""
+    parent = "randomizr"
+    name = "randomizr Home"
+    url = "page/package/randomizr/readme.html"
     weight = 1
 [[menu.main]]
-    parent = "packages"
-    name = "randomizr"
-    url = "http://randomizr.declaredesign.org"
+    parent = "randomizr"
+    name = "Getting Started in R"
+    url = "/page/package/randomizr/articles/randomizr_vignette.html"
     weight = 2
 [[menu.main]]
-    parent = "packages"
-    name = "fabricatr"
-    url = "http://fabricatr.declaredesign.org"
+    parent = "randomizr"
+    name = "Getting Started in Stata"
+    url = "/page/package/randomizr/articles/srandomizr_vignette.html"
     weight = 3
 [[menu.main]]
-    parent = "packages"
-    name = "estimatr"
-    url = "http://estimatr.declaredesign.org"
+    parent = "randomizr"
+    name = "randomizr Reference"
+    url = "/page/package/randomizr/reference/home.html"
     weight = 4
 
+# fabricatr
+#################
 [[menu.main]]
-    name = "Tags"
-    url = "tags"
+    identifier = "fabricatr"
+    name = "fabricatr"
     weight = 7
+[[menu.main]]
+    parent = "fabricatr"
+    name = "fabricatr Home"
+    url = "/page/package/fabricatr/readme.html"
+    weight = 1
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Getting Started with fabricatr"
+    url = "/page/package/fabricatr/articles/getting_started.html"
+    weight = 2
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Building and Importing Data"
+    url = "/page/package/fabricatr/articles/building_importing.html"
+    weight = 3
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Common Social Science Variables"
+    url = "/page/package/fabricatr/articles/common_social.html"
+    weight = 4
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Generating Variables"
+    url = "/page/package/fabricatr/articles/variable_generation.html"
+    weight = 5
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Panel and Cross-Classified Data"
+    url = "/page/package/fabricatr/articles/cross_classified.html"
+    weight = 6
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Resampling"
+    url = "/page/package/fabricatr/articles/resampling.html"
+    weight = 7
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Time Series Data"
+    url = "/page/package/fabricatr/articles/time_series.html"
+    weight = 8
+[[menu.main]]
+    parent = "fabricatr"
+    name = "Advanced Features for fabricatr"
+    url = "/page/package/fabricatr/articles/advanced_features.html"
+    weight = 9
+[[menu.main]]
+    parent = "fabricatr"
+    name = "fabricatr Reference"
+    url = "/page/package/fabricatr/reference/home.html"
+    weight = 10
+
+# estimatr
+#################
+[[menu.main]]
+    identifier = "estimatr"
+    name = "estimatr"
+    weight = 8
+[[menu.main]]
+    parent = "estimatr"
+    name = "estimatr Home"
+    url = "/page/package/estimatr/readme.html"
+    weight = 1
+[[menu.main]]
+    parent = "estimatr"
+    name = "Getting Started with estimatr"
+    url = "/page/package/estimatr/articles/getting-started.html"
+    weight = 2
+[[menu.main]]
+    parent = "estimatr"
+    name = "Mathematical Notes"
+    url = "page/package/estimatr/reference/home.html"
+    weight = 3
+[[menu.main]]
+    parent = "estimatr"
+    name = "Mathematical Notes"
+    url = "/page/package/estimatr/articles/mathematical-notes.html"
+    weight = 4
+[[menu.main]]
+    parent = "estimatr"
+    name = "Simulations - Speed Comparisons"
+    url = "/page/package/estimatr/articles/benchmarking-estimatr.html"
+    weight = 5
+[[menu.main]]
+    parent = "estimatr"
+    name = "Simulations - OLS and Variance"
+    url = "/page/package/estimatr/articles/simulations-ols-variance.html"
+    weight = 6
+[[menu.main]]
+    parent = "estimatr"
+    name = "Simulations - Debiasing Difference-in-Means"
+    url = "/page/package/estimatr/articles/simulations-debiasing-dim.html"
+    weight = 7
+[[menu.main]]
+    parent = "estimatr"
+    name = "How Stata’s hat matrix differs with weights"
+    url = "/page/package/estimatr/articles/stata-wls-hat.html"
+    weight = 8
+[[menu.main]]
+    parent = "estimatr"
+    name = "estimatr Reference"
+    url = "/page/package/estimatr/reference/home.html"
+    weight = 9

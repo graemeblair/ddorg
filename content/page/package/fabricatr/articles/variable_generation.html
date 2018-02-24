@@ -1,0 +1,305 @@
+---
+title: "Generating discrete random variables with fabricatr"
+author: "Aaron Rudkin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Generating discrete random variables with fabricatr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+<div id="fabricating-discrete-random-variables." class="section level1">
+<h1>Fabricating discrete random variables.</h1>
+<p><strong>fabricatr</strong> provides convenient helper functions to generate discrete random variables far more easily than using R’s built-in data generation mechanisms. Below we introduce you to the types of data you can generate using <strong>fabricatr</strong>.</p>
+<div id="binary-and-binomial-outcomes" class="section level2">
+<h2>Binary and binomial outcomes</h2>
+<p>The simplest possible type of data is a binary random variable (also called a bernoulli random variable). Generating a binary random variable requires only one parameter <code>prob</code> which specifies the probability that outcomes drawn from this variable are equal to 1. By default, <code>draw_binary()</code> will generate <code>N = length(prob)</code> draws. <code>N</code> can also be specified explicitly. Consider these examples:</p>
+<pre class="r"><code>draw_binary_ex &lt;- fabricate(
+  N = 3, p = c(0, .5, 1),
+  binary_1 = draw_binary(prob = p),
+  binary_2 = draw_binary(N = 3, prob = 0.5)
+)</code></pre>
+<p>In addition to binary variables, you can make data from repeated Bernoulli trials (“binomial” data). This requires using the <code>draw_binomial()</code> function and specifying an argument <code>trials</code>, equal to the number of trials.</p>
+<pre class="r"><code>binomial_ex &lt;- fabricate(
+  N = 3,
+  freethrows = draw_binomial(N = N, prob = 0.5, trials = 10)
+)</code></pre>
+<p>Some researchers may be interested in specifying probabilities through a “link function”. This can be done in any of your data generating functions through the <code>link</code> argument. The default link function is “identity”, but we also support “logit”, and “probit”. These link functions transform continuous and unbounded latent data into probabilities of a positive outcome.</p>
+<pre class="r"><code>bernoulli_probit &lt;- fabricate(
+  N = 3, x = 10 * rnorm(N),
+  binary = draw_binary(prob = x, link = &quot;probit&quot;)
+)</code></pre>
+</div>
+<div id="ordered-outcomes" class="section level2">
+<h2>Ordered outcomes</h2>
+<p>Some researchers may be interested in generating ordered outcomes – for example, Likert scale outcomes. You can do this with the <code>draw_ordered()</code> function. Ordered variables require a vector of breakpoints, supplied as the argument <code>breaks</code> – points at which the underlying latent variable switches from category to category. The first break should always be below the lower bound of the data, while the final break should always be above the upper bound of the data – if breaks do not cover the data, <code>draw_ordered()</code> will attempt to correct this by adding breaks where appropriate.</p>
+<p>In the following example, each of three observations has a latent variable <code>x</code> which is continuous and unbounded. The variable <code>ordered</code> transforms <code>x</code> into three numeric categories: 1, 2, and 3. All values of <code>x</code> below -1 result in <code>ordered</code> 1; all values of <code>x</code> between -1 and 1 result in <code>ordered</code> 2; all values of <code>x</code> above 1 result in <code>ordered</code> 3:</p>
+<pre class="r"><code>ordered_example &lt;- fabricate(
+  N = 3,
+  x = 5 * rnorm(N),
+  ordered = draw_ordered(x, breaks = c(-Inf, -1, 1, Inf))
+)</code></pre>
+<p>Ordered data also supports link functions including “logit” or “probit”:</p>
+<pre class="r"><code>ordered_probit_example &lt;- fabricate(
+  N = 3,
+  x = 5 * rnorm(N),
+  ordered = draw_ordered(
+    x, breaks = c(-Inf, -1, 1, Inf),
+    link = &quot;probit&quot;
+  )
+)</code></pre>
+</div>
+<div id="likert-variables" class="section level2">
+<h2>Likert variables</h2>
+<p>Likert variables are a special case of ordered variables. Users can use <code>draw_ordered()</code> with properly specified breaks and break labels to generate Likert data, or use the <code>draw_likert()</code> function as a convenient alias:</p>
+<pre class="r"><code>survey_data &lt;- fabricate(
+  N = 100,
+  Q1 = draw_likert(x = rnorm(N)),
+  Q2 = draw_likert(x = rnorm(N)),
+  Q3 = draw_likert(x = rnorm(N))
+)</code></pre>
+<p><code>draw_likert()</code> takes one compulsory argument (<code>x</code>, which represents the latent variable being transformed into ordered data). By default, <code>draw_likert()</code> provides a 7-item Likert scale with breaks at [-<span class="math inline">\(\infty\)</span>, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, <span class="math inline">\(\infty\)</span>]. Users can explicitly specify the <code>type</code> argument to use other types of Likert data. Supported types are 4, 5, and 7. Default breaks for 5-item Likert scales are [-<span class="math inline">\(\infty\)</span>, -1.5, -0.5, 0.5, 1.5, <span class="math inline">\(\infty\)</span>]. Default breaks for 4-item Likert scales are [-<span class="math inline">\(\infty\)</span>, -1, 0, 1, <span class="math inline">\(\infty\)</span>].</p>
+<p>Optionally, users can specify their own breaks. These will override the <code>type</code> command and scale type will be detected based on the length of the <code>break</code> argument. As above, a <code>break</code> argument with 8 values will produce a 7-item Likert scale, one with 6 values will produce a 5-item Likert scale, and one with 5 values will produce a 4-item Likert scale.</p>
+<p>Labels are automatically provided by <code>draw_likert()</code>. The default 7-item Likert scale uses the labels [“Strongly Disagree”, “Disagree”, “Lean Disagree”, “Don’t Know / Neutral”, “Lean Agree”, “Agree”, “Strongly Agree”].</p>
+<p>Examples of how users might use the function are available below:</p>
+<pre class="r"><code>survey_data &lt;- fabricate(
+  N = 100,
+  Q1 = draw_likert(x = rnorm(N), type = 7),
+  Q2 = draw_likert(x = rnorm(N), type = 5),
+  Q3 = draw_likert(x = rnorm(N), type = 4),
+  Q4 = draw_likert(x = rnorm(N), breaks = c(-Inf, -0.8, 0, 1, 2, Inf))
+)
+
+table(survey_data$Q2)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">Strongly Disagree</th>
+<th align="right">Disagree</th>
+<th align="right">Don’t Know / Neutral</th>
+<th align="right">Agree</th>
+<th align="right">Strongly Agree</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">9</td>
+<td align="right">18</td>
+<td align="right">45</td>
+<td align="right">19</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+<p>This function is a convenient, quick alias for creating likert variables with these labels. Users who want more flexibility with respect to break labels or number of breaks should use <code>draw_ordered()</code> and specify breaks and break labels explicitly.</p>
+</div>
+<div id="ordered-quantile-outcomes-e.g.quartile-decile-etc." class="section level2">
+<h2>Ordered quantile outcomes (e.g. quartile, decile, etc.)</h2>
+<p>Some variables of interest are modeled as quantile outcomes; for example, income data in a survey might be reported or analyzed by income deciles. We provide two simple helper functions for this purpose: <code>draw_quantile()</code> which allows you to generate quantile outcomes without underlying data, and <code>split_quantile()</code> which allows you to transform underlying data into quantile outcomes. This is particularly relevant for survey data that has been made granular to protect respondent privacy.</p>
+<p>In this example, we will generate income data for a population and then transform it into deciles:</p>
+<pre class="r"><code>population &lt;- fabricate(
+  N = 1000,
+  income = 20000 * rgamma(N, 1.4, 0.65),
+  income_decile = split_quantile(income, type = 10)
+)</code></pre>
+<p>The <code>type</code> paramater of the <code>split_quantile()</code> function specifies how many bins to split the data into. In the decile example, 10. Note that the resulting quantiles will be based on the sample data, not the parameterization of the population. It would also be possible to skip the step of characterizing the income data by directly modeling income deciles:</p>
+<p>This parameterization of the income variable was derived by researching U.S. individual income data and using numerical optimization to derive the parameterization that best approximated a series of quantiles from that data. Many other data generation packages, including <strong>wakefield</strong>, implement automatic generation of income data. For more information about using <strong>fabricatr</strong> with other data generating packages, see <a href="http://fabricatr.declaredesign.org/articles/other_packages.Rmd">our online tutorial</a></p>
+</div>
+<div id="count-outcomes" class="section level2">
+<h2>Count outcomes</h2>
+<p><code>draw_count()</code> allows you to create Poisson-distributed count outcomes. These require that the user specify the parameter <code>mean</code>, equal to the Poisson distribution mean (often referred to as <code>lambda</code> in statistical formulations of count data).</p>
+<pre class="r"><code>count_outcome_example = fabricate(N = 3, 
+                                  x = c(0, 5, 100), 
+                                  count = draw_count(mean = x))</code></pre>
+</div>
+<div id="categorical-data" class="section level2">
+<h2>Categorical data</h2>
+<p><code>draw_categorical()</code> can generate non-ordered, categorical data. Users must provide a vector of probabilities for each category (or a matrix, if each observation should have separate probabilities).</p>
+<p>If probabilities do not sum to exactly one, they will be normalized, but negative probabilities will cause an error.</p>
+<p>In the first example, each unit has a different set of probabilities and the probabilities are provided as a matrix:</p>
+<pre class="r"><code>categorical_example &lt;- fabricate(
+  N = 6,
+  p1 = runif(N, 0, 1),
+  p2 = runif(N, 0, 1),
+  p3 = runif(N, 0, 1),
+  cat = draw_categorical(N = N, prob = cbind(p1, p2, p3))
+)</code></pre>
+<p>In the second example, each unit has the same probability of getting a given category. <code>draw_categorical()</code> will issue a warning to remind you that it is interpreting the vector in this way.</p>
+<pre class="r"><code>warn_draw_cat_example &lt;- fabricate(
+  N = 6,
+  cat = draw_categorical(N = N, prob = c(0.2, 0.4, 0.4))
+)</code></pre>
+<pre><code>## For a categorical (multinomial) distribution, a matrix of probabilities should be provided. The data below is generated by interpreting the vector of category probabilities you provided as identical for each observation.</code></pre>
+<p>“categorical” variables can also use link functions, for example to generate multinomial probit data.</p>
+</div>
+</div>
+<div id="fabricating-cluster-correlated-random-variables." class="section level1">
+<h1>Fabricating cluster-correlated random variables.</h1>
+<p>We also provide helper functions to generate cluster-correlated random variables with fixed intra-cluster correlation (ICC) values. Our two functions <code>draw_binary_icc()</code> and <code>draw_normal_icc()</code> allow you to generate both discrete binary data with fixed ICCs and normal data with fixed ICCs.</p>
+<div id="binary-data-with-fixed-iccs" class="section level2">
+<h2>Binary data with fixed ICCs</h2>
+<p><code>draw_binary_icc()</code> takes three required arguments: <code>prob</code>, a probability or vector of probabilities which determine the chance a given observation will be a 1; <code>clusters</code>, a map of units to clusters (required to generate the correlation structure); and <code>ICC</code>, the fixed intra-cluster correlation (from 0 to 1). Users may optionally specify <code>N</code>; if it is not specified, <code>draw_binary_icc()</code> will determine it based on the length of the <code>clusters</code> vector.</p>
+<p>Consider the following example, which models whether individuals smoke:</p>
+<pre class="r"><code># 100 individual population, 20 each in each of 5 clusters
+clusters = rep(1:5, 20)
+
+# Individuals have a 20% chance of smoking, but clusters are highly correlated
+# in their tendency to smoke
+smoker = draw_binary_icc(prob = 0.2, clusters = clusters, ICC = 0.5)
+
+# Observe distribution of smokers and non-smokers
+table(smoker)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">0</th>
+<th align="right">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">76</td>
+<td align="right">24</td>
+</tr>
+</tbody>
+</table>
+<p>We see that approximately 20% of the population smokes, in line with our specification, but what patterns of heterogeneity do we see by cluster?</p>
+<pre class="r"><code>table(clusters, smoker)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">0</th>
+<th align="right">1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">16</td>
+<td align="right">4</td>
+</tr>
+<tr class="even">
+<td align="right">19</td>
+<td align="right">1</td>
+</tr>
+<tr class="odd">
+<td align="right">18</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">16</td>
+</tr>
+<tr class="odd">
+<td align="right">19</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>Here we learn that of our 5 clusters, 4 are overwhelmingly non-smokers, while a fifth is composed of 80% smokers.</p>
+<p>We can also specify separate mean for each cluster; but it is worth noting that the higher the ICC, the more the cluster mean will depart from the nominal cluster mean.</p>
+<p>If you do not specify a vector of probabilities or a correlation coefficient, the default values are probability 0.5 for each cluster and ICC of 0.5. If you do not specify cluster IDs, the function will return an error.</p>
+</div>
+<div id="normal-data-with-fixed-iccs" class="section level2">
+<h2>Normal data with fixed ICCs</h2>
+<p><code>draw_normal_icc()</code> takes four required arguments: <code>mean</code>, a mean or vector of means, one for each cluster; <code>clusters</code>, a map of units to clusters (required to generate the correlation structure); <code>ICC</code>, the fixed intra-cluster correlation coefficient; and <code>sd</code>, a standard deviation or vector of standard deviations, one for each cluster. Users can optionally specify <code>N</code>, a number of units, but if it is not supplied <code>draw_normal_icc()</code> will determine it based on the length of the <code>clusters</code> vector.</p>
+<p>If <code>sd</code> is not supplied, each cluster will be assumed to have a within-cluster standard deviation of 1. If <code>mean</code> is not supplied, each cluster will be assumed to be mean zero. If <code>ICC</code> is not supplied, it will be set to 0.5.</p>
+<p>Here, we model student academic performance by cluster:</p>
+<pre class="r"><code># 100 students, 10 each in 10 clusters
+clusters &lt;- rep(1:5, 20)
+
+numeric_grade &lt;- draw_normal_icc(mean = 80, clusters = clusters, ICC = 0.5, sd = 15)
+
+letter_grade &lt;- draw_ordered(
+  x = numeric_grade,
+  breaks = c(-Inf, 60, 70, 80, 90, Inf),
+  break_labels = c(&quot;F&quot;, &quot;D&quot;, &quot;C&quot;, &quot;B&quot;, &quot;A&quot;)
+)
+
+mean(numeric_grade)</code></pre>
+<p>84.12</p>
+<p>The mean grade matches the population mean. Now let’s look at the relationship between cluster and letter grade to observe the cluster pattern:</p>
+<pre class="r"><code>table(letter_grade, clusters)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">F</th>
+<th align="right">D</th>
+<th align="right">C</th>
+<th align="right">B</th>
+<th align="right">A</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">2</td>
+<td align="right">15</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="right">3</td>
+<td align="right">5</td>
+<td align="right">9</td>
+<td align="right">3</td>
+</tr>
+<tr class="odd">
+<td align="right">5</td>
+<td align="right">3</td>
+<td align="right">8</td>
+<td align="right">2</td>
+<td align="right">2</td>
+</tr>
+<tr class="even">
+<td align="right">4</td>
+<td align="right">7</td>
+<td align="right">2</td>
+<td align="right">5</td>
+<td align="right">2</td>
+</tr>
+<tr class="odd">
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">2</td>
+<td align="right">18</td>
+</tr>
+</tbody>
+</table>
+<p>It is obvious upon inspection that two of the clusters contain academic high-performers, while two of the clusters have a substantial failure rate. Although each cluster has the same mean in expectation, the induced intra-cluster correlation forces some clusters higher and others lower.</p>
+</div>
+</div>
+<div id="next-steps" class="section level1">
+<h1>Next Steps</h1>
+<p>If you are interested in reading more about how to generate specific variables with <strong>fabricatr</strong>, you can read our tutorial on <a href="http://fabricatr.declaredesign.org/articles/common_social.html">common social science variables</a>, or learn how to <a href="http://fabricatr.declaredesign.org/articles/other_packages.html">use other data-generating packages with <strong>fabricatr</strong></a>.</p>
+<p>If you are interested in learning how to import or build data, you can read our <a href="http://fabricatr.declaredesign.org/articles/building_importing.html">introduction to building and importing data</a>. More advanced users can read our tutorial on <a href="http://fabricatr.declaredesign.org/articles/cross_classified.html">generating panel or cross-classified data</a>. You can also learn about <a href="http://fabricatr.declaredesign.org/articles/resampling.html">bootstrapping and resampling hierarchical data</a>.</p>
+</div>
+<div id="technical-appendix" class="section level1">
+<h1>Technical Appendix</h1>
+<p>When generating binary data with a fixed ICC, we use this formula, where <span class="math inline">\(i\)</span> is a cluster and <span class="math inline">\(j\)</span> is a unit in a cluster:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  z_i &amp;\sim \text{Bern}(p_i) \\
+  u_{ij} &amp;\sim \text{Bern}(\sqrt{\rho}) \\
+  x_{ij} &amp;= 
+  \begin{cases}
+    x_{ij} \sim \text{Bern}(p_i) &amp; \quad \text{if } u_{ij} = 1 \\
+    z_i &amp; \quad \text{if } u_{ij} = 0
+  \end{cases}
+\end{aligned}
+\]</span></p>
+<p>In expectation, this guarantees an intra-cluster correlation of <span class="math inline">\(\rho\)</span> and a cluster proportion of <span class="math inline">\(p_i\)</span>. This approach derives from Hossain, Akhtar and Chakraborti, Hrishikesh. “ICCBin: Facilitates Clustered Binary Data Generation, and Estimation of Intracluster Correlation Coefficient (ICC) for Binary Data”, available on <a href="CRAN">https://cran.r-project.org/web/packages/ICCbin/index.html</a> or <a href="GitHub">https://github.com/akhtarh/ICCbin</a></p>
+<p>When generating normal data with a fixed ICC, we follow this formula, again with <span class="math inline">\(i\)</span> as a cluster and <span class="math inline">\(j\)</span> as a unit in the cluster:</p>
+<p><span class="math display">\[
+\begin{aligned}
+  \sigma^2_{\alpha i} &amp;= \frac{(\rho * \sigma^2_{\epsilon i})}{(1 - \rho)} \\
+  \alpha_i &amp;\sim \mathcal{N}(0, \sigma^2_{\alpha i}) \\
+  \mu_{ij} &amp;\sim \mathcal{N}(\mu_i, \sigma^2_{\epsilon i}) \\
+  x_{ij} &amp;= \mu_{ij} + \alpha_i
+\end{aligned}
+\]</span></p>
+<p>In expectation, this approach guarantees an intra-cluster correlation of <span class="math inline">\(\rho\)</span>, a cluster mean of <span class="math inline">\(\mu_{i}\)</span>, and a cluster-level variance in error terms of <span class="math inline">\(\sigma^2_{\epsilon i}\)</span>. This approach is specified on <a href="StatsExchange">https://stats.stackexchange.com/questions/263451/create-synthetic-data-with-a-given-intraclass-correlation-coefficient-icc</a>.</p>
+</div>

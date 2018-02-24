@@ -1,0 +1,80 @@
+---
+title: "randomizr"
+---
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Complete Random Sampling</h1>
+    </div>
+
+    
+    <p>complete_rs implements a random sampling procedure in which fixed numbers of units are sampled. The canonical example of complete random sampling is a procedure in which exactly n of N units are sampled. 
+Users can set the exact number of units to sample with n. Alternatively, users can specify the probability of being sampled with prob and complete_rs will infer the correct number of units to sample.
+complete_rs will either sample floor(N*prob) or ceiling(N*prob) units, choosing between these two values to ensure that the overall probability of being sampled is exactly prob.
+Users should specify N and not more than one of n or prob.  
+If only N is specified, N/2 units will be sampled. If N is odd, either floor(N/2) units or ceiling(N/2) units will be sampled.</p>
+    
+
+    <pre class="usage"><span class='fu'>complete_rs</span>(<span class='no'>N</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>check_inputs</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>N</th>
+      <td><p>The number of units. N must be a positive integer. (required)</p></td>
+    </tr>
+    <tr>
+      <th>n</th>
+      <td><p>Use for a design in which exactly n units are sampled. (optional)</p></td>
+    </tr>
+    <tr>
+      <th>prob</th>
+      <td><p>Use for a design in which either floor(N*prob) or ceiling(N*prob) units are sampled. The probability of being sampled is exactly prob because with probability 1-prob, floor(N*prob) units will be sampled and with probability prob, ceiling(N*prob) units will be sampled. prob must be a real number between 0 and 1 inclusive. (optional)</p></td>
+    </tr>
+    <tr>
+      <th>check_inputs</th>
+      <td><p>logical. Defaults to TRUE.</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A numeric vector of length N that indicates if a unit is sampled (1) or not (0).</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>S</span> <span class='kw'>&lt;-</span> <span class='fu'>complete_rs</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='fu'>table</span>(<span class='no'>S</span>)</div><div class='output co'>#&gt; S
+#&gt;  0  1 
+#&gt; 50 50 </div><div class='input'>
+<span class='no'>S</span> <span class='kw'>&lt;-</span> <span class='fu'>complete_rs</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+<span class='fu'>table</span>(<span class='no'>S</span>)</div><div class='output co'>#&gt; S
+#&gt;  0  1 
+#&gt; 50 50 </div><div class='input'>
+<span class='no'>S</span> <span class='kw'>&lt;-</span> <span class='fu'>complete_rs</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>.111</span>)
+<span class='fu'>table</span>(<span class='no'>S</span>)</div><div class='output co'>#&gt; S
+#&gt;  0  1 
+#&gt; 89 11 </div><div class='input'>
+<span class='co'># If N = n, sample with 100% probability...</span>
+<span class='fu'><a href='complete_ra.html'>complete_ra</a></span>(<span class='kw'>N</span><span class='kw'>=</span><span class='fl'>2</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>2</span>)</div><div class='output co'>#&gt; [1] T1 T2
+#&gt; Levels: T1 T2</div><div class='input'>
+<span class='co'># except if N = n = 1, in which case sample with 50% probability</span>
+<span class='fu'><a href='complete_ra.html'>complete_ra</a></span>(<span class='kw'>N</span><span class='kw'>=</span><span class='fl'>1</span>, <span class='kw'>n</span><span class='kw'>=</span><span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] T1
+#&gt; Levels: T1</div><div class='input'>
+
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

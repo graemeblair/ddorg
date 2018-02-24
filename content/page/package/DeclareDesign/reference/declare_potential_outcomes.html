@@ -1,0 +1,108 @@
+---
+title: "DeclareDesign"
+---
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Potential Outcomes</h1>
+    </div>
+
+    
+    <p>Potential Outcomes</p>
+    
+
+    <pre class="usage"><span class='fu'>declare_potential_outcomes</span>(<span class='no'>...</span>, <span class='kw'>handler</span> <span class='kw'>=</span> <span class='no'>potential_outcomes_function_default</span>,
+  <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments to the potential_outcomes_function</p></td>
+    </tr>
+    <tr>
+      <th>handler</th>
+      <td><p>A function that accepts a data.frame as an argument and returns a data.frame with potential outcomes columns appended. See the examples for the behavior of the default function.</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>A step label</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a function that returns a data.frame</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>A `declare_potential_outcomes` declaration returns a function. That function takes data and returns data with potential outcomes columns appended. These columns describe the outcomes that each unit would express if that unit were in the corresponding treatment condition.</p>
+<p>The potential outcomes function can sometimes be a stumbling block for users, as some are uncomfortable asserting anything in particular about the very causal process that they are conducting a study to learn about! We recommend trying to imagine what your preferred theory would predict, what an alternative theory would predict, and what your study would reveal if there were no differences in potential outcomes for any unit (i.e., all treatment effects are zero).</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='no'>my_population</span> <span class='kw'>&lt;-</span>
+<span class='fu'><a href='declare_population.html'>declare_population</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>1000</span>,
+                   <span class='kw'>income</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span>),
+                   <span class='kw'>age</span> <span class='kw'>=</span> <span class='fu'>sample</span>(<span class='fl'>18</span>:<span class='fl'>95</span>, <span class='no'>N</span>, <span class='kw'>replace</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>))
+<span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>my_population</span>()
+
+<span class='co'># By default, there are two ways of declaring potential outcomes:</span>
+<span class='co'># as separate variables or using a formula:</span>
+
+<span class='co'># As separate variables</span>
+
+<span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span>
+     <span class='fu'>declare_potential_outcomes</span>(
+        <span class='kw'>Y_Z_0</span> <span class='kw'>=</span> <span class='fl'>.05</span>,
+        <span class='kw'>Y_Z_1</span> <span class='kw'>=</span> <span class='fl'>.30</span> + <span class='fl'>.01</span> * <span class='no'>age</span>)
+
+<span class='fu'>head</span>(<span class='fu'>my_potential_outcomes</span>(<span class='no'>pop</span>))</div><div class='output co'>#&gt;     ID     income age Y_Z_0 Y_Z_1
+#&gt; 1 0001 -0.4349032  30  0.05  0.60
+#&gt; 2 0002  0.4989009  85  0.05  1.15
+#&gt; 3 0003  1.1979224  65  0.05  0.95
+#&gt; 4 0004 -0.1707637  71  0.05  1.01
+#&gt; 5 0005  0.5745204  40  0.05  0.70
+#&gt; 6 0006 -0.5342050  44  0.05  0.74</div><div class='input'>
+<span class='co'># Using a formula</span>
+ <span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_potential_outcomes</span>(
+ <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>Y</span> ~ <span class='fl'>.25</span> * <span class='no'>Z</span> + <span class='fl'>.01</span> * <span class='no'>age</span> * <span class='no'>Z</span>)
+ <span class='no'>pop_pos</span> <span class='kw'>&lt;-</span> <span class='fu'>my_potential_outcomes</span>(<span class='no'>pop</span>)
+ <span class='fu'>head</span>(<span class='no'>pop_pos</span>)</div><div class='output co'>#&gt;     ID     income age Y_Z_0 Y_Z_1
+#&gt; 1 0001 -0.4349032  30     0  0.55
+#&gt; 2 0002  0.4989009  85     0  1.10
+#&gt; 3 0003  1.1979224  65     0  0.90
+#&gt; 4 0004 -0.1707637  71     0  0.96
+#&gt; 5 0005  0.5745204  40     0  0.65
+#&gt; 6 0006 -0.5342050  44     0  0.69</div><div class='input'>
+ <span class='co'># condition_names defines the "range" of the potential outcomes function</span>
+ <span class='no'>my_potential_outcomes</span> <span class='kw'>&lt;-</span>
+      <span class='fu'>declare_potential_outcomes</span>(
+      <span class='kw'>formula</span> <span class='kw'>=</span> <span class='no'>Y</span> ~ <span class='fl'>.25</span> * <span class='no'>Z</span> + <span class='fl'>.01</span> * <span class='no'>age</span> * <span class='no'>Z</span>,
+      <span class='kw'>condition_names</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>)
+
+<span class='fu'>head</span>(<span class='fu'>my_potential_outcomes</span>(<span class='no'>pop</span>))</div><div class='output co'>#&gt;     ID     income age Y_Z_1 Y_Z_2 Y_Z_3 Y_Z_4
+#&gt; 1 0001 -0.4349032  30  0.55  1.10  1.65  2.20
+#&gt; 2 0002  0.4989009  85  1.10  2.20  3.30  4.40
+#&gt; 3 0003  1.1979224  65  0.90  1.80  2.70  3.60
+#&gt; 4 0004 -0.1707637  71  0.96  1.92  2.88  3.84
+#&gt; 5 0005  0.5745204  40  0.65  1.30  1.95  2.60
+#&gt; 6 0006 -0.5342050  44  0.69  1.38  2.07  2.76</div><div class='input'>
+</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

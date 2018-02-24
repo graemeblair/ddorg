@@ -1,0 +1,118 @@
+---
+title: "DeclareDesign"
+---
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Declare Assignment Procedure</h1>
+    </div>
+
+    
+    <p>Declare Assignment Procedure</p>
+    
+
+    <pre class="usage"><span class='fu'>declare_assignment</span>(<span class='no'>...</span>, <span class='kw'>handler</span> <span class='kw'>=</span> <span class='no'>assignment_function_default</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments to the assignment function.</p></td>
+    </tr>
+    <tr>
+      <th>handler</th>
+      <td><p>A function that takes a data.frame, adds an assignment variable and optionally assignment probabilities or other relevant quantities, and returns a data.frame. By default, the assignment_function uses the randomizr functions <code>conduct_ra</code> and <code>obtain_condition_probabilities</code> to conduct random assignment and obtain the probabilities of assignment to each condition.</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>a step label</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a function that takes a data.frame as an argument and returns a data.frame with additional columns appended including an assignment variable and (optionally) probabilities of assignment.</p>
+    
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>While declare_assignment can work with any assignment_function that takes data and returns data, most random assignment procedures can be easily implemented with randomizr. The arguments to <code>conduct_ra</code> can include N, block_var, clust_var, m, m_each, prob, prob_each, block_m, block_m_each = NULL, block_prob, block_prob_each, num_arms, and condition_names. The arguments you need to specify are different for different designs. Check the help files for <code>complete_ra</code>, <code>block_ra</code>, <code>cluster_ra</code>, or <code>block_and_cluster_ra</code> for details on how to execute many common designs.</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='no'>my_population</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='declare_population.html'>declare_population</a></span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>female</span> <span class='kw'>=</span> <span class='fu'>rbinom</span>(<span class='no'>N</span>, <span class='fl'>1</span>, <span class='fl'>.5</span>))
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>my_population</span>()
+
+<span class='co'># Complete random assignment using randomizr</span>
+<span class='co'># use any arguments you would use in conduct_ra.</span>
+
+<span class='no'>my_assignment</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_assignment</span>(<span class='kw'>m</span> <span class='kw'>=</span> <span class='fl'>50</span>)
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>my_assignment</span>(<span class='no'>df</span>)
+<span class='fu'>head</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;    ID female Z Z_cond_prob
+#&gt; 1 001      0 1         0.5
+#&gt; 2 002      1 1         0.5
+#&gt; 3 003      1 0         0.5
+#&gt; 4 004      0 0         0.5
+#&gt; 5 005      0 0         0.5
+#&gt; 6 006      0 1         0.5</div><div class='input'><span class='fu'>table</span>(<span class='no'>df</span>$<span class='no'>Z</span>)</div><div class='output co'>#&gt; 
+#&gt;  0  1 
+#&gt; 50 50 </div><div class='input'>
+<span class='co'># Block random assignment</span>
+
+<span class='no'>my_blocked_assignment</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_assignment</span>(<span class='kw'>blocks</span> <span class='kw'>=</span> <span class='no'>female</span>)
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>my_population</span>()
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>my_blocked_assignment</span>(<span class='no'>df</span>)
+<span class='fu'>head</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;    ID female Z Z_cond_prob
+#&gt; 1 001      0 1         0.5
+#&gt; 2 002      1 1         0.5
+#&gt; 3 003      0 0         0.5
+#&gt; 4 004      0 1         0.5
+#&gt; 5 005      0 1         0.5
+#&gt; 6 006      1 1         0.5</div><div class='input'><span class='fu'>with</span>(<span class='no'>df</span>, <span class='fu'>table</span>(<span class='no'>Z</span>, <span class='no'>female</span>))</div><div class='output co'>#&gt;    female
+#&gt; Z    0  1
+#&gt;   0 22 28
+#&gt;   1 22 28</div><div class='input'>
+
+<span class='co'># Custom random assignment functions</span>
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>my_population</span>()
+
+<span class='no'>my_assignment_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>data</span>) {
+   <span class='no'>data</span>$<span class='no'>Z</span> <span class='kw'>&lt;-</span> <span class='fu'>rbinom</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fu'>nrow</span>(<span class='no'>data</span>),
+   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
+   <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+   <span class='no'>data</span>
+   }
+
+<span class='no'>my_assignment_custom</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_assignment</span>(
+   <span class='kw'>handler</span> <span class='kw'>=</span> <span class='no'>my_assignment_function</span>)
+
+<span class='no'>df</span> <span class='kw'>&lt;-</span> <span class='fu'>my_assignment_custom</span>(<span class='no'>df</span>)
+<span class='fu'>head</span>(<span class='no'>df</span>)</div><div class='output co'>#&gt;    ID female Z
+#&gt; 1 001      0 0
+#&gt; 2 002      1 0
+#&gt; 3 003      1 0
+#&gt; 4 004      0 1
+#&gt; 5 005      0 0
+#&gt; 6 006      0 1</div><div class='input'><span class='fu'>table</span>(<span class='no'>df</span>$<span class='no'>Z</span>)</div><div class='output co'>#&gt; 
+#&gt;  0  1 
+#&gt; 49 51 </div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+
+      <li><a href="#details">Details</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

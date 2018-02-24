@@ -1,0 +1,103 @@
+---
+title: "DeclareDesign"
+---
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Declare the Size and Features of the Population</h1>
+    </div>
+
+    
+    <p>Declare the Size and Features of the Population</p>
+    
+
+    <pre class="usage"><span class='fu'>declare_population</span>(<span class='no'>...</span>, <span class='kw'>handler</span> <span class='kw'>=</span> <span class='no'>fabricate</span>, <span class='kw'>label</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>...</th>
+      <td><p>Arguments to the population function</p></td>
+    </tr>
+    <tr>
+      <th>handler</th>
+      <td><p>A function that generates a data.frame containing features of the population. By default, the fabricatr function <code>fabricate</code> function is used, which allows you to draw single or multi-level hierarchical population data.</p></td>
+    </tr>
+    <tr>
+      <th>label</th>
+      <td><p>a step label</p></td>
+    </tr>
+    </table>
+    
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>a function that returns a data.frame</p>
+    
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'>
+<span class='co'># Declare a single-level population with no covariates</span>
+<span class='no'>my_population</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_population</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+<span class='fu'>head</span>(<span class='fu'>my_population</span>())</div><div class='output co'>#&gt;    ID
+#&gt; 1 001
+#&gt; 2 002
+#&gt; 3 003
+#&gt; 4 004
+#&gt; 5 005
+#&gt; 6 006</div><div class='input'>
+<span class='co'># Declare a single-level population with a covariate</span>
+<span class='no'>my_population</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_population</span>(
+  <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>,
+  <span class='kw'>height_ft</span> <span class='kw'>=</span> <span class='fu'>runif</span>(<span class='no'>N</span>, <span class='fl'>3.5</span>, <span class='fl'>8</span>)
+)
+<span class='fu'>head</span>(<span class='fu'>my_population</span>())</div><div class='output co'>#&gt;    ID height_ft
+#&gt; 1 001  4.541163
+#&gt; 2 002  5.541377
+#&gt; 3 003  5.251368
+#&gt; 4 004  6.432244
+#&gt; 5 005  5.487036
+#&gt; 6 006  5.307416</div><div class='input'>
+<span class='co'># Declare a two-level hierarchical population</span>
+<span class='co'># containing cities within regions</span>
+
+<span class='no'>pop</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_population</span>(
+ <span class='kw'>regions</span> <span class='kw'>=</span> <span class='fu'>level</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>5</span>),
+ <span class='kw'>cities</span> <span class='kw'>=</span> <span class='fu'>level</span>(<span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>pollution</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>)))
+<span class='fu'>head</span>(<span class='fu'>my_population</span>())</div><div class='output co'>#&gt;    ID height_ft
+#&gt; 1 001  4.784681
+#&gt; 2 002  6.894644
+#&gt; 3 003  5.042305
+#&gt; 4 004  3.531256
+#&gt; 5 005  4.855222
+#&gt; 6 006  3.734016</div><div class='input'>
+<span class='co'># Custom population functions</span>
+
+<span class='no'>my_population_function</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>N</span>) {
+  <span class='fu'>data.frame</span>(<span class='kw'>u</span> <span class='kw'>=</span> <span class='fu'>rnorm</span>(<span class='no'>N</span>))
+}
+
+<span class='no'>my_population_custom</span> <span class='kw'>&lt;-</span> <span class='fu'>declare_population</span>(
+  <span class='kw'>handler</span> <span class='kw'>=</span> <span class='no'>my_population_function</span>, <span class='kw'>N</span> <span class='kw'>=</span> <span class='fl'>100</span>)
+
+<span class='fu'>head</span>(<span class='fu'>my_population_custom</span>())</div><div class='output co'>#&gt;            u
+#&gt; 1 -2.0197586
+#&gt; 2  0.2559044
+#&gt; 3  0.3904464
+#&gt; 4 -0.8311341
+#&gt; 5  0.5195553
+#&gt; 6 -0.8455217</div></pre>
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      
+      <li><a href="#value">Value</a></li>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
+
+  </div>
+</div>

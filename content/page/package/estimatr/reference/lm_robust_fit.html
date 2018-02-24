@@ -1,0 +1,72 @@
+---
+title: "estimatr"
+---
+
+<div class="row">
+  <div class="col-md-9 contents">
+    <div class="page-header">
+    <h1>Internal method that creates linear fits</h1>
+    </div>
+
+    
+    <p>Internal method that creates linear fits</p>
+    
+
+    <pre class="usage"><span class='fu'>lm_robust_fit</span>(<span class='no'>y</span>, <span class='no'>X</span>, <span class='no'>weights</span>, <span class='no'>cluster</span>, <span class='no'>ci</span>, <span class='no'>se_type</span>, <span class='no'>alpha</span>, <span class='no'>return_vcov</span>,
+  <span class='no'>try_cholesky</span>, <span class='no'>has_int</span>)</pre>
+    
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a> Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>y</th>
+      <td><p>numeric outcome vector</p></td>
+    </tr>
+    <tr>
+      <th>X</th>
+      <td><p>numeric design matrix</p></td>
+    </tr>
+    <tr>
+      <th>weights</th>
+      <td><p>numeric weights vector</p></td>
+    </tr>
+    <tr>
+      <th>cluster</th>
+      <td><p>numeric cluster vector</p></td>
+    </tr>
+    <tr>
+      <th>ci</th>
+      <td><p>boolean that when T returns confidence intervals and p-values</p></td>
+    </tr>
+    <tr>
+      <th>se_type</th>
+      <td><p>character denoting which kind of SEs to return</p></td>
+    </tr>
+    <tr>
+      <th>alpha</th>
+      <td><p>numeric denoting the test size for confidence intervals</p></td>
+    </tr>
+    <tr>
+      <th>return_vcov</th>
+      <td><p>logical, whether to return the vcov matrix for later usage</p></td>
+    </tr>
+    <tr>
+      <th>try_cholesky</th>
+      <td><p>logical, whether to try using a cholesky decomposition to solve LS instead of a QR decomposition</p></td>
+    </tr>
+    <tr>
+      <th>has_int</th>
+      <td><p>logical, whether the model has an intercept, used for \(R^2\)</p></td>
+    </tr>
+    </table>
+    
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+                </ul>
+
+  </div>
+</div>

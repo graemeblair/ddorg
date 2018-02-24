@@ -1,0 +1,53 @@
+get_package_reference_files <- function()
+{
+  requireNamespace("pkgdown")
+  requireNamespace("blogdown") # using requireNamespace, they have conflicting functions
+  out <- tempdir()
+  
+  
+  pkgs <-   c("DeclareDesign","estimatr","fabricatr","randomizr")
+  packages <- download.packages(
+    pkgs,
+    destdir = out,
+    repos="https://declaredesign.github.io",
+    type = "source"
+  )
+  
+  
+  
+   rownames(packages) <- pkgs
+  colnames(packages) <- c("pkg", "tar")
+  
+  # untar all
+   mapply(untar, tarfile=packages[,2], exdir=out)
+  
+  unlink("content/page/package", recursive = TRUE)
+  
+  for (pkg in pkgs)
+  {
+    zipped_folder_name <- file.path(out, paste0(pkg,"_github.tar.gz"))
+    folder_name <- file.path(out, paste0(pkg,"_github"))
+    download.file(paste0("https://api.github.com/repos/DeclareDesign/", pkg, "/tarball"), zipped_folder_name)
+    system(sprintf("mkdir %s && tar xf %s -C %s --strip-components 1", folder_name, zipped_folder_name, folder_name))
+  }
+  
+  
+  for (pkg in pkgs) {
+    
+    exdir <- file.path(out, packages[pkg,1])
+    github_dir <- file.path(out, paste0(pkg, "_github"))
+    # Put the reference pages and vignettes in their own folders under the main package folder.
+    main_outdir <- file.path(getwd(), "content", "page", "package", pkg)
+    pkgdown_outdir_reference <- file.path(getwd(), "content", "page", "package", pkg, "reference")
+    pkgdown_outdir_vignettes <- file.path(getwd(), "content", "page", "package", pkg, "articles")
+    
+    system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", exdir))
+    
+    # We want pkgdown to build the references, but do not let it build the vignettes.
+    # Blogdown will take care of them, so just copy them over without touching them.
+    pkgdown::build_reference(exdir[1],  path=pkgdown_outdir_reference)
+    system(sprintf("cp -r %s %s", file.path(github_dir, "vignettes"), pkgdown_outdir_vignettes))
+    system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
+    
+  }
+}

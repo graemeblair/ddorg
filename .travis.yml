@@ -8,3 +8,8 @@ script:
 
 before_deploy:
   - wget -qO- https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz | tar xvz
+
+deploy:
+  provider: script
+  script: netlify deploy --site-id $NETLIFY_SITE_ID --access-token $NETLIFY_ACCESS_TOKEN
+  skip_cleanup: true

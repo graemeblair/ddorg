@@ -17,7 +17,7 @@ before_deploy:
 
 deploy:
   provider: script
-  script: netlifyctl deploy --base-directory 'public' --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"
+  script: ./netlifyctl deploy --base-directory 'public' --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"
   skip_cleanup: true
   on:
     branch: master

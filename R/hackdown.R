@@ -27,7 +27,9 @@ get_package_reference_files <- function()
   {
     zipped_folder_name <- file.path(out, paste0(pkg,"_github.tar.gz"))
     folder_name <- file.path(out, paste0(pkg,"_github"))
-    download.file(paste0("https://api.github.com/repos/DeclareDesign/", pkg, "/tarball"), zipped_folder_name)
+    file_url <- paste0("https://api.github.com/repos/DeclareDesign/", pkg, "/tarball")
+    download.file(url = file_url, destfile = zipped_folder_name, method = "wget", extra = "--user-agent='DeclareDesign'")
+    
     system(sprintf("mkdir %s && tar xf %s -C %s --strip-components 1", folder_name, zipped_folder_name, folder_name))
   }
   

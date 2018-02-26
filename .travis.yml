@@ -1,0 +1,23 @@
+language: r
+
+cache:
+  packages: yes
+  directories:
+    - $HOME/bin
+
+
+before_script:
+  - Rscript -e 'blogdown::install_hugo()'
+
+script:
+  - Rscript 'R/superBuild.R'
+
+before_deploy:
+  - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz
+
+deploy:
+  provider: script
+  script: netlifyctl deploy --base-directory 'public' --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"
+  skip_cleanup: true
+  on:
+    branch: master

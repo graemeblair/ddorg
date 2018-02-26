@@ -1,0 +1,27 @@
+Package: stuff
+Type: Website
+Title: Cool stuff.
+Version: 1.1.7
+Imports:
+  pkgdown,
+  blogdown,
+  randomizr,
+  fabricatr,
+  estimatr,
+  DeclareDesign,
+  doParallel,
+  foreach,
+  doRNG,
+  ggplot2,
+  dplyr,
+  margins,
+  diagram,
+  blockTools,
+  texreg
+Remotes:
+  r-lib/pkgdown,
+  rstudio/blogdown,
+  DeclareDesign/randomizr,
+  DeclareDesign/fabricatr,
+  DeclareDesign/estimatr,
+  DeclareDesign/DeclareDesign

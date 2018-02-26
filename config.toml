@@ -1,233 +1,67 @@
 baseurl = "https://thirsty-morse-aa29ed.netlify.com"
-DefaultContentLanguage = "en"
+languageCode = "en-us"
 title = "Declare Design"
-theme = "beautifulhugo"
-metaDataFormat = "yaml"
-pygmentsStyle = "trac"
-pygmentsUseClasses = true
-pygmentsCodeFences = true
-pygmentsCodefencesGuessSyntax = true
-pygmentOptions = "linenos=table"
-#disqusShortname = "XXX"
-#googleAnalytics = "XXX"
+theme = "hugo-lithium-theme"
+googleAnalytics = ""
+disqusShortname = ""
+ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 uglyurls = true
 
-ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
-
-[Params]
-  subtitle = "Declare and diagnose research designs to understand and improve them"
-# logo = "img/avatar-icon.png"
-  favicon = "img/favicon.ico"
-  dateFormat = "January 2, 2006"
-  commit = false
-  rss = true
-  comments = false
-  readingTime = false
-#  gcse = "012345678901234567890:abcdefghijk" # Get your code from google.com/cse. Make sure to go to "Look and Feel" and change Layout to "Full Width" and Theme to "Classic"
-
-#[[Params.bigimg]]
-#  src = "img/triangle.jpg"
-#  desc = "Triangle"
-#[[Params.bigimg]]
-#  src = "img/sphere.jpg"
-#  desc = "Sphere"
-#  # position: see values of CSS background-position.
-#  position = "center top"
-#[[Params.bigimg]]
-#  src = "img/hexagon.jpg"
-#  desc = "Hexagon"
-
-[Author]
-  name = "Graeme Blair • Jasper Cooper • Alexander Coppock • Macartan Humphreys"
-  email = "contribute@declaredesign.org"
-  github = "DeclareDesign"
-  stackoverflow = "questions/tagged/declaredesign"
-
-############################################
-# Main Menu
-############################################
-# Important! No two menu items can have the same name (even two submenu items from two different menus)
-###########################################
+[permalinks]
+    post = "/:year/:month/:day/:slug/"
 
 # Declare Design
 #################
 [[menu.main]]
-    name = "Blog"
-    url = "/post.html"
-    weight = 1
+  name = "Blog"
+  url = "/post.html"
+  weight = 1
 
 [[menu.main]]
-    name = "The Idea"
-    url = "/page/package/DeclareDesign/articles/idea.html"
-    weight = 2
+  name = "The Idea"
+  url = "/page/package/DeclareDesign/articles/idea.html"
+  weight = 2
 
 [[menu.main]]
-    name = "Design Library"
-    url = "/page/package/DeclareDesign/articles/design_library.html"
-    weight = 3
-
-[[menu.main]]
-    identifier = "using_declare_design"
-    name = "Using Declare Design"
-    weight = 4
-[[menu.main]]
-    parent = "using_declare_design"
-    name = "Getting Started"
-    url = "/page/package/DeclareDesign/articles/DeclareDesign.html"
-    weight = 1
-[[menu.main]]
-    parent = "using_declare_design"
-    name = "Custom Functions"
-    url = "/page/package/DeclareDesign/articles/custom_functions.html"
-    weight = 2
-[[menu.main]]
-    parent = "using_declare_design"
-    name = "Advanced Features"
-    url = "/page/package/DeclareDesign/articles/advanced_features.html"
-    weight = 3
-[[menu.main]]
-    parent = "using_declare_design"
-    name = "Companion Packages"
-    url = "/page/package/DeclareDesign/articles/companion_packages.html"
-    weight = 4
-
-[[menu.main]]
-    name = "Ask for Help"
-    url = "http://discuss.declaredesign.org"
-    weight = 5
+  name = "Design Library"
+  url = "/page/package/DeclareDesign/articles/design_library.html"
+  weight = 3
 
 # randomizr
 #################
 [[menu.main]]
-    identifier = "randomizr"
-    name = "randomizr"
-    weight = 6
-[[menu.main]]
-    parent = "randomizr"
-    name = "randomizr Home"
-    url = "page/package/randomizr/readme.html"
-    weight = 1
-[[menu.main]]
-    parent = "randomizr"
-    name = "Getting Started in R"
-    url = "/page/package/randomizr/articles/randomizr_vignette.html"
-    weight = 2
-[[menu.main]]
-    parent = "randomizr"
-    name = "Getting Started in Stata"
-    url = "/page/package/randomizr/articles/srandomizr_vignette.html"
-    weight = 3
-[[menu.main]]
-    parent = "randomizr"
-    name = "randomizr Reference"
-    url = "/page/package/randomizr/reference/home.html"
-    weight = 4
+  name = "randomizr Home"
+  url = "/page/package/randomizr/readme.html"
+  weight = 4
 
 # fabricatr
 #################
 [[menu.main]]
-    identifier = "fabricatr"
-    name = "fabricatr"
-    weight = 7
-[[menu.main]]
-    parent = "fabricatr"
-    name = "fabricatr Home"
-    url = "/page/package/fabricatr/readme.html"
-    weight = 1
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Getting Started with fabricatr"
-    url = "/page/package/fabricatr/articles/getting_started.html"
-    weight = 2
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Building and Importing Data"
-    url = "/page/package/fabricatr/articles/building_importing.html"
-    weight = 3
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Common Social Science Variables"
-    url = "/page/package/fabricatr/articles/common_social.html"
-    weight = 4
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Generating Variables"
-    url = "/page/package/fabricatr/articles/variable_generation.html"
-    weight = 5
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Panel and Cross-Classified Data"
-    url = "/page/package/fabricatr/articles/cross_classified.html"
-    weight = 6
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Resampling"
-    url = "/page/package/fabricatr/articles/resampling.html"
-    weight = 7
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Time Series Data"
-    url = "/page/package/fabricatr/articles/time_series.html"
-    weight = 8
-[[menu.main]]
-    parent = "fabricatr"
-    name = "Advanced Features for fabricatr"
-    url = "/page/package/fabricatr/articles/advanced_features.html"
-    weight = 9
-[[menu.main]]
-    parent = "fabricatr"
-    name = "fabricatr Reference"
-    url = "/page/package/fabricatr/reference/home.html"
-    weight = 10
+  name = "fabricatr Home"
+  url = "/page/package/fabricatr/readme.html"
+  weight = 5
 
 # estimatr
 #################
 [[menu.main]]
-    identifier = "estimatr"
-    name = "estimatr"
-    weight = 8
-[[menu.main]]
-    parent = "estimatr"
-    name = "estimatr Home"
-    url = "/page/package/estimatr/readme.html"
-    weight = 1
-[[menu.main]]
-    parent = "estimatr"
-    name = "Getting Started with estimatr"
-    url = "/page/package/estimatr/articles/getting-started.html"
-    weight = 2
-[[menu.main]]
-    parent = "estimatr"
-    name = "Mathematical Notes"
-    url = "page/package/estimatr/reference/home.html"
-    weight = 3
-[[menu.main]]
-    parent = "estimatr"
-    name = "Mathematical Notes"
-    url = "/page/package/estimatr/articles/mathematical-notes.html"
-    weight = 4
-[[menu.main]]
-    parent = "estimatr"
-    name = "Simulations - Speed Comparisons"
-    url = "/page/package/estimatr/articles/benchmarking-estimatr.html"
-    weight = 5
-[[menu.main]]
-    parent = "estimatr"
-    name = "Simulations - OLS and Variance"
-    url = "/page/package/estimatr/articles/simulations-ols-variance.html"
-    weight = 6
-[[menu.main]]
-    parent = "estimatr"
-    name = "Simulations - Debiasing Difference-in-Means"
-    url = "/page/package/estimatr/articles/simulations-debiasing-dim.html"
-    weight = 7
-[[menu.main]]
-    parent = "estimatr"
-    name = "How Stata’s hat matrix differs with weights"
-    url = "/page/package/estimatr/articles/stata-wls-hat.html"
-    weight = 8
-[[menu.main]]
-    parent = "estimatr"
-    name = "estimatr Reference"
-    url = "/page/package/estimatr/reference/home.html"
-    weight = 9
+  name = "estimatr Home"
+  url = "/page/package/estimatr/readme.html"
+  weight = 6
+
+[params]
+    description = "Declare and diagnose research designs to understand and improve them"
+
+    # options for highlight.js (version, additional languages, and theme)
+    highlightjsVersion = "9.12.0"
+    highlightjsCDN = "//cdn.bootcss.com"
+    highlightjsLang = ["r", "yaml"]
+    highlightjsTheme = "github"
+
+    MathJaxCDN = "//cdn.bootcss.com"
+    MathJaxVersion = "2.7.3"
+
+    [params.logo]
+    url = "logo.png"
+    width = 50
+    height = 50
+    alt = "Logo"

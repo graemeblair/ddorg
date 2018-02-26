@@ -10,8 +10,6 @@ vignette: >
 
 
 
-<div id="time-series-data" class="section level1">
-<h1>Time series data</h1>
 <p>Below, we begin a series of examples discussing the creation of time series style data in <strong>fabricatr</strong>. This document assumes you are familiar with the basics of <a href="http://fabricatr.declaredesign.org/articles/building_importing.html">building and importing data with <strong>fabricatr</strong></a>.</p>
 <div id="single-unit-fixed-time-trend-data" class="section level3">
 <h3>Single unit fixed time trend data</h3>
@@ -23,8 +21,8 @@ vignette: >
 )</code></pre>
 <p>First, we begin by creating tracking progress on the time trend, here <code>ts_year</code>, which begins at 0 and increases by one across observations. Next, we create a variable that depends on the current value of <code>ts_year</code>; here the GDP measure for our unit begins at 20 (log units) and increases by one third of a log unit each year. We also specify a stochastic error term.</p>
 </div>
-<div id="multiple-units-with-time-trends" class="section level3">
-<h3>Multiple units with time trends</h3>
+<div id="multiple-units-with-time-trends" class="section level2">
+<h2>Multiple units with time trends</h2>
 <p>A more complex example might involve several geographic units, each of which has a separate growth value. Here we can use <strong>fabricatr</strong>’s support for multi-level, hierarchical data to elaborate:</p>
 <pre class="r"><code>panel_units &lt;- fabricate(
   countries = add_level(
@@ -40,7 +38,6 @@ vignette: >
   )
 )</code></pre>
 <p>Here, each country-year inherits the parameters of the country: a base GDP, an annual growth rate (which is constant in this model), and an error parameter. The resulting data is 25 rows; 5 years for each of 5 countries.</p>
-</div>
 <div id="multiple-units-with-fixed-global-time-trends" class="section level3">
 <h3>Multiple units with fixed global time trends</h3>
 <p>Note that it would also be possible to include a fixed global trend in this example by including it as part of the variable specification:</p>
@@ -62,8 +59,9 @@ global_trend_example &lt;- fabricate(
   )
 )</code></pre>
 </div>
-<div id="multiple-units-with-global-yearly-shocks" class="section level3">
-<h3>Multiple units with global yearly shocks</h3>
+</div>
+<div id="multiple-units-with-global-yearly-shocks" class="section level2">
+<h2>Multiple units with global yearly shocks</h2>
 <p>Even more complex designs may include non-trend global level shocks (for example, financial crises or booms that affect all countries). The traditional hierarchical data design may not fit here, because we want common country-level data and common year-level data, both combined to form country-year observations. This is a good example of data that can best be described as multiple non-nested levels. Users interested in implementing this should review our manual on <a href="http://fabricatr.declaredesign.org/articles/cross_classified.html">cross-classified and panel data</a>. The below example will use <code>cross_levels</code> and non-nested level data.</p>
 <pre class="r"><code>panel_global_data &lt;- fabricate(
   years = add_level(
@@ -86,12 +84,11 @@ global_trend_example &lt;- fabricate(
 )</code></pre>
 <p>Notice that each variable is specified in the appropriate level; time series year indicators and yearly shocks are specified at the year level; country-specific time trend information and base GDP are specified at the country level; and the actual GDP measure, which is country-year, is specified at the country-year level.</p>
 </div>
-<div id="seasonal-or-arima-time-series" class="section level3">
-<h3>Seasonal or ARIMA Time Series</h3>
+<div id="seasonal-or-arima-time-series" class="section level2">
+<h2>Seasonal or ARIMA Time Series</h2>
 <p>Although <strong>fabricatr</strong> does not have formal functionality for the creation of ARIMA time series, we recommend that interested users see our <a href="http://fabricatr.declaredesign.org/articles/other_packages.html">guide to using other data creation packages with <strong>fabricatr</strong></a>, which includes an example of using the <strong>forecast</strong> package to generate ARIMA data.</p>
 </div>
-<div id="whats-next" class="section level3">
-<h3>What’s next?</h3>
+<div id="whats-next" class="section level2">
+<h2>What’s next?</h2>
 <p>You may also be interested in our online tutorial on <a href="http://fabricatr.declaredesign.org/articles/cross_classified.html">structuring panel and cross-classified data.</a>.</p>
-</div>
 </div>

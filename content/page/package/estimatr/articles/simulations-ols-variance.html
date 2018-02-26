@@ -131,7 +131,7 @@ dig &lt;- diagnose_design(
 </tbody>
 </table>
 <p>As we can see the bias is very close to zero. Because the standard error of the bias is much larger than the estimated bias, we can be reasonably certain that the only reason the bias is not exactly zero is due to simulation error. We can also see the unbiasedness visually, using a density plot of estimated variances with a line for the true variance.</p>
-<p><img src="/page/package/estimatr/articles/simulations-ols-variance_files/figure-html/unnamed-chunk-10-1.png" width="480" /></p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-10-1.png" width="480" /></p>
 <p>We can also show that the standard error is unbiased for the standard deviation of the sampling distribution of <span class="math inline">\(\beta\)</span> and that the coverage is appropriate.</p>
 <table>
 <thead>
@@ -173,7 +173,7 @@ dig &lt;- diagnose_design(
 )
 # Plot shows variance of errors increasing with x
 plot(dat$x, dat$noise_var, xlab = &quot;x&quot;, ylab = &quot;sigmasq_i&quot;)</code></pre>
-<p><img src="/page/package/estimatr/articles/simulations-ols-variance_files/figure-html/unnamed-chunk-12-1.png" width="384" /></p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-12-1.png" width="384" /></p>
 <p>Note that the general form of the true variance with fixed covariates is:</p>
 <p><span class="math display">\[
 \mathbb{V}[\widehat{\beta}] = (\mathbf{X}^\top \mathbf{X})^{-1} \mathbf{X}^\top \mathbf{\Phi} \mathbf{X} (\mathbf{X}^\top \mathbf{X})^{-1},
@@ -321,7 +321,7 @@ for (i in seq_along(Ns)) {
   )$diagnosands
   diags[[i]]$N &lt;- Ns[i]
 }</code></pre>
-<p><img src="/page/package/estimatr/articles/simulations-ols-variance_files/figure-html/unnamed-chunk-18-1.png" width="480" /></p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-18-1.png" width="480" /></p>
 <p>As you can see, the HC2 variance tends to be conservative—as the bias is positive—and is consistent, converging to the true value as the sample size increases. The classical error, while also converging, will never have zero bias and the bias is negative, underestimating the variance of the coefficients.</p>
 <div id="hc1-and-hc2-in-small-samples" class="section level2">
 <h2>HC1 and HC2 in small samples</h2>
@@ -347,7 +347,7 @@ for (i in seq_along(Ns)) {
   )$diagnosands
   diags_hc[[i]]$N &lt;- Ns[i]
 }</code></pre>
-<p><img src="/page/package/estimatr/articles/simulations-ols-variance_files/figure-html/unnamed-chunk-19-1.png" width="480" /></p>
+<p><img src="/rmarkdown-libs/figure-html4/unnamed-chunk-19-1.png" width="480" /></p>
 <p>In small datasets, HC1 variance estimates suffers from greater downward bias than HC2 variance estimates.</p>
 </div>
 </div>

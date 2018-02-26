@@ -1,6 +1,6 @@
-Package: stuff
+Package: declare_design_blog
 Type: Website
-Title: Cool stuff.
+Title: Declare Design Blog.
 Version: 1.1.7
 Imports:
   pkgdown,

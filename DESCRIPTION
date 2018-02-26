@@ -19,6 +19,7 @@ Imports:
   blockTools,
   texreg
 Remotes:
+  rstudio/rmarkdown,
   r-lib/pkgdown,
   rstudio/blogdown,
   DeclareDesign/randomizr,

@@ -92,7 +92,7 @@ you can use the generic accessor functions <code>coef</code>, <code>vcov</code>,
 them can be gotten by passing this object to
 <code><a href='http://www.rdocumentation.org/packages/margins/topics/margins'>margins</a></code> from the <span class="pkg">margins</span>.</p>
 <p>Users who want to print the results in TeX of HTML can use the
-<code>extract</code> function and the <span class="pkg">texreg</span> package.</p>
+<code><a href='http://www.rdocumentation.org/packages/texreg/topics/extract'>extract</a></code> function and the <span class="pkg">texreg</span> package.</p>
 <p>An object of class <code>"lm_robust"</code> is a list containing at least the
 following components:</p>
 <dt>coefficients</dt><dd><p>the estimated coefficients</p></dd>
@@ -233,7 +233,7 @@ Freedman, David A. 2008. "On Regression Adjustments in Experiments with Several 
 
   <span class='co'># Can output results using 'texreg'</span>
   <span class='fu'>library</span>(<span class='no'>texreg</span>)
-  <span class='no'>texregobj</span> <span class='kw'>&lt;-</span> <span class='fu'>extract</span>(<span class='no'>lmlout</span>)
+  <span class='no'>texregobj</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='http://www.rdocumentation.org/packages/texreg/topics/extract'>extract</a></span>(<span class='no'>lmlout</span>)
 <span class='co'># }</span><div class='input'>
 </div></pre>
   </div>

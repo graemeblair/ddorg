@@ -16,7 +16,8 @@ Imports:
   dplyr,
   margins,
   diagram,
-  blockTools
+  blockTools,
+  texreg
 Remotes:
   r-lib/pkgdown,
   rstudio/blogdown,

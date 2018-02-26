@@ -5,3 +5,6 @@ before_script:
 
 script:
   - Rscript 'R/superBuild.R'
+
+before_deploy:
+  - wget -qO- https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz | tar xvz

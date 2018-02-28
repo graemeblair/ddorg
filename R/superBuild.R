@@ -1,7 +1,5 @@
 source("R/hackdown.R")
 
-unlink("public", recursive = TRUE)
-
 get_package_reference_files()
 
 index_pages <-

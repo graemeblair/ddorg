@@ -19,40 +19,40 @@ uglyurls = true
 
 [[menu.main]]
   name = "The Idea"
-  url = "/page/package/DeclareDesign/articles/idea.html"
+  url = "/R/DeclareDesign/articles/idea.html"
   weight = 2
 
 [[menu.main]]
   name = "Design Library"
-  url = "/page/package/DeclareDesign/articles/design_library.html"
+  url = "/R/DeclareDesign/articles/design_library.html"
   weight = 3
 
 # Declare Design
 #################
 [[menu.main]]
   name = "Declare Design Home"
-  url = "/page/package/DeclareDesign/readme.html"
+  url = "/R/DeclareDesign/README.html"
   weight = 4
 
 # randomizr
 #################
 [[menu.main]]
   name = "randomizr Home"
-  url = "/page/package/randomizr/readme.html"
+  url = "/R/randomizr/README.html"
   weight = 5
 
 # fabricatr
 #################
 [[menu.main]]
   name = "fabricatr Home"
-  url = "/page/package/fabricatr/readme.html"
+  url = "/R/fabricatr/README.html"
   weight = 6
 
 # estimatr
 #################
 [[menu.main]]
   name = "estimatr Home"
-  url = "/page/package/estimatr/readme.html"
+  url = "/R/estimatr/README.html"
   weight = 7
 
 [params]

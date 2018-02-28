@@ -1,3 +1,7 @@
 .nav {
     max-width: 100%;
 }
+
+.nav-logo img {
+  border-radius: 0;
+}

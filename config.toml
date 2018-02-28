@@ -69,6 +69,6 @@ uglyurls = true
 
     [params.logo]
     url = "logo.png"
-    width = 50
-    height = 50
+    width = 222
+    height = 476
     alt = "Logo"

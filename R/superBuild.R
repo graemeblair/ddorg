@@ -3,8 +3,8 @@ source("R/hackdown.R")
 get_package_reference_files()
 
 index_pages <-
-  list.files("content/R",
-             pattern = "index.html",
+  list.files("content",
+             pattern = "^index.html",
              full.names = TRUE,
              recursive = TRUE)
 

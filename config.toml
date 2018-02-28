@@ -10,7 +10,7 @@ uglyurls = true
 [permalinks]
     post = "/:year/:month/:day/:slug/"
 
-# Declare Design
+# Home
 #################
 [[menu.main]]
   name = "Blog"
@@ -27,26 +27,33 @@ uglyurls = true
   url = "/page/package/DeclareDesign/articles/design_library.html"
   weight = 3
 
+# Declare Design
+#################
+[[menu.main]]
+  name = "Declare Design Home"
+  url = "/page/package/DeclareDesign/readme.html"
+  weight = 4
+
 # randomizr
 #################
 [[menu.main]]
   name = "randomizr Home"
   url = "/page/package/randomizr/readme.html"
-  weight = 4
+  weight = 5
 
 # fabricatr
 #################
 [[menu.main]]
   name = "fabricatr Home"
   url = "/page/package/fabricatr/readme.html"
-  weight = 5
+  weight = 6
 
 # estimatr
 #################
 [[menu.main]]
   name = "estimatr Home"
   url = "/page/package/estimatr/readme.html"
-  weight = 6
+  weight = 7
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"

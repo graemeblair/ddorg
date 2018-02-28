@@ -1,40 +1,15 @@
 ---
-output:
-  github_document
+title: "Home Page"
 ---
+# The Declare Universe
+Nunc a ex quis lacus tristique tincidunt hendrerit a lorem. Ut posuere nunc eget libero sollicitudin, eget convallis nisi viverra. Pellentesque ultrices sit amet tortor congue pretium. Duis hendrerit risus lectus, in efficitur nibh mollis et. Nullam luctus euismod pellentesque. In mattis tincidunt porttitor. Quisque consequat dui sed sem cursus, tincidunt blandit tortor pulvinar.
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+Nulla facilisi. Etiam tellus turpis, imperdiet id nunc quis, tempor consequat ante. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque condimentum laoreet ligula, efficitur lobortis elit. Suspendisse vehicula nec nulla in pretium. Vivamus molestie non risus vel vulputate. Integer sed lorem purus. Nunc id eros tempor, iaculis neque et, laoreet nulla. Maecenas sollicitudin eu elit a rutrum. Vivamus sit amet tortor ac enim suscipit vestibulum. Vestibulum pellentesque risus in rhoncus laoreet. Vestibulum nec neque ut arcu accumsan tempor a nec turpis. Proin posuere tellus eget aliquam convallis. Vivamus et nunc in odio euismod accumsan sed et diam. Donec a metus dui. Aliquam nisi risus, aliquam eu ultricies ullamcorper, dapibus eu nisi.
 
-```{r echo=FALSE}
-set.seed(42)
-options(digits=2)
-```
+## At Husto Ac
+Donec at turpis scelerisque est dictum consectetur a quis urna. Nunc pretium leo dolor, in condimentum orci sagittis sit amet. Nullam non consequat tellus. Vestibulum faucibus elit sit amet dui ornare, at pretium arcu ultrices. Etiam nec ante ligula. Mauris ut efficitur quam, sit amet mattis libero. Donec eget mi in massa iaculis tincidunt.
 
-# DeclareDesign: Declare and diagnose research designs to understand and improve them
+Suspendisse id massa et tellus ullamcorper feugiat quis quis neque. Praesent quis facilisis ex, ac pulvinar purus. Duis pellentesque fringilla lobortis. Morbi iaculis tristique dui, non venenatis tortor eleifend at. Curabitur quis cursus enim. Ut dignissim velit vel lacus dictum mattis. Curabitur vulputate finibus suscipit. Proin at justo ac nulla molestie faucibus a eget libero. Sed quis venenatis velit. Etiam malesuada, orci non tincidunt blandit, neque urna vestibulum lorem, in condimentum turpis leo id mi. Proin ac aliquet justo.
 
-**DeclareDesign** is statistical software that makes it easier for researchers to characterize and learn about the properties of research designs before implementation. Ex ante declaration and diagnosis of designs can help researchers clarify the strengths and limitations of their designs and to improve their properties. It can make it easier for readers to evaluate a research strategy prior to implementation and without access to results. It can also make it easier for designs to be shared, replicated, and critiqued.
-
-Get started <!-- with our Web-based [design builder](http://shiny.declaredesign.org/builder/) or --> by reading about [the idea behind DeclareDesign](/page/idea/).
-
-The motivation for the software is described in a [working paper](/files/paper.pdf) by the authors.
-
-**DeclareDesign** consists of a core package, which is documented on this web site, as well as three companion packages that stand on their own but are also called on by the core package. They are:
-
-1. [randomizr](http://randomizr.declaredesign.org): Easy to use tools for common forms of random assignment and sampling.
-2. [fabricatr](http://fabricatr.declaredesign.org): Imagine your data before you collect it.
-3. [estimatr](http://estimatr.declaredesign.org): Fast estimators for social scientists.
-
-A [library](/page/design_library/) of declared designs is under construction. The library includes canonical designs that users can download, modify, and deploy. To get underway with your own designs, follow the install instructions below and check out our guide on [getting started with DeclareDesign](/page/DeclareDesign/), which covers the main functionality of the software.
-
-## Installing DeclareDesign
-
-To install the latest development release of all of the packages, please ensure that you are running version 3.3 or later of R and run the following code:
-
-```{r, eval=F}
-install.packages("DeclareDesign", dependencies = TRUE, 
-                 repos = c("http://R.declaredesign.org", "https://cloud.r-project.org"))
-```
-
----
-
-This project is generously supported by a grant from the [Laura and John Arnold Foundation](http://www.arnoldfoundation.org) and seed funding from [EGAP](http://egap.org).
+## Consequat Lorem
+Curabitur nulla nisi, tristique sed tempus vel, porttitor et augue. Vivamus magna magna, congue non mauris non, sollicitudin rutrum augue. Curabitur malesuada felis eget diam cursus bibendum. Quisque id mauris pulvinar, egestas arcu non, maximus nisl. Praesent sit amet est sit amet felis aliquet porttitor id a tortor. Suspendisse consectetur, dui a feugiat rhoncus, est lacus auctor dui, quis porttitor nulla augue sit amet ligula. Vestibulum nec nisl a sem pharetra dapibus vitae ut nunc. Nulla facilisi. Pellentesque vel ipsum lectus. Curabitur porttitor vehicula nulla, non sodales velit viverra ut. Sed eget ligula sit amet risus convallis molestie quis eget nisl. Aenean tristique consequat lorem, id tristique justo rhoncus eget. Nunc justo diam, iaculis et sem ac, aliquam tempor sapien. Aenean tempus vel orci eget faucibus. Mauris vel lacinia justo, at iaculis nulla.

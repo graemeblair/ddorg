@@ -10,43 +10,158 @@ uglyurls = true
 [permalinks]
     post = "/:year/:month/:day/:slug/"
 
-# Declare Design
+# Home
 #################
 [[menu.main]]
   name = "Blog"
   url = "/post.html"
   weight = 1
-
 [[menu.main]]
   name = "The Idea"
-  url = "/page/package/DeclareDesign/articles/idea.html"
+  url = "/DeclareDesign/articles/idea.html"
   weight = 2
-
 [[menu.main]]
   name = "Design Library"
-  url = "/page/package/DeclareDesign/articles/design_library.html"
+  url = "/DeclareDesign/articles/design_library.html"
   weight = 3
-
-# randomizr
-#################
+[[menu.main]]
+  name = "Ask for Help"
+  url = "http://discuss.declaredesign.org"
+  weight = 4
+[[menu.main]]
+  name = "Declare Design Home"
+  url = "/DeclareDesign/README.html"
+  weight = 5
 [[menu.main]]
   name = "randomizr Home"
-  url = "/page/package/randomizr/readme.html"
-  weight = 4
-
-# fabricatr
-#################
+  url = "/randomizr/README.html"
+  weight = 6
 [[menu.main]]
   name = "fabricatr Home"
-  url = "/page/package/fabricatr/readme.html"
-  weight = 5
-
-# estimatr
-#################
+  url = "/fabricatr/README.html"
+  weight = 7
 [[menu.main]]
   name = "estimatr Home"
-  url = "/page/package/estimatr/readme.html"
-  weight = 6
+  url = "/estimatr/README.html"
+  weight = 8
+############################################################################
+############################################################################
+[[menu.declaredesign]]
+    name = "Getting Started"
+    url = "/DeclareDesign/articles/DeclareDesign.html"
+    weight = 1
+[[menu.declaredesign]]
+    name = "Custom Functions"
+    url = "/DeclareDesign/articles/custom_functions.html"
+    weight = 2
+[[menu.declaredesign]]
+    name = "Advanced Features"
+    url = "/DeclareDesign/articles/advanced_features.html"
+    weight = 3
+[[menu.declaredesign]]
+    name = "Companion Packages"
+    url = "/DeclareDesign/articles/companion_packages.html"
+    weight = 4
+############################################################################
+############################################################################
+[[menu.randomizr]]
+    name = "randomizr Home"
+    url = "/randomizr/readme.html"
+    weight = 1
+[[menu.randomizr]]
+    name = "Getting Started in R"
+    url = "/randomizr/articles/randomizr_vignette.html"
+    weight = 2
+[[menu.randomizr]]
+    name = "Getting Started in Stata"
+    url = "/randomizr/articles/srandomizr_vignette.html"
+    weight = 3
+[[menu.randomizr]]
+    name = "randomizr Reference"
+    url = "/randomizr/reference/home.html"
+    weight = 4
+############################################################################
+############################################################################
+[[menu.fabricatr]]
+    name = "fabricatr Home"
+    url = "/fabricatr/readme.html"
+    weight = 1
+[[menu.fabricatr]]
+    name = "Getting Started with fabricatr"
+    url = "/fabricatr/articles/getting_started.html"
+    weight = 2
+[[menu.fabricatr]]
+    name = "Building and Importing Data"
+    url = "/fabricatr/articles/building_importing.html"
+    weight = 3
+[[menu.fabricatr]]
+    name = "Common Social Science Variables"
+    url = "/fabricatr/articles/common_social.html"
+    weight = 4
+[[menu.fabricatr]]
+    name = "Generating Variables"
+    url = "/fabricatr/articles/variable_generation.html"
+    weight = 5
+[[menu.fabricatr]]
+    name = "Panel and Cross-Classified Data"
+    url = "/fabricatr/articles/cross_classified.html"
+    weight = 6
+[[menu.fabricatr]]
+    name = "Resampling"
+    url = "/fabricatr/articles/resampling.html"
+    weight = 7
+[[menu.fabricatr]]
+    name = "Time Series Data"
+    url = "/fabricatr/articles/time_series.html"
+    weight = 8
+[[menu.fabricatr]]
+    name = "Advanced Features for fabricatr"
+    url = "/fabricatr/articles/advanced_features.html"
+    weight = 9
+[[menu.fabricatr]]
+    name = "fabricatr Reference"
+    url = "/fabricatr/reference/home.html"
+    weight = 10
+############################################################################
+############################################################################
+[[menu.estimatr]]
+    name = "estimatr Home"
+    url = "/estimatr/readme.html"
+    weight = 1
+[[menu.estimatr]]
+    name = "Getting Started with estimatr"
+    url = "/estimatr/articles/getting-started.html"
+    weight = 2
+[[menu.estimatr]]
+    name = "Mathematical Notes"
+    url = "/estimatr/reference/home.html"
+    weight = 3
+[[menu.estimatr]]
+    name = "Mathematical Notes"
+    url = "/estimatr/articles/mathematical-notes.html"
+    weight = 4
+[[menu.estimatr]]
+    name = "Simulations - Speed Comparisons"
+    url = "/estimatr/articles/benchmarking-estimatr.html"
+    weight = 5
+[[menu.estimatr]]
+    name = "Simulations - OLS and Variance"
+    url = "/estimatr/articles/simulations-ols-variance.html"
+    weight = 6
+[[menu.estimatr]]
+    name = "Simulations - Debiasing Difference-in-Means"
+    url = "/estimatr/articles/simulations-debiasing-dim.html"
+    weight = 7
+[[menu.estimatr]]
+    name = "How Stata’s hat matrix differs with weights"
+    url = "/estimatr/articles/stata-wls-hat.html"
+    weight = 8
+[[menu.estimatr]]
+    name = "estimatr Reference"
+    url = "/estimatr/reference/home.html"
+    weight = 9
+############################################################################
+############################################################################
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"
@@ -62,6 +177,6 @@ uglyurls = true
 
     [params.logo]
     url = "logo.png"
-    width = 50
-    height = 50
+    width = 222
+    height = 476
     alt = "Logo"

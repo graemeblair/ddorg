@@ -1,0 +1,214 @@
+---
+title: "Panel and Cross-classified data"
+author: "Aaron Rudkin"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Panel and Cross-classified data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+<p>Although much of <strong>fabricatr</strong>’s is designed to generate hierarchical, nested data, we also provide functions to generate panel and cross-classified (partially nested) data. In this vignette, we offer instructions to do both.</p>
+<div id="panel-data-construction" class="section level2">
+<h2>Panel Data Construction</h2>
+<p>Let’s begin by visualizing an example of panel data, where we have data for each of several countries in each of several years.</p>
+<p><img src="/R/fabricatr/articles/cross_classified_files/figure-html/unnamed-chunk-2-1.png" width="480" /></p>
+<p>This data arrangement is somewhat more complex than traditional nested, hierarchical data. Each observation draws from a common pool of countries and years. In other words, the year-specific variables attached to Country A’s 1997 observation are also attached to Country B’s 1997 observation.</p>
+<p>The steps for generating a panel in <strong>fabricatr</strong> are as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Generate multiple non-nested data frames (Countries and Years)</li>
+<li>Use the <code>cross_levels()</code> function to join the non-nested data frames to make a panel.</li>
+<li>Optionally, add new variables or further levels in the resulting cross-classified data. (Observation-level variables)</li>
+</ol>
+<div id="generating-multiple-non-nested-levels-in-fabricatr" class="section level3">
+<h3>Generating multiple, non-nested levels in <strong>fabricatr</strong></h3>
+<p>First, we need to generate country and year data. By default, <strong>fabricatr</strong> fully nests subsequent levels under the first level call. Here, we must explicitly not do this.</p>
+<pre class="r"><code>panels &lt;- fabricate(
+  countries = add_level(N = 150, country_fe = runif(N, 1, 10)),
+  years = add_level(N = 25, year_shock = runif(N, 1, 10), nest = FALSE),
+  ...
+)</code></pre>
+<p>Note that this function call will not evaluate because we have specified the two non-nested data frames, but not yet told <strong>fabricatr</strong> what to do with them. The second (and any subsequent) non-nested levels should contain the <code>nest = FALSE</code> argument – otherwise, years would be interpreted as to be a level nested within countries. Each level will track all of its own variables, so it is possible to add as many features as you would like to the levels.</p>
+</div>
+<div id="importing-non-nested-data-frames" class="section level3">
+<h3>Importing non-nested data frames</h3>
+<p>It is also possible to import multiple non-nested data frames; this will allow you to assemble pre-existing data sources however you would like. Recall that the first argument to a <code>fabricate()</code> call is the data you wish to import. We have previously seen that it is possible to import a single data frame this way, but it is also possible to import a list of data frames, staging them all for use for cross-classifying data. Data imported in this manner looks like this:</p>
+<pre class="r"><code>example_data &lt;- fabricate(
+  list(data_frame_1, data_frame_2),
+  ...
+)</code></pre>
+<p>Again, the <code>fabricate()</code> call is incomplete – we have imported the data we wish to cross-classify on, but not yet learned how to merge the data. If you do not specify how to merge the data, <code>fabricate()</code> will simply return the most recent data frame imported or generated, unmodified.</p>
+</div>
+<div id="specifying-a-merge-function" class="section level3">
+<h3>Specifying a merge function</h3>
+<p>Specifying a merge function to create a panel is simple. You need only to tell <strong>fabricatr</strong> which levels you wish to merge, and then you will have an assembled panel and can generate new variables at the observation-level. We do this using a call to <code>cross_levels()</code>:</p>
+<pre class="r"><code>panels &lt;- fabricate(
+  countries = add_level(N = 150, country_fe = runif(N, 1, 10)),
+  years = add_level(N = 25, year_shock = runif(N, 1, 10), nest = FALSE),
+  obs = cross_levels(
+    by = join(countries, years),
+    new_variable = country_fe + year_shock + rnorm(N, 0, 2)
+  )
+)</code></pre>
+<p>Note that <code>cross_levels()</code> takes a single required argument, which is of the form <code>by = join(...)</code>. This join command tells <strong>fabricatr</strong> how to assemble your data. In this case, we are telling it to join the countries data frame to the years data frame, resulting in country-year observations.</p>
+<p>Just like with regular <code>add_level()</code> commands, you can add new variables which have full access to the existing columns.</p>
+</div>
+</div>
+<div id="cross-classified-or-correlated-data-joins" class="section level2">
+<h2>Cross-Classified or Correlated Data Joins:</h2>
+<p>Another type of data <strong>fabricatr</strong> excels at enabling is cross-classified data. In a cross-classified dataset, just like in a panel, observations draw from a combination of multiple existing data sets. Our example in this vignette will be students. Students attend a primary school and a secondary school. Unlike in a panel, not every student attends every school; and not every combination of schools has exactly one student. Student outcomes depend both on primary and secondary school education.</p>
+<p>Let’s begin by visualizing how our data will be laid out:</p>
+<p><img src="/R/fabricatr/articles/cross_classified_files/figure-html/unnamed-chunk-6-1.png" width="480" /></p>
+<p>The main steps involved in generating cross-classified data are as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Generate multiple non-nested data frames (Primary and Secondary Schools)</li>
+<li>Use the <code>link_levels()</code> function to join the non-nested data frames on <em>particular variables</em>, optionally specifying a desired correlation outcome.</li>
+<li>Optionally, add new variables or further levels in the resulting cross-classified data. (Student-level characteristics)</li>
+</ol>
+<p>We have already learned above how to generate multiple non-nested data frames; now we example how to specify a merge function for cross-classified data.</p>
+<div id="specifying-a-merge-function-for-cross-classified-data." class="section level3">
+<h3>Specifying a merge function for cross-classified data.</h3>
+<p>One difference between panel data and cross-classified data is that we need to specify the number of observations we will create by combining the existing levels of data. For example, there may be 20 primary schools and 15 secondary schools in a mid-sized city, but several thousand students. Specifying this is as easy as providing an <code>N</code> argument to the <code>link_levels()</code> call. At this juncture, we will assume there is no relationship between the primary school a student attends and the secondary school a student attends.</p>
+<p>Our model generates primary schools and secondary schools, each of which have a quality variable associated with them (<code>ps_quality</code> for primary schools, and <code>ss_quality</code> for secondary schools):</p>
+<pre class="r"><code>schools_data &lt;- fabricate(
+  primary_schools = add_level(N = 20, ps_quality = runif(N, 1, 10)),
+  secondary_schools = add_level(N = 15, ss_quality = runif(N, 1, 10), nest = FALSE),
+  students = link_levels(N = 1500, by = join(primary_schools, secondary_schools))
+)</code></pre>
+<p>We see that compared to generating a panel, the only change is to switch the joining function to <code>link_levels()</code> and adding an <code>N</code> argument. The result is, predictably, a data frame containing 1500 observations, each of five columns: primary_schools (ID), ps_quality, secondary_schools (ID), ss_quality, and students (ID).</p>
+</div>
+<div id="adding-additional-variables" class="section level3">
+<h3>Adding additional variables</h3>
+<p>As shown above, it is simple to add variables to the new, cross-classified data:</p>
+<pre class="r"><code>schools_data &lt;- fabricate(
+  primary_schools = add_level(N = 20, ps_quality = runif(N, 1, 10)),
+  secondary_schools = add_level(N = 15, ss_quality = runif(N, 1, 10), nest = FALSE),
+  students = link_levels(
+    N = 1500, by = join(primary_schools, secondary_schools),
+    SAT_score = 800 + 13 * ps_quality + 26 * ss_quality +
+      rnorm(N, 0, 50)
+  )
+)</code></pre>
+<p>Here, each student is assigned a standardized testing score, equal to a baseline, plus an additive effect from the quality of their primary school, plus a large additive effect from the quality of their secondary school, plus a stochastic component.</p>
+<p>A linear regression confirms that the resulting data approximately reflects the the data generating process:</p>
+<pre class="r"><code>lm(SAT_score ~ ps_quality + ss_quality, data = schools_data)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="right">Estimate</th>
+<th align="right">Std. Error</th>
+<th align="right">t value</th>
+<th align="right">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>(Intercept)</td>
+<td align="right">800</td>
+<td align="right">4.09</td>
+<td align="right">196</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>ps_quality</td>
+<td align="right">13</td>
+<td align="right">0.40</td>
+<td align="right">33</td>
+<td align="right">0</td>
+</tr>
+<tr class="odd">
+<td>ss_quality</td>
+<td align="right">26</td>
+<td align="right">0.57</td>
+<td align="right">46</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p>Other variables can be added in the <em>students</em> level, or indeed in either of the component levels.</p>
+</div>
+<div id="correlations-after-merging" class="section level3">
+<h3>Correlations after merging</h3>
+<p>A variety of R packages support functionality for joining data in various ways. However, a key feature of <strong>fabricatr</strong> is that it is possible to generate <em>correlated</em> cross-classified data. Above, we assumed that the primary school a student attended has no relationship to the secondary school the same student attends. This assumption does not reflect actual patterns in the social world. We might, for example, reasonably assume that students assigned to better primary schools are later assigned to better secondary schools – whether due to economic geography of the area, selective admissions, or other causes. It is easy to specify a correlation between these outcomes using much the same syntax we used before:</p>
+<pre class="r"><code>corr_data &lt;- fabricate(
+  primary_schools = add_level(N = 20, ps_quality = runif(N, 1, 10)),
+  secondary_schools = add_level(N = 15, ss_quality = runif(N, 1, 10), nest = FALSE),
+  students = link_levels(
+    N = 1500, by = join(ps_quality, ss_quality, rho = 0.5),
+    SAT_score = 800 + 13 * ps_quality + 26 * ss_quality +
+      rnorm(N, 0, 50)
+  )
+)</code></pre>
+<pre><code>## `link_levels()` calls are faster if the `mvnfast` package is installed.</code></pre>
+<p>Here, we have changed the structure of our <code>join()</code> function call. First, the variables we are joining on are <code>ps_quality</code> and <code>ss_quality</code>. <strong>fabricatr</strong> locates these variables within the data frames they come from. Second we specify a Spearman’s (rank) correlation coefficient, <code>rho</code>, which will induce a correlation in the resulting data based on the join function. In this case, we want a correlation between <code>ps_quality</code> and <code>ss_quality</code> of 0.5.</p>
+<p>Technical details of the implementation of this function are contained below, but in the mean time the important thing to note is that <code>rho</code> can be any value from -1 to 1, and that the resulting correlation will be approximately equal to <code>rho</code>.</p>
+<p><em>Note: Because of the technical details of our implementation, the true correlation in the resulting data will be slightly attenuated (smaller in magnitude) from the specified <code>rho</code>. There is no general purpose correction to compensate for this attenuation.</em></p>
+<p>We can check the resulting correlation here:</p>
+<pre class="r"><code>cor(corr_data$ps_quality, corr_data$ss_quality)</code></pre>
+<p>0.49</p>
+<p>It should be noted that the specified correlation exists only within the variables on which a join was specified: other variables from either data source will not be explicitly connected except through the joined variables.</p>
+<p>Correlation is only possible for cross-classified data, not panel data.</p>
+</div>
+</div>
+<div id="joining-more-than-two-levels" class="section level2">
+<h2>Joining more than two levels</h2>
+<p>All of the functions specified above work when joining more than two levels. We could extend our student example to include, for example, college quality. Nothing changes about the join syntax beyond the addition of the third or subsequent variable names:</p>
+<pre class="r"><code>three_data &lt;- fabricate(
+  primary_schools = add_level(N = 20, ps_quality = runif(N, 1, 10)),
+  secondary_schools = add_level(N = 15, ss_quality = runif(N, 1, 10), nest = FALSE),
+  colleges = add_level(N = 50, c_quality = runif(N, 1, 10), nest = FALSE),
+  students = link_levels(
+    N = 1500,
+    by = join(
+      ps_quality, ss_quality, c_quality,
+      rho = 0.2
+    ),
+    earning_potential = 20000 + (2000 * ps_quality) +
+      (6000 * ss_quality) + (10000 * c_quality) +
+      rnorm(N, 0, 5000)
+  )
+)</code></pre>
+<pre><code>## `link_levels()` calls are faster if the `mvnfast` package is installed.</code></pre>
+<p>One potential source for failure is specifying an invalid <code>rho</code>. If you specify a <code>rho</code> that makes the correlation between the three variables impossible to obtain, the <code>fabricate()</code> call will fail. A common case of this occurring is specifying a negative <code>rho</code> with three or more levels – in general, if A is negatively correlated with B, and B is negatively correlated with C, then A and C cannot be negatively correlated.</p>
+<p>Instead of specifying a <code>rho</code> correlation coefficient, users can specify a <code>sigma</code> correlation matrix to make the resulting correlations more sophisticated. Consider the following setup:</p>
+<pre class="r"><code>sigma &lt;- matrix(
+  c(
+    1, 0.4, 0.2,
+    0.4, 1, 0.8,
+    0.2, 0.8, 1
+  ),
+  ncol = 3, nrow = 3
+)
+
+adv_data &lt;- fabricate(
+  primary_schools = add_level(N = 20, ps_quality = runif(N, 1, 10)),
+  secondary_schools = add_level(N = 15, ss_quality = runif(N, 1, 10), nest = FALSE),
+  colleges = add_level(N = 50, c_quality = runif(N, 1, 10), nest = FALSE),
+  students = link_levels(
+    N = 1500,
+    by = join(
+      ps_quality, ss_quality, c_quality,
+      sigma = sigma
+    ),
+    earning_potential = 20000 + (2000 * ps_quality) +
+      (6000 * ss_quality) + (10000 * c_quality) +
+      rnorm(N, 0, 5000)
+  )
+)</code></pre>
+<pre><code>## `link_levels()` calls are faster if the `mvnfast` package is installed.</code></pre>
+<p><code>sigma</code> must be specified as a symmetric square matrix with a diagonal of all 1s and a feasible correlation structure.</p>
+</div>
+<div id="technical-appendix-implementation-of-correlated-joins." class="section level2">
+<h2>Technical appendix: Implementation of correlated joins.</h2>
+<p>The implementation of the correlated join is done via the Gaussian copula. Mathematically, what is occurring is as follows:</p>
+<ol style="list-style-type: decimal">
+<li>User specifies a correlation structure.</li>
+<li>Draw multivariate standard normal data with that correlation structure.</li>
+<li>Transform the standard normal data for each dimension to quantiles of the standard normal cumulative distribution function.</li>
+<li>Take the data from the source distribution at the empirical quantile equal to the quantiles from step 3. This ensures that the data being joined on have a Spearman’s (rank) correlation coefficient as specified in the multivariate standard normal draw.</li>
+<li>Map the data chosen back to a row from the source distribution and join that row to the chosen row from the other source distributions, ensuring that all covariates are put in the resulting merged data.</li>
+</ol>
+</div>

@@ -1,12 +1,10 @@
 source("R/hackdown.R")
 
-unlink("public", recursive = TRUE)
-
 get_package_reference_files()
 
 index_pages <-
-  list.files("content/page/package",
-             pattern = "index.html",
+  list.files("content",
+             pattern = "^index.html",
              full.names = TRUE,
              recursive = TRUE)
 

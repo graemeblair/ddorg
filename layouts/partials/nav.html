@@ -1,32 +1,105 @@
-<nav class="nav">
-  <a href="{{ "/" | relURL }}" class="nav-logo">
-    <img src="{{ print "images/" .Site.Params.logo.url | relURL }}"
-         width="{{ .Site.Params.logo.width }}"
-         height="{{ .Site.Params.logo.height }}"
-         alt="{{ .Site.Params.logo.alt }}">
-  </a>
+<div id='cssmenu'>
+  <ul>
 
-  <ul class="nav-links">
+    <li><a href="/">The Declare Universe</a></li>
+
     {{if eq .Section "DeclareDesign"}}
-      {{ range .Site.Menus.declaredesign }}
-      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-      {{ end }}
+        {{ range .Site.Menus.declaredesign.ByWeight }}
+          {{ if .HasChildren }}
+              <li>
+                <a>{{ .Name }}</a>
+                <ul>
+                  {{ range .Children }}
+                    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                  {{ end }}
+                </ul>
+            </li>
+          {{ else }}
+            <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
+          {{ end }}
+        {{ end }}
+
     {{else if eq .Section "randomizr"}}
-      {{ range .Site.Menus.randomizr }}
-      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+        {{ range .Site.Menus.randomizr.ByWeight }}
+          {{ if .HasChildren }}
+              <li>
+                <a>{{ .Name }}</a>
+                <ul>
+                  {{ range .Children }}
+                    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                  {{ end }}
+                </ul>
+            </li>
+          {{ else }}
+            <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
+          {{ end }}
+        {{ end }}
+
+  {{else if eq .Section "fabricatr"}}
+      {{ range .Site.Menus.fabricatr.ByWeight }}
+        {{ if .HasChildren }}
+            <li>
+              <a>{{ .Name }}</a>
+              <ul>
+                {{ range .Children }}
+                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                {{ end }}
+              </ul>
+          </li>
+        {{ else }}
+          <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
+        {{ end }}
       {{ end }}
-    {{else if eq .Section "fabricatr"}}
-      {{ range .Site.Menus.fabricatr }}
-      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+
+  {{else if eq .Section "estimatr"}}
+      {{ range .Site.Menus.estimatr.ByWeight }}
+        {{ if .HasChildren }}
+            <li>
+              <a>{{ .Name }}</a>
+              <ul>
+                {{ range .Children }}
+                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                {{ end }}
+              </ul>
+          </li>
+        {{ else }}
+          <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
+        {{ end }}
       {{ end }}
-    {{else if eq .Section "estimatr"}}
-      {{ range .Site.Menus.estimatr }}
-      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+
+  {{else}}
+      {{ range .Site.Menus.main.ByWeight }}
+        {{ if .HasChildren }}
+            <li>
+              <a>{{ .Name }}</a>
+              <ul>
+                {{ range .Children }}
+                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+                {{ end }}
+              </ul>
+          </li>
+        {{ else }}
+          <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
+        {{ end }}
       {{ end }}
-    {{else}}
-      {{ range .Site.Menus.main }}
-      <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-      {{ end }}
-    {{end}}
-  </ul>
-</nav>
+
+  {{end}}
+
+
+  {{ range .Site.Menus.packagelist.ByWeight }}
+    {{ if .HasChildren }}
+        <li>
+          <a>{{ .Name }}</a>
+          <ul>
+            {{ range .Children }}
+              <li><a href="{{ .URL }}">{{ .Name }}</a></li>
+            {{ end }}
+          </ul>
+      </li>
+    {{ else }}
+      <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
+    {{ end }}
+  {{ end }}
+
+</ul>
+</div>

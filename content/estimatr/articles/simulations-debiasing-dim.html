@@ -72,7 +72,7 @@ my_diagnosands &lt;- declare_diagnosands(
 <pre class="r"><code>dat &lt;- draw_data(simp_bl_des)
 plot(dat$blocks, dat$Y_Z_1, 
      ylab = &quot;Y_Z_1 (treatment PO)&quot;, xlab = &quot;Block ID&quot;)</code></pre>
-<p><img src="/R/estimatr/articles/simulations-debiasing-dim_files/figure-html/unnamed-chunk-4-1.png" width="384" /></p>
+<p><img src="/estimatr/articles/simulations-debiasing-dim_files/figure-html/unnamed-chunk-4-1.png" width="384" /></p>
 <p>As you can see, the blocks tend to have clustered treatment potential outcomes. Now let’s compare the performance of the two estimators using our diagnosands of interest.</p>
 <pre class="r"><code>set.seed(42)
 simp_bl_dig &lt;- diagnose_design(
@@ -168,7 +168,7 @@ corr_bl_des &lt;- declare_design(
 <pre class="r"><code>dat &lt;- draw_data(corr_bl_des)
 plot(factor(dat$m_treat / 8), dat$Y_Z_1 - dat$Y_Z_0, 
      ylab = &quot;True treat. effect&quot;, xlab = &quot;Pr treatment in block&quot;)</code></pre>
-<p><img src="/R/estimatr/articles/simulations-debiasing-dim_files/figure-html/unnamed-chunk-8-1.png" width="384" /></p>
+<p><img src="/estimatr/articles/simulations-debiasing-dim_files/figure-html/unnamed-chunk-8-1.png" width="384" /></p>
 <p>Let’s diagnose these estimators.</p>
 <pre class="r"><code>set.seed(42)
 corr_bl_dig &lt;- diagnose_design(
@@ -283,7 +283,7 @@ table(Z = dat$Z, clusters = dat$clusters)</code></pre>
 <p>Furthermore, treatment potential outcomes are correlated with cluster.</p>
 <pre class="r"><code>plot(dat$clusters, dat$Y_Z_1,
      ylab = &quot;Y_Z_1 (treatment PO)&quot;, xlab = &quot;Cluster ID&quot;)</code></pre>
-<p><img src="/R/estimatr/articles/simulations-debiasing-dim_files/figure-html/unnamed-chunk-13-1.png" width="384" /></p>
+<p><img src="/estimatr/articles/simulations-debiasing-dim_files/figure-html/unnamed-chunk-13-1.png" width="384" /></p>
 <p>Let’s diagnose this design.</p>
 <pre class="r"><code>set.seed(42)
 simp_cl_dig &lt;- diagnose_design(

@@ -2,6 +2,10 @@
 
 // Adapted from http://cssmenumaker.com/menu/responsive-flat-menu
 
+// When the website menu is squashed down because the page width is narrow, this code helps show and hide menu items.
+// When the page width is long enough and the menu is displaying normally, this code does not help show or hide menu
+// items.
+
 function initializeMenu(options)
 {
     const defaultOptions = {

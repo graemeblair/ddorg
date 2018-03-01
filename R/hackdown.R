@@ -24,9 +24,11 @@ get_package_reference_files <- function()
    # Cleanup
    # This is important because if a file is removed from the real package, it will not automatically
    # be removed from our content folder unless we clean it out ourselves.
-  unlink("content/R", recursive = TRUE)
-  unlink("public", recursive = TRUE)
-  
+   unlink("public", recursive = TRUE)
+   for (pkg in pkgs)
+   {
+     unlink(file.path("content", pkg), recursive = TRUE)
+   }
   
   for (pkg in pkgs)
   {

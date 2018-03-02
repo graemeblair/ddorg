@@ -1,92 +1,6 @@
-<div id='cssmenu'>
-  <ul>
-
-    <li><a href="/">The Declare Universe</a></li>
-
-    {{if eq .Section "DeclareDesign"}}
-        {{ range .Site.Menus.declaredesign.ByWeight }}
-          {{ if .HasChildren }}
-              <li>
-                <a>{{ .Name }}</a>
-                <ul>
-                  {{ range .Children }}
-                    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-                  {{ end }}
-                </ul>
-            </li>
-          {{ else }}
-            <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
-          {{ end }}
-        {{ end }}
-
-    {{else if eq .Section "randomizr"}}
-        {{ range .Site.Menus.randomizr.ByWeight }}
-          {{ if .HasChildren }}
-              <li>
-                <a>{{ .Name }}</a>
-                <ul>
-                  {{ range .Children }}
-                    <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-                  {{ end }}
-                </ul>
-            </li>
-          {{ else }}
-            <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
-          {{ end }}
-        {{ end }}
-
-  {{else if eq .Section "fabricatr"}}
-      {{ range .Site.Menus.fabricatr.ByWeight }}
-        {{ if .HasChildren }}
-            <li>
-              <a>{{ .Name }}</a>
-              <ul>
-                {{ range .Children }}
-                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-                {{ end }}
-              </ul>
-          </li>
-        {{ else }}
-          <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
-        {{ end }}
-      {{ end }}
-
-  {{else if eq .Section "estimatr"}}
-      {{ range .Site.Menus.estimatr.ByWeight }}
-        {{ if .HasChildren }}
-            <li>
-              <a>{{ .Name }}</a>
-              <ul>
-                {{ range .Children }}
-                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-                {{ end }}
-              </ul>
-          </li>
-        {{ else }}
-          <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
-        {{ end }}
-      {{ end }}
-
-  {{else}}
-      {{ range .Site.Menus.main.ByWeight }}
-        {{ if .HasChildren }}
-            <li>
-              <a>{{ .Name }}</a>
-              <ul>
-                {{ range .Children }}
-                  <li><a href="{{ .URL }}">{{ .Name }}</a></li>
-                {{ end }}
-              </ul>
-          </li>
-        {{ else }}
-          <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
-        {{ end }}
-      {{ end }}
-
-  {{end}}
-
-
-  {{ range .Site.Menus.packagelist.ByWeight }}
+{{define "menu_items_template"}}
+  {{$menu_items := index .context.Site.Menus .section }}
+  {{range $menu_items.ByWeight}}
     {{ if .HasChildren }}
         <li>
           <a>{{ .Name }}</a>
@@ -100,6 +14,27 @@
       <li><a href='{{ .URL }}'>{{ .Name }}</a></li>
     {{ end }}
   {{ end }}
+{{end}}
 
-</ul>
+<div id='cssmenu'>
+  <ul>
+    <li><a href="/">The Declare Universe</a></li>
+    
+    {{/* Unique menu items */}}
+    {{if eq .Section "DeclareDesign"}}
+      {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
+    {{else if eq .Section "randomizr"}}
+      {{template "menu_items_template" dict "section" "randomizr" "context" .}}
+    {{else if eq .Section "fabricatr"}}
+      {{template "menu_items_template" dict "section" "fabricatr" "context" .}}
+    {{else if eq .Section "estimatr"}}
+      {{template "menu_items_template" dict "section" "estimatr" "context" .}}
+    {{else}}
+      {{template "menu_items_template" dict "section" "main" "context" .}}
+    {{end}}
+
+    {{/* General packages list */}}
+    {{template "menu_items_template" dict "section" "packagelist" "context" .}}
+
+  </ul>
 </div>

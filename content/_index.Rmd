@@ -13,9 +13,8 @@ assumptions. [The Idea](/idea) outlines the approach, with further details in ou
 
 # Design Library
 
-To make getting started easy, we provide a library of common research designs that you can use, 
-diagnose, and modify. The [Design Library](/library) includes written descriptions of designs
-and the code used to declare and diagnose them.
+To make getting started easy, we provide a [library of common research designs](/library) that you can
+diagnose, modify, and implement.
 
 # Software
 
@@ -29,7 +28,7 @@ We provide four linked software packages to declare and diagnose research design
 The [Getting Started](/R/DeclareDesign) guide for DeclareDesign provides an overview of
 the capabilities of each package and how to declare and diagnose designs in our framework.
 
-# Getting help
+# Getting Help
 
 If you get stuck, we encourage you to head over to our [help forum](http://discuss.declaredesign.org) where
 we'll be happy to assist with our software or coding your design.

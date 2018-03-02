@@ -9,12 +9,7 @@ reviewers of the design’s high quality.
 
 We describe in this Web site an approach to *declaring* the elements of a research design in 
 code and *diagnosing* the properties of the design, such as power and sampling bias, given 
-assumptions. See [The Idea](/idea) for an outline of the approach.
-
-Ex ante declaration and diagnosis of designs can help researchers improve their
-properties. Readers can more easily evaluate a research strategy prior to implementation
-and without access to results. Ex post, declaration and diagnosing can also make it easier for 
-designs to be shared, improved, and critiqued.
+assumptions. [The Idea](/idea) outlines the approach, with further details in our [working paper](/paper.pdf).
 
 # Design Library
 
@@ -36,14 +31,13 @@ the capabilities of each package and how to declare and diagnose designs in our 
 
 # Getting help
 
-We provide documentation and getting started guides for each package. If you get stuck, we 
-encourage you to head over to our [help forum](http://discuss.declaredesign.org) where
+If you get stuck, we encourage you to head over to our [help forum](http://discuss.declaredesign.org) where
 we'll be happy to assist with our software or coding your design.
 
 # Contributing
 
-There are several ways to contribute to this project. We especially encourage you to 
-contribute your own research design to our design library. You can submit bug reports and feature
-requests through each software package's Github repository. We ask that you agree to our 
-[code of conduct](/conduct) when you contribute.
+We  encourage you to contribute your research designs to our [design library](/library). 
+You can submit bug reports and feature
+requests through our [Github repositories](https://github.com/DeclareDesign). 
+We ask that you agree to our [code of conduct](/conduct) when you contribute.
 

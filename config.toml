@@ -25,12 +25,12 @@ uglyurls = true
 
 [[menu.main]]
     name = "The Idea"
-    url = "https://github.com/tc39/ecma262"
+    url = "idea.html"
     weight = 2
 
 [[menu.main]]
     name = "Design Library"
-    url = "https://github.com/tc39/ecma262"
+    url = "/design_library.html"
     weight = 3
 
 [[menu.main]]

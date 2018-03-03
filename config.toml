@@ -42,53 +42,53 @@ uglyurls = true
 #################
 [[menu.declaredesign]]
   name = "Declare Design Home"
-  url = "/DeclareDesign/readme.html"
+  url = "/R/DeclareDesign/README.html"
   weight = 1
 [[menu.declaredesign]]
   name = "Getting Started"
-  url = "/DeclareDesign/articles/DeclareDesign.html"
+  url = "/R/DeclareDesign/articles/DeclareDesign.html"
   weight = 2
 [[menu.declaredesign]]
   name = "Custom Functions"
-  url = "/DeclareDesign/articles/custom_functions.html"
+  url = "/R/DeclareDesign/articles/custom_functions.html"
   weight = 3
 [[menu.declaredesign]]
   name = "Advanced Features"
-  url = "/DeclareDesign/articles/advanced_features.html"
+  url = "/R/DeclareDesign/articles/advanced_features.html"
   weight = 4
 [[menu.declaredesign]]
   name = "Companion Packages"
-  url = "/DeclareDesign/articles/companion_packages.html"
+  url = "/R/DeclareDesign/articles/companion_packages.html"
   weight = 5
 [[menu.declaredesign]]
   name = "Declare Design Reference"
-  url = "/DeclareDesign/reference/home.html"
+  url = "/R/DeclareDesign/reference/home.html"
   weight = 6
 
 # randomizr
 #################
 [[menu.randomizr]]
   name = "randomizr Home"
-  url = "/randomizr/readme.html"
+  url = "/R/randomizr/README.html"
   weight = 1
 [[menu.randomizr]]
   name = "Getting Started in R"
-  url = "/randomizr/articles/randomizr_vignette.html"
+  url = "/R/randomizr/articles/randomizr_vignette.html"
   weight = 2
 [[menu.randomizr]]
   name = "Getting Started in Stata"
-  url = "/randomizr/articles/srandomizr_vignette.html"
+  url = "/R/randomizr/articles/srandomizr_vignette.html"
   weight = 3
 [[menu.randomizr]]
   name = "randomizr Reference"
-  url = "/randomizr/reference/home.html"
+  url = "/R/randomizr/reference/home.html"
   weight = 4
 
 # fabricatr
 #################
 [[menu.fabricatr]]
   name = "fabricatr Home"
-  url = "/fabricatr/readme.html"
+  url = "/R/fabricatr/README.html"
   weight = 1
 [[menu.fabricatr]]
   identifier = "getting_started"
@@ -97,57 +97,57 @@ uglyurls = true
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Getting Started with fabricatr"
-  url = "/fabricatr/articles/getting_started.html"
+  url = "/R/fabricatr/articles/getting_started.html"
   weight = 1
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Building and Importing Data"
-  url = "/fabricatr/articles/building_importing.html"
+  url = "/R/fabricatr/articles/building_importing.html"
   weight = 2
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Common Social Science Variables"
-  url = "/fabricatr/articles/common_social.html"
+  url = "/R/fabricatr/articles/common_social.html"
   weight = 3
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Generating Variables"
-  url = "/fabricatr/articles/variable_generation.html"
+  url = "/R/fabricatr/articles/variable_generation.html"
   weight = 4
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Panel and Cross-Classified Data"
-  url = "/fabricatr/articles/cross_classified.html"
+  url = "/R/fabricatr/articles/cross_classified.html"
   weight = 5
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Resampling"
-  url = "/fabricatr/articles/resampling.html"
+  url = "/R/fabricatr/articles/resampling.html"
   weight = 6
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Time Series Data"
-  url = "/fabricatr/articles/time_series.html"
+  url = "/R/fabricatr/articles/time_series.html"
   weight = 7
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Advanced Features for fabricatr"
-  url = "/fabricatr/articles/advanced_features.html"
+  url = "/R/fabricatr/articles/advanced_features.html"
   weight = 8
 [[menu.fabricatr]]
   name = "fabricatr Reference"
-  url = "/fabricatr/reference/home.html"
+  url = "/R/fabricatr/reference/home.html"
   weight = 3
 
 # estimatr
 #################
 [[menu.estimatr]]
   name = "estimatr Home"
-  url = "/estimatr/readme.html"
+  url = "/R/estimatr/README.html"
   weight = 1
 [[menu.estimatr]]
   name = "Getting Started"
-  url = "/estimatr/articles/getting-started.html"
+  url = "/R/estimatr/articles/getting-started.html"
   weight = 2
 [[menu.estimatr]]
   identifier = "technical_notes"
@@ -156,31 +156,31 @@ uglyurls = true
 [[menu.estimatr]]
   parent = "technical_notes"
   name = "Mathematical Notes"
-  url = "/estimatr/articles/mathematical-notes.html"
+  url = "/R/estimatr/articles/mathematical-notes.html"
   weight = 1
 [[menu.estimatr]]
   parent = "technical_notes"
   name = "Simulations - Speed Comparisons"
-  url = "/estimatr/articles/benchmarking-estimatr.html"
+  url = "/R/estimatr/articles/benchmarking-estimatr.html"
   weight = 2
 [[menu.estimatr]]
   parent = "technical_notes"
   name = "Simulations - OLS and Variance"
-  url = "/estimatr/articles/simulations-ols-variance.html"
+  url = "/R/estimatr/articles/simulations-ols-variance.html"
   weight = 3
 [[menu.estimatr]]
   parent = "technical_notes"
   name = "Simulations - Debiasing Difference-in-Means"
-  url = "/estimatr/articles/simulations-debiasing-dim.html"
+  url = "/R/estimatr/articles/simulations-debiasing-dim.html"
   weight = 4
 [[menu.estimatr]]
   parent = "technical_notes"
   name = "How Stata’s hat matrix differs with weights"
-  url = "/estimatr/articles/stata-wls-hat.html"
+  url = "/R/estimatr/articles/stata-wls-hat.html"
   weight = 5
 [[menu.estimatr]]
   name = "Reference"
-  url = "/estimatr/reference/home.html"
+  url = "/R/estimatr/reference/home.html"
   weight = 4
 
 # Package List
@@ -191,22 +191,22 @@ uglyurls = true
 [[menu.packagelist]]
   parent = "package_list"
   name = "Declare Design"
-  url = "/DeclareDesign/readme.html"
+  url = "/R/DeclareDesign/README.html"
   weight = 1
 [[menu.packagelist]]
   parent = "package_list"
   name = "randomizr"
-  url = "/randomizr/readme.html"
+  url = "/R/randomizr/README.html"
   weight = 2
 [[menu.packagelist]]
   parent = "package_list"
   name = "fabricatr"
-  url = "/fabricatr/readme.html"
+  url = "/R/fabricatr/README.html"
   weight = 3
 [[menu.packagelist]]
   parent = "package_list"
   name = "estimatr"
-  url = "/estimatr/readme.html"
+  url = "/R/estimatr/README.html"
   weight = 4
 
 [params]

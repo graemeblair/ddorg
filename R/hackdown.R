@@ -15,21 +15,18 @@ get_package_reference_files <- function()
   
   
   
-   rownames(packages) <- pkgs
+  rownames(packages) <- pkgs
   colnames(packages) <- c("pkg", "tar")
   
   # untar all
-   mapply(untar, tarfile=packages[,2], exdir=out)
+  mapply(untar, tarfile=packages[,2], exdir=out)
   
-   # Cleanup
-   # This is important because if a file is removed from the real package, it will not automatically
-   # be removed from our content folder unless we clean it out ourselves.
-   unlink("public", recursive = TRUE)
-   for (pkg in pkgs)
-   {
-     unlink(file.path("content", pkg), recursive = TRUE)
-   }
-  
+  # Cleanup
+  # This is important because if a file is removed from the real package, it will not automatically
+  # be removed from our content folder unless we clean it out ourselves.
+  unlink("content/R", recursive = TRUE)
+  unlink("public", recursive = TRUE)
+
   for (pkg in pkgs)
   {
     zipped_folder_name <- file.path(out, paste0(pkg,"_github.tar.gz"))
@@ -47,9 +44,9 @@ get_package_reference_files <- function()
     github_dir <- file.path(out, paste0(pkg, "_github"))
     
     # Put the reference pages and vignettes in their own folders under the main package folder.
-    main_outdir <- file.path(getwd(), "content", pkg)
-    pkgdown_outdir_reference <- file.path(getwd(), "content", pkg, "reference")
-    pkgdown_outdir_vignettes <- file.path(getwd(), "content", pkg, "articles")
+    main_outdir <- file.path(getwd(), "content", "R", pkg)
+    pkgdown_outdir_reference <- file.path(getwd(), "content", "R", pkg, "reference")
+    pkgdown_outdir_vignettes <- file.path(getwd(), "content", "R", pkg, "articles")
     
     system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", exdir))
     

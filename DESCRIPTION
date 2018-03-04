@@ -20,7 +20,7 @@ Imports:
   texreg
 Remotes:
   rstudio/rmarkdown,
-  r-lib/pkgdown,
+  aaronrudkin/pkgdown,
   rstudio/blogdown,
   DeclareDesign/randomizr,
   DeclareDesign/fabricatr,

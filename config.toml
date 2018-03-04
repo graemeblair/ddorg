@@ -25,7 +25,7 @@ uglyurls = true
 
 [[menu.main]]
     name = "The Idea"
-    url = "idea.html"
+    url = "/idea.html"
     weight = 2
 
 [[menu.main]]

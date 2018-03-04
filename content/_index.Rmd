@@ -20,12 +20,12 @@ diagnose, modify, and implement.
 
 We provide four linked software packages to declare and diagnose research designs.
 
-1. [randomizr](/R/randomizr): Easy-to-use tools for common forms of random assignment and sampling.
-2. [fabricatr](/R/fabricatr): Imagine your data before you collect it.
-3. [estimatr](/R/estimatr): Fast estimators for design-based inference.
-4. [DeclareDesign](/R/DeclareDesign): Declare and diagnose research designs.
+1. [randomizr](/R/randomizr/): Easy-to-use tools for common forms of random assignment and sampling.
+2. [fabricatr](/R/fabricatr/): Imagine your data before you collect it.
+3. [estimatr](/R/estimatr/): Fast estimators for design-based inference.
+4. [DeclareDesign](/R/DeclareDesign/): Declare and diagnose research designs.
 
-The [Getting Started](/R/DeclareDesign) guide for DeclareDesign provides an overview of
+The [Getting Started](/R/DeclareDesign/) guide for DeclareDesign provides an overview of
 the capabilities of each package and how to declare and diagnose designs in our framework.
 
 # Getting Help

@@ -87,17 +87,17 @@ get_package_reference_files <- function()
 fix_output <- function() {
   print("E")
   print("CONTENT")
-  print(list.files("content/R/DeclareDesign"))
+  print(list.files("content/R/DeclareDesign"), full.names = TRUE)
   print("-----")
   print("-----")
   print("-----")
   
   print("PUBLIC")
-  print(list.files("public"))
+  print(list.files("public"), full.names = TRUE)
   print("-----")
-  print(list.files("public/R"))
+  print(list.files("public/R"), full.names = TRUE)
   print("-----")
-  print(list.files("public/R/DeclareDesign"))
+  print(list.files("public/R/DeclareDesign"), full.names = TRUE)
   print("-----")
   all_index_pages <-
     list.files("public/R",

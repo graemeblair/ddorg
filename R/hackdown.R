@@ -86,12 +86,20 @@ get_package_reference_files <- function()
 
 fix_output <- function() {
   print("E")
+  print(list.files("public"))
+  print("-----")
+  print(list.files("public/R"))
+  print("-----")
+  print(list.files("public/R/DeclareDesign"))
+  print("-----")
   all_index_pages <-
     list.files("public/R",
                pattern = "readme.html",
                full.names = TRUE,
                recursive = TRUE)
   print("F")
+  print(all_index_pages)
+  print("-----")
   sapply(all_index_pages, function(file_name)
   {
     print(file_name)

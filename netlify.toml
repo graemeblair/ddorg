@@ -3,3 +3,9 @@
   to = "/R/DeclareDesign/readme.html"
   status = 301
   force = true
+ 
+[[redirects]]
+  from = "/r/declaredesign/readme.html"
+  to = "www.google.com
+  status = 301
+  force = true

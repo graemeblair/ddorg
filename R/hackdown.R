@@ -57,4 +57,62 @@ get_package_reference_files <- function()
     system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
     
   }
+  
+  
+  print("B")
+  reference_index_pages <-
+    list.files(
+      "content/R",
+      pattern = "index.html",
+      full.names = TRUE,
+      recursive = TRUE
+    )
+  print("C")
+  # Rename the reference index pages because right now they are named index.html.
+  # index.html files have a special meaning to Hugo. Leaving reference index pages
+  # as index.html will mess up Hugo's build process.
+  sapply(reference_index_pages, function(file_name)
+  {
+    print(file_name)
+    file.rename(
+      from = file_name,
+      to = sub(pattern = "index.html", replacement = "README.html", file_name)
+    )
+  })
+  print("D")
+  blogdown::build_site()
+}
+
+
+fix_output <- function() {
+  print("E")
+  print("CONTENT")
+  print(list.files("content/R/DeclareDesign"), full.names = TRUE, all.files = TRUE)
+  print("-----")
+  print("-----")
+  print("-----")
+  
+  print("PUBLIC")
+  print(list.files("public"), full.names = TRUE, all.files = TRUE)
+  print("-----")
+  print(list.files("public/R"), full.names = TRUE, all.files = TRUE)
+  print("-----")
+  print(list.files("public/R/DeclareDesign"), full.names = TRUE, all.files = TRUE)
+  print("-----")
+  all_index_pages <-
+    list.files("public/R",
+               pattern = "readme.html",
+               full.names = TRUE,
+               recursive = TRUE)
+  print("F")
+  print(all_index_pages)
+  print("-----")
+  sapply(all_index_pages, function(file_name)
+  {
+    print(file_name)
+    file.rename(
+      from = file_name,
+      to = sub(pattern = "readme.html", replacement = "index.html", file_name)
+    )
+  })
 }

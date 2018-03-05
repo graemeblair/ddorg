@@ -20,4 +20,3 @@ sapply(index_pages, function(file_name)
 })
 
 blogdown::build_site()
-

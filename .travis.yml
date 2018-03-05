@@ -14,8 +14,7 @@ script:
 
 before_deploy:
   - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz
-  - Rscript 'R/cleanup.R'
-  
+
 deploy:
   provider: script
   script: ./netlifyctl deploy --base-directory 'public' --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"

@@ -42,7 +42,7 @@ uglyurls = true
 #################
 [[menu.declaredesign]]
   name = "Declare Design Home"
-  url = "/R/DeclareDesign/"
+  url = "/R/DeclareDesign/README.html"
   weight = 1
 [[menu.declaredesign]]
   name = "Getting Started"
@@ -62,14 +62,14 @@ uglyurls = true
   weight = 5
 [[menu.declaredesign]]
   name = "Declare Design Reference"
-  url = "/R/DeclareDesign/reference/"
+  url = "/R/DeclareDesign/reference/home.html"
   weight = 6
 
 # randomizr
 #################
 [[menu.randomizr]]
   name = "randomizr Home"
-  url = "/R/randomizr/"
+  url = "/R/randomizr/README.html"
   weight = 1
 [[menu.randomizr]]
   name = "Getting Started in R"
@@ -81,14 +81,14 @@ uglyurls = true
   weight = 3
 [[menu.randomizr]]
   name = "randomizr Reference"
-  url = "/R/randomizr/reference/"
+  url = "/R/randomizr/reference/home.html"
   weight = 4
 
 # fabricatr
 #################
 [[menu.fabricatr]]
   name = "fabricatr Home"
-  url = "/R/fabricatr/"
+  url = "/R/fabricatr/README.html"
   weight = 1
 [[menu.fabricatr]]
   identifier = "getting_started"
@@ -136,14 +136,14 @@ uglyurls = true
   weight = 8
 [[menu.fabricatr]]
   name = "fabricatr Reference"
-  url = "/R/fabricatr/reference/"
+  url = "/R/fabricatr/reference/home.html"
   weight = 3
 
 # estimatr
 #################
 [[menu.estimatr]]
   name = "estimatr Home"
-  url = "/R/estimatr/"
+  url = "/R/estimatr/README.html"
   weight = 1
 [[menu.estimatr]]
   name = "Getting Started"
@@ -180,7 +180,7 @@ uglyurls = true
   weight = 5
 [[menu.estimatr]]
   name = "Reference"
-  url = "/R/estimatr/reference/"
+  url = "/R/estimatr/reference/home.html"
   weight = 4
 
 # Package List
@@ -191,22 +191,22 @@ uglyurls = true
 [[menu.packagelist]]
   parent = "package_list"
   name = "Declare Design"
-  url = "/R/DeclareDesign/"
+  url = "/R/DeclareDesign/README.html"
   weight = 1
 [[menu.packagelist]]
   parent = "package_list"
   name = "randomizr"
-  url = "/R/randomizr/"
+  url = "/R/randomizr/README.html"
   weight = 2
 [[menu.packagelist]]
   parent = "package_list"
   name = "fabricatr"
-  url = "/R/fabricatr/"
+  url = "/R/fabricatr/README.html"
   weight = 3
 [[menu.packagelist]]
   parent = "package_list"
   name = "estimatr"
-  url = "/R/estimatr/"
+  url = "/R/estimatr/README.html"
   weight = 4
 
 [params]

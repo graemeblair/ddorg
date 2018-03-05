@@ -3,5 +3,16 @@
 }
 
 .nav-logo img {
-  border-radius: 0;
+    border-radius: 0;
+}
+
+td, th {
+    padding-left: 2rem;
+    padding-right: 2rem;
+}
+
+table {
+    overflow: auto;
+    max-width: 100%;
+    display: block;
 }

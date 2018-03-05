@@ -86,6 +86,13 @@ get_package_reference_files <- function()
 
 fix_output <- function() {
   print("E")
+  print("CONTENT")
+  print(list.files("content/R/DeclareDesign"))
+  print("-----")
+  print("-----")
+  print("-----")
+  
+  print("PUBLIC")
   print(list.files("public"))
   print("-----")
   print(list.files("public/R"))

@@ -2,4 +2,4 @@
   from = "/R/DeclareDesign/index.html"
   to = "/R/DeclareDesign/readme.html"
   status = 301
-  force = false
+  force = true

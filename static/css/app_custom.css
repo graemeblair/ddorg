@@ -17,6 +17,6 @@ table {
     display: block;
 }
 
-div[role="main"] {
+main[role="main"] {
     max-width: 900px;
 }

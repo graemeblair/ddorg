@@ -16,8 +16,8 @@ before_deploy:
   - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz
   - ls -laR ./content
   - ls -laR ./public
-  - find ./public/r -type f -name 'readme.html'
-  - find ./public/r -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
+  - find ./public -type f -name 'readme.html'
+  - find ./public -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
 
 deploy:
   provider: script

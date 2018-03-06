@@ -21,13 +21,13 @@
     <li><a href="/">DeclareDesign</a></li>
 
     {{/* Unique menu items */}}
-    {{if (hasPrefix .Dir "R/DeclareDesign")}}
+    {{if (hasPrefix .Dir "r/DeclareDesign")}}
       {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
-    {{else if (hasPrefix .Dir "R/randomizr")}}
+    {{else if (hasPrefix .Dir "r/randomizr")}}
       {{template "menu_items_template" dict "section" "randomizr" "context" .}}
-    {{else if (hasPrefix .Dir "R/fabricatr")}}
+    {{else if (hasPrefix .Dir "r/fabricatr")}}
       {{template "menu_items_template" dict "section" "fabricatr" "context" .}}
-    {{else if (hasPrefix .Dir "R/estimatr")}}
+    {{else if (hasPrefix .Dir "r/estimatr")}}
       {{template "menu_items_template" dict "section" "estimatr" "context" .}}
     {{else}}
       {{template "menu_items_template" dict "section" "main" "context" .}}

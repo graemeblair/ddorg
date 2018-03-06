@@ -21,7 +21,7 @@
     <li><a href="/">DeclareDesign</a></li>
 
     {{/* Unique menu items */}}
-    {{if (hasPrefix .Dir "r/DeclareDesign")}}
+    {{if (hasPrefix .Dir "r/declaredesign")}}
       {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
     {{else if (hasPrefix .Dir "r/randomizr")}}
       {{template "menu_items_template" dict "section" "randomizr" "context" .}}

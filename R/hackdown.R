@@ -24,7 +24,7 @@ get_package_reference_files <- function()
   # Cleanup
   # This is important because if a file is removed from the real package, it will not automatically
   # be removed from our content folder unless we clean it out ourselves.
-  unlink("content/R", recursive = TRUE)
+  unlink("content/r", recursive = TRUE)
   unlink("public", recursive = TRUE)
 
   for (pkg in pkgs)
@@ -42,11 +42,19 @@ get_package_reference_files <- function()
     
     exdir <- file.path(out, packages[pkg,1])
     github_dir <- file.path(out, paste0(pkg, "_github"))
-    
+
+    # It is very, very, very important to keep all folder names lowercase.
+    # Uppercase filenames create bad bugs when building on Travis. When Hugo
+    # runs on Travis and there are uppercase folder names, Hugo will create
+    # two directories in the public directory for each folder in the content directory:
+    # One folder has its original name, and the other folder has the same name but in
+    # lowercase. This is bad because we do not want these weird duplicate folders.
+    pkg <- tolower(pkg)
+
     # Put the reference pages and vignettes in their own folders under the main package folder.
-    main_outdir <- file.path(getwd(), "content", "R", pkg)
-    pkgdown_outdir_reference <- file.path(getwd(), "content", "R", pkg, "reference")
-    pkgdown_outdir_vignettes <- file.path(getwd(), "content", "R", pkg, "articles")
+    main_outdir <- file.path(getwd(), "content", "r", pkg)
+    pkgdown_outdir_reference <- file.path(getwd(), "content", "r", pkg, "reference")
+    pkgdown_outdir_vignettes <- file.path(getwd(), "content", "r", pkg, "articles")
     
     system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", exdir))
     

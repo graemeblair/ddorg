@@ -1,6 +1,6 @@
 baseurl = "https://thirsty-morse-aa29ed.netlify.com"
 languageCode = "en-us"
-title = "Declare Design"
+title = "DeclareDesign"
 theme = "hugo-lithium-theme"
 googleAnalytics = ""
 disqusShortname = ""

@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-Our design library characterizes designs informally and in code using the MIDA framework, described in [The Idea](../articles/idea.html).
+Our design library characterizes designs in words and in code using the Model-Inquiry-Data Strategy-Answer Strategy (MIDA) framework, described in [The Idea](/idea/).
 
 ---
 

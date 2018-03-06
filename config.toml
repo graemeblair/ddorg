@@ -25,12 +25,12 @@ uglyurls = true
 
 [[menu.main]]
     name = "The Idea"
-    url = "/idea.html"
+    url = "/idea/"
     weight = 2
 
 [[menu.main]]
     name = "Design Library"
-    url = "/design_library.html"
+    url = "/library/"
     weight = 3
 
 [[menu.main]]

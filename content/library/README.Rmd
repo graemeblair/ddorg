@@ -16,11 +16,11 @@ Our design library characterizes designs in words and in code using the Model-In
 --------------------------- -----------------------------------------------------------------------------------------------------------------------
 Goal                        Strategy      Design                                                                  Download
 --------------------------- ------------- ----------------------------------------------------------------------- --------------------------------
-Causal inference            Experimental  [Two-Arm Experiment](./two_arm.html)                                    <a class="btn btn-default" href="./two_arm.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="./two_arm_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a>
+Causal inference            Experimental  [Two-Arm Experiment](/library/two_arm.html)                             <a class="btn btn-default" href="/library/two_arm.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="/library/two_arm_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a>
 
-Causal inference            Experimental  [Two-Way Factorial Experiment](./two_way_factorial.html)                <a class="btn btn-default" href="./two_way_factorial.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="./two_way_factorial_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a>
+Causal inference            Experimental  [Two-Way Factorial Experiment](/library/two_way_factorial.html)         <a class="btn btn-default" href="/library/two_way_factorial.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="/library/two_way_factorial_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a>
 
-Causal inference            Observational [Regression Discontinuity](./regression_discontinuity.html)             <a class="btn btn-default" href="./regression_discontinuity.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="./regression_discontinuity_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a>
+Causal inference            Observational [Regression Discontinuity](/library/regression_discontinuity.html)      <a class="btn btn-default" href="/library/regression_discontinuity.R"><i class="fa fa-code" title = "Download code for design"></i></a> <a class="btn btn-default" href="/library/regression_discontinuity_template.RDS"><i class="fa fa-clipboard" title = "Download template for design"></i></a>
 --------------------------------------------------------------------------------------------------------------------------------------------------
 
 

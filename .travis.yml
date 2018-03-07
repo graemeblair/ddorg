@@ -18,6 +18,9 @@ before_deploy:
   - ls -laR ./public
   - find ./public -type f -name 'readme.html'
   - find ./public -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
+  - mv ./public/blog.html ./public/blog/index.html # By hand adjustments
+  - rm ./public/categories.html ./public/conduct.html ./public/idea.html ./public/library.html ./public/r.html # By hand adjustments
+  - cp '_redirects' './public/_redirects'
 
 deploy:
   provider: script

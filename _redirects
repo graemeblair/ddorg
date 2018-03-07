@@ -1,15 +1,3 @@
-/R/DeclareDesign/index.html /R/DeclareDesign/readme.html
-/R/DeclareDesign/ /R/DeclareDesign/readme.html
-
-/R/randomizr/index.html /R/randomizr/readme.html
-/R/randomizr/ /R/randomizr/readme.html
-
-/R/fabricatr/index.html /R/fabricatr/readme.html
-/R/fabricatr/ /R/fabricatr/readme.html
-
-/R/estimatr/index.html /R/estimatr/readme.html
-/R/estimatr/ /R/estimatr/readme.html
-
 http://fabricatr.declaredesign.org/* https://declaredesign.org/R/fabricatr/:splat 301!
 http://randomizr.declaredesign.org/* https://declaredesign.org/R/randomizr/:splat 301!
 http://estimatr.declaredesign.org/* https://declaredesign.org/R/estimatr/:splat 301!

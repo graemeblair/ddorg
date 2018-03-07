@@ -9,3 +9,7 @@
 
 /R/estimatr/index.html /R/estimatr/readme.html
 /R/estimatr/ /R/estimatr/readme.html
+
+http://fabricatr.declaredesign.org/* https://declaredesign.org/R/fabricatr/:splat 301!
+http://randomizr.declaredesign.org/* https://declaredesign.org/R/randomizr/:splat 301!
+http://estimatr.declaredesign.org/* https://declaredesign.org/R/estimatr/:splat 301!

@@ -18,8 +18,6 @@
 
 <div id='cssmenu'>
   <ul>
-    <li><a href="/">DeclareDesign</a></li>
-
     {{/* Unique menu items */}}
     {{if (hasPrefix .Dir "r/declaredesign")}}
       {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
@@ -30,6 +28,7 @@
     {{else if (hasPrefix .Dir "r/estimatr")}}
       {{template "menu_items_template" dict "section" "estimatr" "context" .}}
     {{else}}
+      <li><a href="/">DeclareDesign</a></li>
       {{template "menu_items_template" dict "section" "main" "context" .}}
     {{end}}
 

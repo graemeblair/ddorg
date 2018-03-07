@@ -190,24 +190,29 @@ uglyurls = true
   name = "Packages"
 [[menu.packagelist]]
   parent = "package_list"
+  name = "Packages Home"
+  url = "/"
+  weight = 1
+[[menu.packagelist]]
+  parent = "package_list"
   name = "DeclareDesign"
   url = "/R/DeclareDesign/"
-  weight = 1
+  weight = 2
 [[menu.packagelist]]
   parent = "package_list"
   name = "randomizr"
   url = "/R/randomizr/"
-  weight = 2
+  weight = 3
 [[menu.packagelist]]
   parent = "package_list"
   name = "fabricatr"
   url = "/R/fabricatr/"
-  weight = 3
+  weight = 4
 [[menu.packagelist]]
   parent = "package_list"
   name = "estimatr"
   url = "/R/estimatr/"
-  weight = 4
+  weight = 5
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"

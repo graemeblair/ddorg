@@ -20,7 +20,7 @@ uglyurls = true
 #################
 [[menu.main]]
     name = "Blog"
-    url = "/blog.html"
+    url = "/blog/"
     weight = 1
 
 [[menu.main]]
@@ -38,10 +38,10 @@ uglyurls = true
     url = "http://discuss.declaredesign.org"
     weight = 5
 
-# Declare Design
+# DeclareDesign
 #################
 [[menu.declaredesign]]
-  name = "Declare Design Home"
+  name = "DeclareDesign Home"
   url = "/R/DeclareDesign/"
   weight = 1
 [[menu.declaredesign]]
@@ -61,7 +61,7 @@ uglyurls = true
   url = "/R/DeclareDesign/articles/companion_packages.html"
   weight = 5
 [[menu.declaredesign]]
-  name = "Declare Design Reference"
+  name = "DeclareDesign Reference"
   url = "/R/DeclareDesign/reference/"
   weight = 6
 
@@ -190,7 +190,7 @@ uglyurls = true
   name = "Packages"
 [[menu.packagelist]]
   parent = "package_list"
-  name = "Declare Design"
+  name = "DeclareDesign"
   url = "/R/DeclareDesign/"
   weight = 1
 [[menu.packagelist]]

@@ -39,3 +39,7 @@ We  encourage you to contribute to our [design library](/library/),
 as well as to submit bug reports and feature requests as [Github](https://github.com/DeclareDesign) issues. 
 We ask that you agree to our [code of conduct](/conduct/).
 
+# Funding
+
+We are grateful for major funding from the [Laura and John Arnold Foundation](http://www.arnoldfoundation.org/)
+and seed funding from [EGAP -- Evidence in Governance and Politics](http://egap.org).

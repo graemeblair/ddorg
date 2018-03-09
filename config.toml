@@ -61,7 +61,7 @@ uglyurls = true
   url = "/R/DeclareDesign/articles/companion_packages.html"
   weight = 5
 [[menu.declaredesign]]
-  name = "DeclareDesign Reference"
+  name = "Reference"
   url = "/R/DeclareDesign/reference/"
   weight = 6
 
@@ -80,7 +80,7 @@ uglyurls = true
   url = "/R/randomizr/articles/srandomizr_vignette.html"
   weight = 3
 [[menu.randomizr]]
-  name = "randomizr Reference"
+  name = "Reference"
   url = "/R/randomizr/reference/"
   weight = 4
 
@@ -135,7 +135,7 @@ uglyurls = true
   url = "/R/fabricatr/articles/advanced_features.html"
   weight = 8
 [[menu.fabricatr]]
-  name = "fabricatr Reference"
+  name = "Reference"
   url = "/R/fabricatr/reference/"
   weight = 3
 

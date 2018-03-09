@@ -11,7 +11,7 @@ We describe in this Web site an approach to *declaring* the elements of a resear
 code and *diagnosing* the properties of the design, such as power and sampling bias, given 
 assumptions. [The Idea](/idea/) outlines the approach, with further details in our [working paper](/paper.pdf).
 
-# Design Library
+# Design library
 
 To make getting started easy, we provide a [library of common research designs](/library/) that you can
 diagnose, modify, and implement.
@@ -28,7 +28,7 @@ We provide four linked software packages to declare and diagnose research design
 The [Getting Started](/R/DeclareDesign/) guide for DeclareDesign provides an overview of
 the capabilities of each package and how to declare and diagnose designs in our framework.
 
-# Getting Help
+# Getting help
 
 If you get stuck, head to our [help forum](http://discuss.declaredesign.org) where
 we'll be happy to assist with our software or coding your design.

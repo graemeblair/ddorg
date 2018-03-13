@@ -41,7 +41,7 @@ uglyurls = true
 # DeclareDesign
 #################
 [[menu.declaredesign]]
-  name = "DeclareDesign Home"
+  name = "DeclareDesign for R"
   url = "/R/DeclareDesign/"
   weight = 1
 [[menu.declaredesign]]
@@ -68,7 +68,7 @@ uglyurls = true
 # randomizr
 #################
 [[menu.randomizr]]
-  name = "randomizr Home"
+  name = "randomizr for R"
   url = "/R/randomizr/"
   weight = 1
 [[menu.randomizr]]
@@ -87,7 +87,7 @@ uglyurls = true
 # fabricatr
 #################
 [[menu.fabricatr]]
-  name = "fabricatr Home"
+  name = "fabricatr for R"
   url = "/R/fabricatr/"
   weight = 1
 [[menu.fabricatr]]
@@ -142,7 +142,7 @@ uglyurls = true
 # estimatr
 #################
 [[menu.estimatr]]
-  name = "estimatr Home"
+  name = "estimatr for R"
   url = "/R/estimatr/"
   weight = 1
 [[menu.estimatr]]

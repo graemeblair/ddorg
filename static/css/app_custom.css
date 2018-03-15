@@ -36,3 +36,7 @@ main[role="main"] {
 
     max-width: 900px;
 }
+
+pre {
+    font-size: 1rem;
+}

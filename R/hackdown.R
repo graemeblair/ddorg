@@ -5,7 +5,7 @@ get_package_reference_files <- function()
   out <- tempdir()
   
   
-  pkgs <-   c("DeclareDesign","estimatr","fabricatr","randomizr")
+  pkgs <-   c("randomizr","fabricatr","estimatr","DeclareDesign")
   packages <- download.packages(
     pkgs,
     destdir = out,

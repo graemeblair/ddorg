@@ -56,7 +56,7 @@ two_way_factorial_template <- function(N = c(30, 100, 500, 1000),
     assignment,
     dplyr::mutate(A = as.numeric(Z %in% c("T2", "T4")),
                   B = as.numeric(Z %in% c("T3", "T4"))),
-    reveal_outcomes,
+    declare_reveal(),
     estimator,
     citation = utils::bibentry(bibtype = "Article",
                                 title = "A factorial experiment in teachers’ written feedback on student homework: Changing teacher behavior a little rather than a lot.",
@@ -165,7 +165,7 @@ design <- declare_design(
   assignment,
   dplyr::mutate(A = as.numeric(Z %in% c("T2", "T4")),
                 B = as.numeric(Z %in% c("T3", "T4"))),
-  reveal_outcomes,
+  declare_reveal(),
   estimator)
 ```
 

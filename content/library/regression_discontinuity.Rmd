@@ -58,7 +58,7 @@ estimator <- declare_estimator(
 
 # Design ------------------------------------------------------------------
 declare_design(
- population, potential_outcomes, estimand, sampling, reveal_outcomes, estimator)
+ population, potential_outcomes, estimand, sampling, declare_reveal(), estimator)
 }
 attr(regression_discontinuity_template,"tips") <-
 	c(N = "Size of population to sample from",

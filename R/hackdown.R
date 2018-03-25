@@ -4,22 +4,7 @@ get_package_reference_files <- function()
   requireNamespace("blogdown") # using requireNamespace, they have conflicting functions
   out <- tempdir()
   
-  
   pkgs <-   c("randomizr","fabricatr","estimatr","DeclareDesign")
-  packages <- download.packages(
-    pkgs,
-    destdir = out,
-    repos="https://declaredesign.github.io",
-    type = "source"
-  )
-  
-  
-  
-  rownames(packages) <- pkgs
-  colnames(packages) <- c("pkg", "tar")
-  
-  # untar all
-  mapply(untar, tarfile=packages[,2], exdir=out)
   
   # Cleanup
   # This is important because if a file is removed from the real package, it will not automatically
@@ -37,12 +22,10 @@ get_package_reference_files <- function()
     system(sprintf("mkdir %s && tar xf %s -C %s --strip-components 1", folder_name, zipped_folder_name, folder_name))
   }
   
-  
-  for (pkg in pkgs) {
-    
-    exdir <- file.path(out, packages[pkg,1])
+  for (pkg in pkgs)
+  {
     github_dir <- file.path(out, paste0(pkg, "_github"))
-
+    
     # It is very, very, very important to keep all folder names lowercase.
     # Uppercase filenames create bad bugs when building on Travis. When Hugo
     # runs on Travis and there are uppercase folder names, Hugo will create
@@ -50,19 +33,18 @@ get_package_reference_files <- function()
     # One folder has its original name, and the other folder has the same name but in
     # lowercase. This is bad because we do not want these weird duplicate folders.
     pkg <- tolower(pkg)
-
+    
     # Put the reference pages and vignettes in their own folders under the main package folder.
     main_outdir <- file.path(getwd(), "content", "r", pkg)
     pkgdown_outdir_reference <- file.path(getwd(), "content", "r", pkg, "reference")
     pkgdown_outdir_vignettes <- file.path(getwd(), "content", "r", pkg, "articles")
     
-    system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", exdir))
+    system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", github_dir))
     
     # We want pkgdown to build the references, but do not let it build the vignettes.
     # Blogdown will take care of them, so just copy them over without touching them.
-    pkgdown::build_reference(exdir[1],  path=pkgdown_outdir_reference)
+    pkgdown::build_reference(github_dir,  path=pkgdown_outdir_reference)
     system(sprintf("cp -r %s %s", file.path(github_dir, "vignettes"), pkgdown_outdir_vignettes))
     system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
-    
   }
 }

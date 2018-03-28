@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+
 temporary_directory=$(mktemp --directory)
 pushd "$temporary_directory"
 
@@ -9,7 +10,7 @@ URLS=$'https://api.github.com/repos/DeclareDesign/DeclareDesign/tarball
 https://api.github.com/repos/DeclareDesign/randomizr/tarball
 https://api.github.com/repos/DeclareDesign/fabricatr/tarball
 https://api.github.com/repos/DeclareDesign/estimatr/tarball'
-echo "$URLS" | tr '\n' '\0' | xargs --max-args=1 --max-procs=8 --null wget # Passes the URLs to wget one at a time (--max-args=1). Runs a maximum of 8 wgets in parallel (--max-procs=8).
+echo "$URLS" | tr '\n' '\0' | xargs --max-args=1 --max-procs=8 --null wget --header="Authorization: token ${GITHUB_API_TOKEN}" # Passes the URLs to wget one at a time (--max-args=1). Runs a maximum of 8 wgets in parallel (--max-procs=8).
 
 for tar_file in tarball*; do
   tar xf "$tar_file"

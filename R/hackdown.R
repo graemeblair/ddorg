@@ -2,8 +2,10 @@ get_package_reference_files <- function()
 {
   requireNamespace("pkgdown")
   requireNamespace("blogdown") # using requireNamespace, they have conflicting functions
-  out <- tempdir()
   
+  arguments <- commandArgs(trailingOnly = TRUE)
+  out <- arguments[1] # Folder with our downloaded and untarred packages.
+  print(out)
   pkgs <-   c("randomizr","fabricatr","estimatr","DeclareDesign")
   
   # Cleanup
@@ -11,16 +13,6 @@ get_package_reference_files <- function()
   # be removed from our content folder unless we clean it out ourselves.
   unlink("content/r", recursive = TRUE)
   unlink("public", recursive = TRUE)
-
-  for (pkg in pkgs)
-  {
-    zipped_folder_name <- file.path(out, paste0(pkg,"_github.tar.gz"))
-    folder_name <- file.path(out, paste0(pkg,"_github"))
-    file_url <- paste0("https://api.github.com/repos/DeclareDesign/", pkg, "/tarball")
-    download.file(url = file_url, destfile = zipped_folder_name, method = "wget", extra = "--user-agent='DeclareDesign'")
-    
-    system(sprintf("mkdir %s && tar xf %s -C %s --strip-components 1", folder_name, zipped_folder_name, folder_name))
-  }
   
   for (pkg in pkgs)
   {

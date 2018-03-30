@@ -94,7 +94,7 @@ temp_d <- data.frame(c(2.1e-06, 0.001), c(0.099, 0.00067),
 colnames(temp_d) <- c("Bias", "RMSE", "Power", "Coverage","Mean Estimand", "Mean Estimate", "SD Estimate", "Type S-Rate")
 rownames(temp_d) <- c("Diagnosand", "Boostrapped SE")
 
-coverage = temp_d[1, 4]
+coverage <- temp_d[1, 4]
 
 kable(temp_d, align = c("cccccccc"))
 ```

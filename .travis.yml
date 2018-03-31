@@ -20,7 +20,7 @@ before_deploy:
 deploy:
   provider: script
   script:
-    - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then ./netlifyctl deploy --draft --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; else ./netlifyctl deploy --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; fi'
+    - 'if [ "$TRAVIS_BRANCH" != "master" ]; then ./netlifyctl deploy --draft --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; else ./netlifyctl deploy --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; fi'
   skip_cleanup: true
   on:
-    branch: master
+    all_branches: true

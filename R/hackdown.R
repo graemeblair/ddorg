@@ -28,15 +28,36 @@ get_package_reference_files <- function()
     
     # Put the reference pages and vignettes in their own folders under the main package folder.
     main_outdir <- file.path(getwd(), "content", "r", pkg)
-    pkgdown_outdir_reference <- file.path(getwd(), "content", "r", pkg, "reference")
-    pkgdown_outdir_vignettes <- file.path(getwd(), "content", "r", pkg, "articles")
+    outdir_reference <- file.path(getwd(), "content", "r", pkg, "reference")
+    outdir_vignettes <- file.path(getwd(), "content", "r", pkg, "articles")
+    outdir_library <- file.path(getwd(), "content", "library")
     
     system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", github_dir))
     
     # We want pkgdown to build the references, but do not let it build the vignettes.
     # Blogdown will take care of them, so just copy them over without touching them.
-    pkgdown::build_reference(github_dir,  path=pkgdown_outdir_reference)
-    system(sprintf("cp -r %s %s", file.path(github_dir, "vignettes"), pkgdown_outdir_vignettes))
+    pkgdown::build_reference(github_dir,  path=outdir_reference)
+    system(sprintf("cp -r %s %s", file.path(github_dir, "vignettes"), outdir_vignettes))
     system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
+  }
+  
+  github_dir <- file.path(out, paste0("designs", "_github"))
+  template_location <- file.path(github_dir, "R")
+  template_files <- list.files(template_location, pattern = ".+\\.R$", full.names = TRUE, recursive = FALSE)
+  designs_environment = new.env()
+  
+  for (template_file in template_files)
+  {
+    source(template_file, local = designs_environment)
+  }
+  
+  template_functions <- ls(designs_environment, pattern = ".+_template$")
+  
+  for (template_function in template_functions)
+  {
+    template_code <- designs::template_text(get(template_function, pos = designs_environment, inherits = FALSE))
+    file_name <- paste0(template_function, ".R")
+    file_path <- file.path(outdir_library, file_name)
+    writeLines(template_code, file_path)
   }
 }

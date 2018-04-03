@@ -5,6 +5,7 @@ Version: 1.1.7
 Imports:
   pkgdown,
   blogdown,
+  designs,
   randomizr,
   fabricatr,
   estimatr,
@@ -22,6 +23,7 @@ Remotes:
   rstudio/rmarkdown,
   aaronrudkin/pkgdown,
   rstudio/blogdown,
+  DeclareDesign/designs,
   DeclareDesign/randomizr,
   DeclareDesign/fabricatr,
   DeclareDesign/estimatr,

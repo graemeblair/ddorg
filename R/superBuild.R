@@ -15,7 +15,7 @@ sapply(index_pages, function(file_name)
 {
  file.rename(
     from = file_name,
-    to = sub(pattern = "index\\.html", replacement = "readme\\.html", file_name)
+    to = sub(pattern = "index.html", replacement = "readme.html", x = file_name, fixed = TRUE)
   )
 })
 

@@ -43,7 +43,7 @@ get_package_reference_files <- function()
   
   github_dir <- file.path(out, paste0("designs", "_github"))
   template_location <- file.path(github_dir, "R")
-  template_files <- list.files(template_location, pattern = ".+\\.R$", full.names = TRUE, recursive = FALSE)
+  template_files <- list.files(template_location, pattern = ".+[.]R$", full.names = TRUE, recursive = FALSE)
   designs_environment = new.env()
   
   for (template_file in template_files)

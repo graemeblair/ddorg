@@ -48,7 +48,7 @@ get_package_reference_files <- function()
   
   for (template_file in template_files)
   {
-    source(template_file, local = designs_environment)
+    source(template_file, local = designs_environment, keep.source = TRUE)
   }
   
   template_functions <- ls(designs_environment, pattern = ".+_template$")

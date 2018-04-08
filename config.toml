@@ -226,3 +226,138 @@ uglyurls = true
     width = 222
     height = 476
     alt = "Logo"
+
+[Authors]
+
+  [[Authors.DeclareDesign]]
+  given = "Graeme"
+  family = "Blair"
+  role = [
+    "aut",
+    "cre"
+  ]
+  email = "graeme.blair@ucla.edu"
+
+  [[Authors.DeclareDesign]]
+  given = "Jasper"
+  family = "Cooper"
+  role = "aut"
+  email = "jjc2247@columbia.edu"
+
+  [[Authors.DeclareDesign]]
+  given = "Alexander"
+  family = "Coppock"
+  role = "aut"
+  email = "alex.coppock@yale.edu"
+
+  [[Authors.DeclareDesign]]
+  given = "Macartan"
+  family = "Humphreys"
+  role = "aut"
+  email = "macartan@gmail.com"
+
+  [[Authors.DeclareDesign]]
+  given = "Neal"
+  family = "Fultz"
+  role = "aut"
+  email = "nfultz@gmail.com"
+
+  [[Authors.randomizr]]
+  given = "Alexander"
+  family = "Coppock"
+  role = [
+    "aut",
+    "cre"
+  ]
+  email = "acoppock@gmail.com"
+
+  [[Authors.randomizr]]
+  given = "Jasper"
+  family = "Cooper"
+  role = "ctb"
+  email = "jaspercooper@gmail.com"
+
+  [[Authors.randomizr]]
+  given = "Neal"
+  family = "Fultz"
+  role = "ctb"
+  email = "nfultz@gmail.com"
+  comment = "C version of restricted partitions"
+
+  [[Authors.fabricatr]]
+  given = "Graeme"
+  family = "Blair"
+  role = [
+    "aut",
+    "cre"
+  ]
+  email = "graeme.blair@ucla.edu"
+
+  [[Authors.fabricatr]]
+  given = "Jasper"
+  family = "Cooper"
+  role = "aut"
+  email = "jjc2247@columbia.edu"
+
+  [[Authors.fabricatr]]
+  given = "Alexander"
+  family = "Coppock"
+  role = "aut"
+  email = "alex.coppock@yale.edu"
+
+  [[Authors.fabricatr]]
+  given = "Macartan"
+  family = "Humphreys"
+  role = "aut"
+  email = "macartan@gmail.com"
+
+  [[Authors.fabricatr]]
+  given = "Aaron"
+  family = "Rudkin"
+  role = "aut"
+  email = "rudkin@ucla.edu"
+
+  [[Authors.fabricatr]]
+  given = "Neal"
+  family = "Fultz"
+  role = "ctb"
+  email = "nfultz@gmail.com"
+
+  [[Authors.estimatr]]
+  given = "Graeme"
+  family = "Blair"
+  role = [
+    "aut",
+    "cre"
+  ]
+  email = "graeme.blair@ucla.edu"
+
+  [[Authors.estimatr]]
+  given = "Jasper"
+  family = "Cooper"
+  role = "aut"
+  email = "jjc2247@columbia.edu"
+
+  [[Authors.estimatr]]
+  given = "Alexander"
+  family = "Coppock"
+  role = "aut"
+  email = "alex.coppock@yale.edu"
+
+  [[Authors.estimatr]]
+  given = "Macartan"
+  family = "Humphreys"
+  role = "aut"
+  email = "macartan@gmail.com"
+
+  [[Authors.estimatr]]
+  given = "Luke"
+  family = "Sonnet"
+  role = "aut"
+  email = "luke.sonnet@gmail.com"
+
+  [[Authors.estimatr]]
+  given = "Neal"
+  family = "Fultz"
+  role = "ctb"
+  email = "nfultz@gmail.com"

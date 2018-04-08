@@ -7,7 +7,7 @@ get_package_reference_files(out)
 
 index_pages <-
   list.files("content/r",
-             pattern = "^index.html",
+             pattern = "^index[.]html",
              full.names = TRUE,
              recursive = TRUE)
 

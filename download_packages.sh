@@ -27,8 +27,14 @@ popd
 
 pwd
 
-Rscript 'R/superBuild.R' "$temporary_directory"
+Rscript 'R/hackdown.R' "$temporary_directory"
+Rscript 'R/downloadDesigns.R' "$temporary_directory"
 
+find "${temporary_directory}/designs/inst/doc" -type f -name "*.html" -exec node cleanHtml.js '{}' ';' -exec cp '{}' ./content/library ';'
+find "${temporary_directory}/designs/vignettes" -type f -name "*.RDS" -exec cp '{}' ./content/library ';'
+cp ${temporary_directory}/designs/README.Rmd ./content/library
+
+Rscript 'R/superBuild.R'
 
 find ./public -type f -name 'readme.html'
 find ./public -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'

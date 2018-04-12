@@ -1,10 +1,3 @@
-source("R/hackdown.R")
-
-arguments <- commandArgs(trailingOnly = TRUE)
-out <- arguments[1] # Folder with our downloaded and untarred packages.
-
-get_package_reference_files(out)
-
 index_pages <-
   list.files("content/r",
              pattern = "^index[.]html",

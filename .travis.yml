@@ -1,10 +1,15 @@
 language: r
 
+env:
+  - TRAVIS_NODE_VERSION="9.11.1"
 cache:
   packages: yes
   directories:
     - $HOME/bin
 
+install:
+    - rm -rf ~/.nvm && git clone https://github.com/creationix/nvm.git ~/.nvm && (cd ~/.nvm && git checkout `git describe --abbrev=0 --tags`) && source ~/.nvm/nvm.sh && nvm install $TRAVIS_NODE_VERSION
+    - npm install -g cheerio
 
 before_script:
   - Rscript -e 'blogdown::install_hugo()'

@@ -10,7 +10,7 @@ before_script:
   - Rscript -e 'blogdown::install_hugo()'
 
 script:
-  - source download_packages.sh
+  - ./download_packages.sh
 
 before_deploy:
   - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz

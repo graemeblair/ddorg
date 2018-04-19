@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+set -e
 
 temporary_directory=$(mktemp --directory)
 pushd "$temporary_directory"

@@ -41,3 +41,10 @@ public/
 
 # Node modules
 node_modules/
+
+# We do not need to track these files because they are automatically fetched on each build.
+content/r
+content/library
+
+static/r
+static/library

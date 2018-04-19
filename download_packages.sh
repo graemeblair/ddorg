@@ -30,8 +30,17 @@ pwd
 Rscript 'R/hackdown.R' "$temporary_directory"
 Rscript 'R/downloadDesigns.R' "$temporary_directory"
 
-find "${temporary_directory}/designs/inst/doc" -type f -name "*.html" -exec node cleanHtml.js '{}' ';' -exec cp '{}' ./content/library ';'
-find "${temporary_directory}/designs/vignettes" -type f -name "*.RDS" -exec cp '{}' ./content/library ';'
+for file in "${temporary_directory}/designs/inst/doc"/*.html; do
+    echo "Cleaning $file"
+    node cleanHtml.js "$file"
+    cp "$file" ./content/library
+done
+
+for file in "${temporary_directory}/designs/vignettes"/*.RDS; do
+  echo "Moving $file"
+  cp "$file" ./content/library
+done
+
 cp ${temporary_directory}/designs/README.Rmd ./content/library
 
 Rscript 'R/superBuild.R'

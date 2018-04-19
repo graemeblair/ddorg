@@ -37,4 +37,7 @@ vignettes/*.pdf
 .DS_Store
 
 # public Folder
-public
+public/
+
+# Node modules
+node_modules/

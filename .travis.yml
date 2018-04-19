@@ -1,7 +1,5 @@
 language: r
 
-env:
-  - TRAVIS_NODE_VERSION="9.11.1"
 cache:
   packages: yes
   directories:
@@ -12,7 +10,7 @@ before_script:
   - Rscript -e 'blogdown::install_hugo()'
 
 script:
-  - ./download_packages.sh
+  - source download_packages.sh
 
 before_deploy:
   - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz

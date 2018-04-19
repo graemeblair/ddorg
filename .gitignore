@@ -39,7 +39,7 @@ vignettes/*.pdf
 # public Folder
 public/
 
-# Node modules
+# Node packages
 node_modules/
 
 # We do not need to track these files because they are automatically fetched on each build.

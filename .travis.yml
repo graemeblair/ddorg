@@ -5,6 +5,9 @@ cache:
   directories:
     - $HOME/bin
 
+before_install:
+  - npm install cheerio
+
 before_script:
   - Rscript -e 'blogdown::install_hugo()'
 

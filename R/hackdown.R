@@ -12,7 +12,7 @@ pkgs <-   c("randomizr","fabricatr","estimatr","DeclareDesign")
 # be removed from our content folder unless we clean it out ourselves.
 unlink("content/r", recursive = TRUE)
 unlink("public", recursive = TRUE)
-unlink("content/library/*", recursive = TRUE)
+unlink("content/library/", recursive = TRUE)
 
 for (pkg in pkgs)
 {
@@ -40,6 +40,7 @@ for (pkg in pkgs)
   system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
 }
 
+dir.create("content/library")
 outdir_library <- file.path(getwd(), "content", "library")
 github_dir <- file.path(out, paste0("designs", "_github"))
 template_location <- file.path(github_dir, "R")

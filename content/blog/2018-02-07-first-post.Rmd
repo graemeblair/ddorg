@@ -1,5 +1,5 @@
 ---
-title: First Post
+title: My post
 author: Barry Lyndon
 date: '2018-02-07'
 slug: first-post

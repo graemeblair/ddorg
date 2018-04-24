@@ -1,0 +1,10 @@
+---
+title: "Team"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Team}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+Who we are 

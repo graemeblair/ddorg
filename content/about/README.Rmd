@@ -7,23 +7,27 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# Principal investigators
+## Principal investigators
 
-Graeme Blair, Jasper Cooper, Alexander Coppock, and Macartan Humphreys direct the project.
+[Graeme Blair](https://graemeblair.com), [Jasper Cooper](http://jasper-cooper.com), [Alexander Coppock](https://alexandercoppock.com), and [Macartan Humphreys](https://macartan.nyc) direct the project.
 
-# Project contributors 
+## Project contributors 
 
-DeclareDesign has benefited from the contributions of many researchers and coders. We recognize core contributors to each piece of software:
+DeclareDesign has benefited from the contributions of many researchers and coders. We recognize contributors in addition to the principal investigators to each component:
 
-`estimatr` for R: Luke Sonnet
+`DeclareDesign` for R: Neal Fultz
 
-`fabricatr` for R: Aaron Rudkin
+`estimatr` for R: [Luke Sonnet](http://lukesonnet.com)
+
+`fabricatr` for R: [Aaron Rudkin](http://rudkin.ca)
 
 `randomizr` for Stata: John Ternovski
 
-Shiny: Clara Bicalho, Neal Fultz
+`DeclareDesignShiny`: Clara Bicalho, Neal Fultz
 
-DesignLibrary: Lily Medina, Clara Bicalho
+`DesignLibrary`: Lily Medina, Tara Slough
+
+declaredesign.org: Nicholas Rivera
 
 # Contributing
 

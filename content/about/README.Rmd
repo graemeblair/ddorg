@@ -29,6 +29,10 @@ DeclareDesign has benefited from the contributions of many researchers and coder
 
 declaredesign.org: Nicholas Rivera
 
+We thank contributors to earlier iterations of the project Thomas Leavitt, Tara Slough, Georgiy Syunyaev, and Anna Wilke.
+
+We also thank early beta testers Lauren Young, Erin York, and Yang-Yang Zhou.
+
 # Contributing
 
 We  encourage you to contribute to our [design library](/library/), 

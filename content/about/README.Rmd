@@ -1,10 +1,38 @@
 ---
-title: "Team"
+title: "About DeclareDesign"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Team}
+  %\VignetteIndexEntry{About}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-Who we are
+# Principal investigators
+
+Graeme Blair, Jasper Cooper, Alexander Coppock, and Macartan Humphreys direct the project.
+
+# Project contributors 
+
+DeclareDesign has benefited from the contributions of many researchers and coders. We recognize core contributors to each piece of software:
+
+`estimatr` for R: Luke Sonnet
+
+`fabricatr` for R: Aaron Rudkin
+
+`randomizr` for Stata: John Ternovski
+
+Shiny: Clara Bicalho, Neal Fultz
+
+DesignLibrary: Lily Medina, Clara Bicalho
+
+# Contributing
+
+We  encourage you to contribute to our [design library](/library/), 
+as well as to submit bug reports and feature requests as [Github](https://github.com/DeclareDesign) issues. 
+We ask that you agree to our [code of conduct](/conduct/).
+
+# Funding
+
+We are grateful for major funding from the [Laura and John Arnold Foundation](http://www.arnoldfoundation.org/)
+and seed funding from [EGAP -- Evidence in Governance and Politics](http://egap.org).
+

@@ -10,6 +10,9 @@ const pageTitle = $("title").text();
 $("body").find("*").removeAttr("style");
 $("body").find("style, script").remove();
 
+// Remove the duplicate title
+$(".toc-ignore").remove();
+
 let bodyHtml = $("body").html();
 bodyHtml = bodyHtml.trim();
 

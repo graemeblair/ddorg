@@ -18,10 +18,10 @@ uglyurls = true
 
 # Home
 #################
-[[menu.main]]
-    name = "Blog"
-    url = "/blog/"
-    weight = 1
+# [[menu.main]]
+#     name = "Blog"
+#     url = "/blog/"
+#     weight = 1
 
 [[menu.main]]
     name = "The Idea"
@@ -38,12 +38,13 @@ uglyurls = true
     url = "http://discuss.declaredesign.org"
     weight = 5
 
+[[menu.main]]
+    name = "About"
+    url = "/about/"
+    weight = 6
+
 # DeclareDesign
 #################
-[[menu.declaredesign]]
-  name = "DeclareDesign for R"
-  url = "/R/DeclareDesign/"
-  weight = 1
 [[menu.declaredesign]]
   name = "Getting Started"
   url = "/R/DeclareDesign/articles/DeclareDesign.html"
@@ -68,10 +69,6 @@ uglyurls = true
 # randomizr
 #################
 [[menu.randomizr]]
-  name = "randomizr for R"
-  url = "/R/randomizr/"
-  weight = 1
-[[menu.randomizr]]
   name = "Getting Started in R"
   url = "/R/randomizr/articles/randomizr_vignette.html"
   weight = 2
@@ -86,10 +83,6 @@ uglyurls = true
 
 # fabricatr
 #################
-[[menu.fabricatr]]
-  name = "fabricatr for R"
-  url = "/R/fabricatr/"
-  weight = 1
 [[menu.fabricatr]]
   identifier = "getting_started"
   name = "Getting Started"
@@ -141,10 +134,6 @@ uglyurls = true
 
 # estimatr
 #################
-[[menu.estimatr]]
-  name = "estimatr for R"
-  url = "/R/estimatr/"
-  weight = 1
 [[menu.estimatr]]
   name = "Getting Started"
   url = "/R/estimatr/articles/getting-started.html"

@@ -32,7 +32,7 @@ Rscript 'R/downloadDesigns.R' "$temporary_directory"
 
 for file in "${temporary_directory}/designs/inst/doc"/*.html; do
     echo "Cleaning $file"
-    node cleanHtml.js "$file"
+    node clean_library_pages.js "$file"
     cp "$file" ./content/library
 done
 
@@ -48,6 +48,10 @@ Rscript 'R/superBuild.R'
 find ./public -type f -name 'readme.html'
 find ./public -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
 mv ./public/blog.html ./public/blog/index.html # By hand adjustments
-rm ./public/categories.html ./public/conduct.html ./public/idea.html ./public/library.html ./public/r.html # By hand adjustments
+rm ./public/categories.html ./public/conduct.html ./public/idea.html ./public/library.html ./public/r.html  ./public/about.html # By hand adjustments
 mkdir -p ./public/r/estimatr/vignettes && cp ./public/r/estimatr/articles/lm_speed.png ./public/r/estimatr/articles/lm_speed_covars.png ./public/r/estimatr/vignettes # By hand adjustments
+
+# Temporarily remove blog pages for now
+rm -r ./public/blog
+
 cp '_redirects' './public/_redirects'

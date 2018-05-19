@@ -9,7 +9,7 @@ vignette: >
 
 ## Principal investigators
 
-[Graeme Blair](https://graemeblair.com), [Jasper Cooper](http://jasper-cooper.com), [Alexander Coppock](https://alexandercoppock.com), and [Macartan Humphreys](https://macartan.nyc) direct the project.
+[Graeme Blair](https://graemeblair.com), [Jasper Cooper](http://jasper-cooper.com), [Alexander Coppock](http://alexandercoppock.com), and [Macartan Humphreys](http://macartan.nyc) direct the project.
 
 ## Project contributors 
 

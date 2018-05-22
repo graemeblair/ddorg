@@ -24,69 +24,92 @@ uglyurls = true
 #     weight = 1
 
 [[menu.main]]
-    name = "The Idea"
-    url = "/idea/"
-    weight = 2
+  name = "The Idea"
+  url = "/idea/"
+  weight = 2
 
 [[menu.main]]
-    name = "Design Library"
-    url = "/library/"
-    weight = 3
+  name = "Design Library"
+  url = "/library/"
+  weight = 3
 
 [[menu.main]]
-    name = "Ask for Help"
-    url = "http://discuss.declaredesign.org"
-    weight = 5
+  name = "Ask for Help"
+  url = "http://discuss.declaredesign.org"
+  weight = 4
 
 [[menu.main]]
-    name = "About"
-    url = "/about/"
-    weight = 6
+  name = "About"
+  url = "/about/"
+  weight = 5
+
+# Design Library
+#################
+[[menu.library]]
+  identifier = "getting_started"
+  name = "Getting Started"
+  weight = 1
+
+[[menu.library]]
+  parent = "getting_started"
+  name = "How to Contribute"
+  url = "/library/articles/how_to_write_and_contribute_designers.html"
+  weight = 1
+
+[[menu.library]]
+  name = "Library Overview"
+  url = "/library/reference/"
+  weight = 2
+
+[[menu.library]]
+  name = "About"
+  url = "/about/"
+  weight = 3
 
 # DeclareDesign
 #################
 [[menu.declaredesign]]
   name = "Getting Started"
   url = "/R/DeclareDesign/articles/DeclareDesign.html"
-  weight = 2
+  weight = 1
 [[menu.declaredesign]]
   name = "Custom Functions"
   url = "/R/DeclareDesign/articles/custom_functions.html"
-  weight = 3
+  weight = 2
 [[menu.declaredesign]]
   name = "Advanced Features"
   url = "/R/DeclareDesign/articles/advanced_features.html"
-  weight = 4
+  weight = 3
 [[menu.declaredesign]]
   name = "Companion Packages"
   url = "/R/DeclareDesign/articles/companion_packages.html"
-  weight = 5
+  weight = 4
 [[menu.declaredesign]]
   name = "Reference"
   url = "/R/DeclareDesign/reference/"
-  weight = 6
+  weight = 5
 
 # randomizr
 #################
 [[menu.randomizr]]
   name = "Getting Started in R"
   url = "/R/randomizr/articles/randomizr_vignette.html"
-  weight = 2
+  weight = 1
 [[menu.randomizr]]
   name = "Getting Started in Stata"
   url = "/R/randomizr/articles/srandomizr_vignette.html"
-  weight = 3
+  weight = 2
 [[menu.randomizr]]
   name = "Reference"
   url = "/R/randomizr/reference/"
-  weight = 4
+  weight = 3
 
 # fabricatr
 #################
 [[menu.fabricatr]]
   identifier = "getting_started"
   name = "Getting Started"
-  weight = 2
+  weight = 1
 [[menu.fabricatr]]
   parent = "getting_started"
   name = "Getting Started with fabricatr"
@@ -130,18 +153,18 @@ uglyurls = true
 [[menu.fabricatr]]
   name = "Reference"
   url = "/R/fabricatr/reference/"
-  weight = 3
+  weight = 2
 
 # estimatr
 #################
 [[menu.estimatr]]
   name = "Getting Started"
   url = "/R/estimatr/articles/getting-started.html"
-  weight = 2
+  weight = 1
 [[menu.estimatr]]
   identifier = "technical_notes"
   name = "Technical Notes"
-  weight = 3
+  weight = 2
 [[menu.estimatr]]
   parent = "technical_notes"
   name = "Mathematical Notes"
@@ -170,7 +193,7 @@ uglyurls = true
 [[menu.estimatr]]
   name = "Reference"
   url = "/R/estimatr/reference/"
-  weight = 4
+  weight = 3
 
 # Package List
 #################
@@ -215,138 +238,3 @@ uglyurls = true
     width = 222
     height = 476
     alt = "Logo"
-
-[Authors]
-
-  [[Authors.DeclareDesign]]
-  given = "Graeme"
-  family = "Blair"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "graeme.blair@ucla.edu"
-
-  [[Authors.DeclareDesign]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "aut"
-  email = "jjc2247@columbia.edu"
-
-  [[Authors.DeclareDesign]]
-  given = "Alexander"
-  family = "Coppock"
-  role = "aut"
-  email = "alex.coppock@yale.edu"
-
-  [[Authors.DeclareDesign]]
-  given = "Macartan"
-  family = "Humphreys"
-  role = "aut"
-  email = "macartan@gmail.com"
-
-  [[Authors.DeclareDesign]]
-  given = "Neal"
-  family = "Fultz"
-  role = "aut"
-  email = "nfultz@gmail.com"
-
-  [[Authors.randomizr]]
-  given = "Alexander"
-  family = "Coppock"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "acoppock@gmail.com"
-
-  [[Authors.randomizr]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "ctb"
-  email = "jaspercooper@gmail.com"
-
-  [[Authors.randomizr]]
-  given = "Neal"
-  family = "Fultz"
-  role = "ctb"
-  email = "nfultz@gmail.com"
-  comment = "C version of restricted partitions"
-
-  [[Authors.fabricatr]]
-  given = "Graeme"
-  family = "Blair"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "graeme.blair@ucla.edu"
-
-  [[Authors.fabricatr]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "aut"
-  email = "jjc2247@columbia.edu"
-
-  [[Authors.fabricatr]]
-  given = "Alexander"
-  family = "Coppock"
-  role = "aut"
-  email = "alex.coppock@yale.edu"
-
-  [[Authors.fabricatr]]
-  given = "Macartan"
-  family = "Humphreys"
-  role = "aut"
-  email = "macartan@gmail.com"
-
-  [[Authors.fabricatr]]
-  given = "Aaron"
-  family = "Rudkin"
-  role = "aut"
-  email = "rudkin@ucla.edu"
-
-  [[Authors.fabricatr]]
-  given = "Neal"
-  family = "Fultz"
-  role = "ctb"
-  email = "nfultz@gmail.com"
-
-  [[Authors.estimatr]]
-  given = "Graeme"
-  family = "Blair"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "graeme.blair@ucla.edu"
-
-  [[Authors.estimatr]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "aut"
-  email = "jjc2247@columbia.edu"
-
-  [[Authors.estimatr]]
-  given = "Alexander"
-  family = "Coppock"
-  role = "aut"
-  email = "alex.coppock@yale.edu"
-
-  [[Authors.estimatr]]
-  given = "Macartan"
-  family = "Humphreys"
-  role = "aut"
-  email = "macartan@gmail.com"
-
-  [[Authors.estimatr]]
-  given = "Luke"
-  family = "Sonnet"
-  role = "aut"
-  email = "luke.sonnet@gmail.com"
-
-  [[Authors.estimatr]]
-  given = "Neal"
-  family = "Fultz"
-  role = "ctb"
-  email = "nfultz@gmail.com"

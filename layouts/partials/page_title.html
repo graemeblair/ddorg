@@ -1,0 +1,20 @@
+{{if (hasPrefix .Dir "r/declaredesign")}}
+  <title>{{with .Title}}{{.}} - {{end}}DeclareDesign for R</title>
+  <meta property="og:title" content="{{with .Title}}{{.}} - {{end}}DeclareDesign for R">
+{{else if (hasPrefix .Dir "r/randomizr")}}
+  <title>{{with .Title}}{{.}} - {{end}}randomizr for R and Stata</title>
+  <meta property="og:title" content="{{with .Title}}{{.}} - {{end}}randomizr for R and Stata">
+{{else if (hasPrefix .Dir "r/fabricatr")}}
+  <title>{{with .Title}}{{.}} - {{end}}fabricatr for R</title>
+  <meta property="og:title" content="{{with .Title}}{{.}} - {{end}}fabricatr for R">
+{{else if (hasPrefix .Dir "r/estimatr")}}
+  <title>{{with .Title}}{{.}} - {{end}}estimatr for R</title>
+  <meta property="og:title" content="{{with .Title}}{{.}} - {{end}}estimatr for R">
+{{else if eq .URL "/"}}
+  <title>DeclareDesign</title>
+  <meta property="og:title" content="DeclareDesign">
+  <meta property="og:type" content="website">
+{{else}}
+  <title>{{with .Title}}{{.}} - {{end}}DeclareDesign</title>
+  <meta property="og:title" content="{{with .Title}}{{.}} - {{end}}DeclareDesign">
+{{end}}

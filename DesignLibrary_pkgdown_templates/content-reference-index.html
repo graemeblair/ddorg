@@ -1,0 +1,40 @@
+<div id="TOC">
+    <ul>
+        {{#sections}}
+        <li><a href="#{{slug}}">{{title}}</a></li>
+        {{/sections}}
+    </ul>
+</div>
+
+<div class="page-header">
+    <h1>Overview</h1>
+</div>
+
+<div class="contents">
+    <table class="ref-index">
+
+        <colgroup>
+            <col class="alias">
+            <col class="title">
+        </colgroup>
+
+        {{#sections}}
+        <tbody>
+        <tr>
+            <th colspan="2">
+                <h2 id="{{slug}}" class="hasAnchor"><a href="#{{slug}}" class="anchor"></a>{{title}}</h2>
+                <p class="section-desc">{{{desc}}}</p>
+            </th>
+        </tr>
+        {{#contents}}
+        <tr>
+            <td>
+                <p>{{#aliases}}<code><a href="{{path}}">{{{.}}}</a></code> {{/aliases}}</p>
+            </td>
+            <td><p>{{{title}}}</p></td>
+        </tr>
+        {{/contents}}
+        </tbody>
+        {{/sections}}
+    </table>
+</div>

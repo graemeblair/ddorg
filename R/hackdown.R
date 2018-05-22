@@ -1,64 +1,72 @@
-arguments <- commandArgs(trailingOnly = TRUE)
-out <- arguments[1] # Folder with our downloaded and untarred packages.
-
 requireNamespace("pkgdown")
-requireNamespace("blogdown") # using requireNamespace, they have conflicting functions
+requireNamespace("blogdown") # Using requireNamespace because pkgdown and blogdown have conflicting functions.
 
-print(out)
-pkgs <-   c("randomizr","fabricatr","estimatr","DeclareDesign")
-
-# Cleanup
-# This is important because if a file is removed from the real package, it will not automatically
-# be removed from our content folder unless we clean it out ourselves.
-unlink("content/r", recursive = TRUE)
-unlink("public", recursive = TRUE)
-unlink("content/library/", recursive = TRUE)
-
-for (pkg in pkgs)
+build_package <- function(pkg, out, parent_directory)
 {
   github_dir <- file.path(out, paste0(pkg, "_github"))
   
   # It is very, very, very important to keep all folder names lowercase.
-  # Uppercase filenames create bad bugs when building on Travis. When Hugo
-  # runs on Travis and there are uppercase folder names, Hugo will create
-  # two directories in the public directory for each folder in the content directory:
-  # One folder has its original name, and the other folder has the same name but in
-  # lowercase. This is bad because we do not want these weird duplicate folders.
+  # Uppercase filenames create bad bugs when building on Travis. When Hugo runs
+  # on Travis and there are uppercase folder names, Hugo will create two
+  # directories in the public directory for each folder in the content
+  # directory: One folder has its original name, and the other folder has the
+  # same name but in lowercase. This is bad because we do not want these weird
+  # duplicate folders.
+  pkg_original_case <- pkg
   pkg <- tolower(pkg)
   
   # Put the reference pages and vignettes in their own folders under the main package folder.
-  main_outdir <- file.path(getwd(), "content", "r", pkg)
-  outdir_reference <- file.path(getwd(), "content", "r", pkg, "reference")
-  outdir_vignettes <- file.path(getwd(), "content", "r", pkg, "articles")
+  main_outdir <- file.path(getwd(), parent_directory)
+  outdir_reference <- file.path(getwd(), parent_directory, "reference")
+  outdir_vignettes <- file.path(getwd(), parent_directory, "articles")
   
-  system(sprintf("cp -r _pkgdown.yml pkgdown_templates/* %s", github_dir))
+  # We use pkgdown to render the reference pages for packages. For most
+  # packages, the default options and templates for pkgdown are OK. These
+  # options are in the folder pkgdown_templates. For some packages, we want more
+  # customization. These packages will have custom pkgdown options and templates
+  # in a special folder with the naming scheme MyPackageName_pkgdown_templates.
+  custom_pkgdown_templates_folder <- paste0(pkg_original_case, "_pkgdown_templates")
+  if (dir.exists(custom_pkgdown_templates_folder))
+  {
+    cat("Using custom templates for", pkg, "\n")
+    system(sprintf("cp -r %s_pkgdown_templates/* %s", pkg_original_case, github_dir))
+  }
+  else
+  {
+    cat("Using standard templates for", pkg, "\n")
+    system(sprintf("cp -r pkgdown_templates/* %s", github_dir))
+  }
   
-  # We want pkgdown to build the references, but do not let it build the vignettes.
-  # Blogdown will take care of them, so just copy them over without touching them.
-  pkgdown::build_reference(github_dir,  path=outdir_reference)
-  system(sprintf("cp -r %s %s", file.path(github_dir, "vignettes"), outdir_vignettes))
+  # We want pkgdown to build the references, but do not let it build the
+  # vignettes. Blogdown will take care of them, so just copy them over without
+  # touching them.
+  pkgdown::build_reference(github_dir,  path = outdir_reference)
+  system(sprintf("cp -r %s %s",file.path(github_dir, "vignettes"),outdir_vignettes))
   system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
 }
 
-dir.create("content/library")
-outdir_library <- file.path(getwd(), "content", "library")
-github_dir <- file.path(out, paste0("designs", "_github"))
-template_location <- file.path(github_dir, "R")
-
-template_files <- list.files(template_location, pattern = ".+[.]R$", full.names = TRUE, recursive = FALSE)
-designs_environment = new.env()
-
-for (template_file in template_files)
+build_packages <- function(out, packages)
 {
-  source(template_file, local = designs_environment, keep.source = TRUE)
+  print(out)
+  
+  for (pkg in names(packages))
+  {
+    build_package(pkg, out, parent_directory = packages[[pkg]])
+  }
 }
 
-template_functions <- ls(designs_environment, pattern = ".+_template$")
+arguments <- commandArgs(trailingOnly = TRUE)
+out <- arguments[1] # Folder with our downloaded and untarred packages.
 
-for (template_function in template_functions)
-{
-  template_code <- designs::template_text(get(template_function, pos = designs_environment, inherits = FALSE))
-  file_name <- paste0(template_function, ".R")
-  file_path <- file.path(outdir_library, file_name)
-  writeLines(template_code, file_path)
-}
+packages <-
+  list(
+    randomizr = "content/r/randomizr",
+    fabricatr = "content/r/fabricatr",
+    estimatr = "content/r/estimatr",
+    DeclareDesign = "content/r/declaredesign",
+    DesignLibrary = "content/library"
+  )
+
+build_packages(out, packages)
+
+blogdown::build_site()

@@ -1,0 +1,93 @@
+DeclareDesign:
+  - given: Graeme
+    family: Blair
+    role:
+      - Author
+      - Maintainer
+    contact: https://graemeblair.com
+  - given: Jasper
+    family: Cooper
+    role: Author
+    contact: http://jasper-cooper.com
+  - given: Alexander
+    family: Coppock
+    role: Author
+    contact: http://alexandercoppock.com
+  - given: Macartan
+    family: Humphreys
+    role: Author
+    contact: http://www.macartan.nyc
+  - given: Neal
+    family: Fultz
+    role: Author
+    contact: https://github.com/nfultz
+randomizr:
+  - given: Alexander
+    family: Coppock
+    role:
+      - Author
+      - Maintainer
+    contact: http://alexandercoppock.com
+  - given: Jasper
+    family: Cooper
+    role: Contributor
+    contact: http://jasper-cooper.com
+  - given: Neal
+    family: Fultz
+    role: Contributor
+    contact: https://github.com/nfultz
+    comment: C version of restricted partitions
+fabricatr:
+  - given: Graeme
+    family: Blair
+    role:
+      - Author
+      - Maintainer
+    contact: https://graemeblair.com
+  - given: Jasper
+    family: Cooper
+    role: Author
+    contact: http://jasper-cooper.com
+  - given: Alexander
+    family: Coppock
+    role: Author
+    contact: http://alexandercoppock.com
+  - given: Macartan
+    family: Humphreys
+    role: Author
+    contact: http://www.macartan.nyc
+  - given: Aaron
+    family: Rudkin
+    role: Author
+    contact: http://rudkin.ca
+  - given: Neal
+    family: Fultz
+    role: Contributor
+    contact: https://github.com/nfultz
+estimatr:
+  - given: Graeme
+    family: Blair
+    role:
+      - Author
+      - Maintainer
+    contact: https://graemeblair.com
+  - given: Jasper
+    family: Cooper
+    role: Author
+    contact: http://jasper-cooper.com
+  - given: Alexander
+    family: Coppock
+    role: Author
+    contact: http://alexandercoppock.com
+  - given: Macartan
+    family: Humphreys
+    role: Author
+    contact: http://www.macartan.nyc
+  - given: Luke
+    family: Sonnet
+    role: Author
+    contact: http://lukesonnet.com
+  - given: Neal
+    family: Fultz
+    role: Contributor
+    contact: https://github.com/nfultz

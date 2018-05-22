@@ -8,7 +8,7 @@ pre {
     font-family: 'IBM Plex Mono', monospace;
 }
 
-main[role="main"] {
+main {
     margin-top: 2rem;
     margin-bottom: 2rem;
 }
@@ -63,6 +63,7 @@ table, img {
     border-width: 1px 1px 4px 1px;
 }
 
+/* Adjust header sizes. */
 h1, .h1 {
     font-size: 1.6rem
 }
@@ -85,4 +86,13 @@ h5, .h5 {
 
 h6, .h6 {
     font-size: 0.66rem
+}
+
+/* Adjust the main menu font color. */
+#navbarContent > ul > li > a {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+#developers_list {
+    font-size: 1rem;
 }

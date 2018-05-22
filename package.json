@@ -1,7 +1,8 @@
 {
-  "name": "blog",
+  "name": "declaredesign.org",
   "version": "1.0.0",
   "dependencies": {
-    "cheerio": "^1.0.0-rc.2"
+    "cheerio": "^1.0.0-rc.2",
+    "js-yaml": "^3.11.0"
   }
 }

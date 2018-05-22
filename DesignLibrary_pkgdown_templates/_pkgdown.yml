@@ -1,0 +1,12 @@
+url: http://pkgdown.r-lib.org
+
+template:
+    path: "pkgdown_templates"
+
+reference:
+- title: Designers
+  contents:
+  - ends_with("_designer")
+- title: Designs
+  contents:
+  - ends_with("_design")

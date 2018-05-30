@@ -58,6 +58,8 @@ mkdir -p ./public/r/estimatr/vignettes && cp ./public/r/estimatr/articles/lm_spe
 
 cp '_redirects' './public/_redirects'
 
+node create_library_table.js "$(pwd)/${packages[DesignLibrary]}/reference/index.html" "${temporary_directory}/DesignLibrary_github/man" "${temporary_directory}/DesignLibrary_github/vignettes"
+
 IFS=$'\n'; set -f
 for file in $(find $(pwd)/public -type f -name '*.html'); do
   echo "Cleaning $file"

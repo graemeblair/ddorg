@@ -26,6 +26,7 @@ Imports:
   lfe,
   margins,
   methods,
+  microbenchmark,
   mvnfast,
   pkgdown,
   prediction,

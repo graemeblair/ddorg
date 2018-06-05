@@ -22,6 +22,7 @@ Imports:
   Formula,
   future.apply,
   ggplot2,
+  huxtable,
   ivpack,
   lfe,
   margins,

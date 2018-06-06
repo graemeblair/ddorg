@@ -46,20 +46,20 @@ uglyurls = true
 # Design Library
 #################
 [[menu.library]]
+  name = "Library Overview"
+  url = "/library/"
+  weight = 1
+
+[[menu.library]]
   identifier = "getting_started"
   name = "Getting Started"
-  weight = 1
+  weight = 2
 
 [[menu.library]]
   parent = "getting_started"
   name = "How to Contribute"
   url = "/library/articles/how_to_write_and_contribute_designers.html"
   weight = 1
-
-[[menu.library]]
-  name = "Library Overview"
-  url = "/library/reference/"
-  weight = 2
 
 [[menu.library]]
   name = "About"

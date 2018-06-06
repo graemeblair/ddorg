@@ -71,3 +71,6 @@ for package in "${!packages[@]}"; do
   echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml"
   node add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml"
 done
+
+# Temporary hack until the final Design Library homepage vignette is ready...
+cp ./public/library/reference/index.html ./public/library/index.html

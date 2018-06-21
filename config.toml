@@ -27,17 +27,14 @@ uglyurls = true
   name = "The Idea"
   url = "/idea/"
   weight = 2
-
 [[menu.main]]
   name = "Design Library"
   url = "/library/"
   weight = 3
-
 [[menu.main]]
   name = "Ask for Help"
   url = "http://discuss.declaredesign.org"
   weight = 4
-
 [[menu.main]]
   name = "About"
   url = "/about/"
@@ -49,18 +46,15 @@ uglyurls = true
   name = "Library Overview"
   url = "/library/"
   weight = 1
-
 [[menu.library]]
   identifier = "getting_started"
   name = "Getting Started"
   weight = 2
-
-[[menu.library]]
-  parent = "getting_started"
-  name = "How to Contribute"
-  url = "/library/articles/how_to_write_and_contribute_designers.html"
-  weight = 1
-
+  [[menu.library]]
+    parent = "getting_started"
+    name = "How to Contribute"
+    url = "/library/articles/how_to_write_and_contribute_designers.html"
+    weight = 1
 [[menu.library]]
   name = "About"
   url = "/about/"
@@ -110,46 +104,46 @@ uglyurls = true
   identifier = "getting_started"
   name = "Getting Started"
   weight = 1
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Getting Started with fabricatr"
-  url = "/R/fabricatr/articles/getting_started.html"
-  weight = 1
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Building and Importing Data"
-  url = "/R/fabricatr/articles/building_importing.html"
-  weight = 2
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Common Social Science Variables"
-  url = "/R/fabricatr/articles/common_social.html"
-  weight = 3
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Generating Variables"
-  url = "/R/fabricatr/articles/variable_generation.html"
-  weight = 4
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Panel and Cross-Classified Data"
-  url = "/R/fabricatr/articles/cross_classified.html"
-  weight = 5
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Resampling"
-  url = "/R/fabricatr/articles/resampling.html"
-  weight = 6
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Time Series Data"
-  url = "/R/fabricatr/articles/time_series.html"
-  weight = 7
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Advanced Features for fabricatr"
-  url = "/R/fabricatr/articles/advanced_features.html"
-  weight = 8
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Getting Started with fabricatr"
+    url = "/R/fabricatr/articles/getting_started.html"
+    weight = 1
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Building and Importing Data"
+    url = "/R/fabricatr/articles/building_importing.html"
+    weight = 2
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Common Social Science Variables"
+    url = "/R/fabricatr/articles/common_social.html"
+    weight = 3
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Generating Variables"
+    url = "/R/fabricatr/articles/variable_generation.html"
+    weight = 4
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Panel and Cross-Classified Data"
+    url = "/R/fabricatr/articles/cross_classified.html"
+    weight = 5
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Resampling"
+    url = "/R/fabricatr/articles/resampling.html"
+    weight = 6
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Time Series Data"
+    url = "/R/fabricatr/articles/time_series.html"
+    weight = 7
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Advanced Features for fabricatr"
+    url = "/R/fabricatr/articles/advanced_features.html"
+    weight = 8
 [[menu.fabricatr]]
   name = "Reference"
   url = "/R/fabricatr/reference/"
@@ -158,38 +152,58 @@ uglyurls = true
 # estimatr
 #################
 [[menu.estimatr]]
+  identifier = "getting_started"
   name = "Getting Started"
-  url = "/R/estimatr/articles/getting-started.html"
   weight = 1
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "Getting Started with estimatr"
+    url = "/R/estimatr/articles/getting-started.html"
+    weight = 1
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "Regression Tables with estimatr"
+    url = "/R/estimatr/articles/regression-tables.html"
+    weight = 2
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "Absorbing Fixed Effects with estimatr"
+    url = "/R/estimatr/articles/absorbing-fixed-effects.html"
+  weight = 3
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "estimatr in the Tidyverse"
+    url = "/R/estimatr/articles/estimatr-in-the-tidyverse.html"
+    weight = 4
 [[menu.estimatr]]
   identifier = "technical_notes"
   name = "Technical Notes"
   weight = 2
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Mathematical Notes"
-  url = "/R/estimatr/articles/mathematical-notes.html"
-  weight = 1
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Simulations - Speed Comparisons"
-  url = "/R/estimatr/articles/benchmarking-estimatr.html"
-  weight = 2
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Simulations - OLS and Variance"
-  url = "/R/estimatr/articles/simulations-ols-variance.html"
-  weight = 3
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Simulations - Debiasing Difference-in-Means"
-  url = "/R/estimatr/articles/simulations-debiasing-dim.html"
-  weight = 4
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "How Stata’s hat matrix differs with weights"
-  url = "/R/estimatr/articles/stata-wls-hat.html"
-  weight = 5
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Mathematical Notes"
+    url = "/R/estimatr/articles/mathematical-notes.html"
+    weight = 1
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Simulations - Speed Comparisons"
+    url = "/R/estimatr/articles/benchmarking-estimatr.html"
+    weight = 2
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Simulations - OLS and Variance"
+    url = "/R/estimatr/articles/simulations-ols-variance.html"
+    weight = 3
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Simulations - Debiasing Difference-in-Means"
+    url = "/R/estimatr/articles/simulations-debiasing-dim.html"
+    weight = 4
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "How Stata’s hat matrix differs with weights"
+    url = "/R/estimatr/articles/stata-wls-hat.html"
+    weight = 5
 [[menu.estimatr]]
   name = "Reference"
   url = "/R/estimatr/reference/"

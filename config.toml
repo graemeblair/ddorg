@@ -144,6 +144,11 @@ uglyurls = true
     name = "Advanced Features for fabricatr"
     url = "/R/fabricatr/articles/advanced_features.html"
     weight = 8
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Other Packages"
+    url = "/R/fabricatr/articles/other_packages.html"
+    weight = 9
 [[menu.fabricatr]]
   name = "Reference"
   url = "/R/fabricatr/reference/"

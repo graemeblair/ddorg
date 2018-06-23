@@ -4,8 +4,8 @@ set -e
 # Cleanup This is important because if a file is removed from the real package,
 # it will not automatically be removed from our content folder unless we clean
 # it out ourselves.
-rm -rf 'content/r' 'public/' 'content/library'
-mkdir -p 'content/r' 'public/' 'content/library'
+rm -rf 'content/r' 'public/' 'content/library' 'static/designs'
+mkdir -p 'content/r' 'public/' 'content/library' 'static/designs'
 
 declare -A packages
 
@@ -41,6 +41,7 @@ popd
 
 pwd
 
+Rscript 'R/create_rdata.R'
 Rscript 'R/hackdown.R' "$temporary_directory"
 
 # Rename the reference index pages because right now they are named index.html.

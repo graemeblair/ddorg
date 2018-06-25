@@ -10,7 +10,7 @@ const $ = cheerio.load(webPage);
 
 function clean_tables()
 {
-    $("table").addClass("table table-striped");
+    $("table:not(#design_library_list)").addClass("table table-striped");
 }
 
 function clean_code_blocks()

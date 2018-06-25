@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "dependencies": {
     "cheerio": "^1.0.0-rc.2",
+    "csv-parse": "^2.5.0",
     "js-yaml": "^3.11.0"
   }
 }

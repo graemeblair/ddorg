@@ -54,21 +54,22 @@ uglyurls = true
   url = "/R/DeclareDesign/articles/DeclareDesign.html"
   weight = 1
 [[menu.declaredesign]]
-  name = "Custom Functions"
+  name = "Tutorials"
+  weight = 1
+[[menu.declaredesign]]
+  parent = "Tutorials",
+  name = "Use Your Own Functions"
   url = "/R/DeclareDesign/articles/custom_functions.html"
   weight = 2
 [[menu.declaredesign]]
+  parent = "Tutorials",
   name = "Advanced Features"
   url = "/R/DeclareDesign/articles/advanced_features.html"
   weight = 3
 [[menu.declaredesign]]
-  name = "Companion Packages"
-  url = "/R/DeclareDesign/articles/companion_packages.html"
-  weight = 4
-[[menu.declaredesign]]
   name = "Reference"
   url = "/R/DeclareDesign/reference/"
-  weight = 5
+  weight = 4
 
 # randomizr
 #################

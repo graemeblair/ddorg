@@ -46,10 +46,6 @@ uglyurls = true
   name = "Contributing"
   url = "/library/articles/how_to_write_and_contribute_designers.html"
   weight = 1
-[[menu.library]]
-  name = "About"
-  url = "/about/"
-  weight = 2
 
 # DeclareDesign
 #################
@@ -209,7 +205,7 @@ uglyurls = true
 #################
 [[menu.packagelist]]
   identifier = "package_list"
-  name = "Packages"
+  name = "Software"
 [[menu.packagelist]]
   parent = "package_list"
   name = "DeclareDesign"

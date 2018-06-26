@@ -180,9 +180,18 @@ function add_design_to_table(row)
     // Add the KEYWORDS column.
     // Combine all keywords from the CSV file, the designer, and the design. Adding and then immediately
     // extracting the keywords from the set is a trick to remove all duplicate keywords.
-    const row_keywords      = extract_keywords(row.keywords, ",");
-    const designer_keywords = designs_and_designers.get(row.designer).concept;
-    const design_keywords   = designs_and_designers.get(row.design).concept;
+    const row_keywords    = extract_keywords(row.keywords, ",");
+    let designer_keywords = [];
+    let design_keywords   = [];
+
+    if (designs_and_designers.get(row.designer))
+    {
+        designer_keywords = designs_and_designers.get(row.designer).concept;
+    }
+    if (designs_and_designers.get(row.design))
+    {
+        design_keywords = designs_and_designers.get(row.design).concept;
+    }
 
     let all_keywords = [...new Set(row_keywords.concat(designer_keywords, design_keywords))];
     all_keywords     = all_keywords.filter(keyword => keyword !== "");

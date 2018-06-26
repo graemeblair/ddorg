@@ -59,18 +59,18 @@ mkdir -p ./public/r/estimatr/vignettes && cp ./public/r/estimatr/articles/lm_spe
 
 cp '_redirects' './public/_redirects'
 
-node create_library_table.js "$(pwd)/${packages[DesignLibrary]}/reference/index.html" "${temporary_directory}/DesignLibrary_github/man" "${temporary_directory}/DesignLibrary_github/vignettes" "${temporary_directory}/DesignLibrary_github/data/overview.csv"
+node js/create_library_table.js "$(pwd)/${packages[DesignLibrary]}/reference/index.html" "${temporary_directory}/DesignLibrary_github/man" "${temporary_directory}/DesignLibrary_github/vignettes" "${temporary_directory}/DesignLibrary_github/data/overview.csv"
 
 IFS=$'\n'; set -f
 for file in $(find $(pwd)/public -type f -name '*.html'); do
   echo "Cleaning $file"
-  node clean_nonlibrary_pages.js "$file"
+  node js/clean_nonlibrary_pages.js "$file"
 done
 unset IFS; set +f
 
 for package in "${!packages[@]}"; do
   echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml"
-  node add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml"
+  node js/add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml"
 done
 
 # Temporary hack until the final Design Library homepage vignette is ready...

@@ -91,3 +91,12 @@ estimatr:
     family: Fultz
     role: Contributor
     contact: https://github.com/nfultz
+strandomizr:
+  - given: John
+    family: Ternovski
+    role: Author
+    contact: http://www.jter.co
+  - given: Alex
+    family: Coppock
+    role: Author
+    contact: http://alexandercoppock.com

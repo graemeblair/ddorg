@@ -39,6 +39,7 @@ Imports:
   rmarkdown,
   sandwich,
   stargazer,
+  systemfit,
   testthat,
   texreg
 Remotes:

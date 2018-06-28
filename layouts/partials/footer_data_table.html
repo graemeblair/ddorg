@@ -2,12 +2,17 @@
 <script src="https://cdn.datatables.net/v/bs4/dt-1.10.18/datatables.min.js"></script>
 
 <script>
-  jQuery(function ()
-  {
-    const library_list = jQuery("#design_library_list");
-    library_list.addClass("table table-striped table-bordered");
-    library_list.DataTable();
+    jQuery(function ()
+    {
+        const library_list = jQuery("#design_library_list");
+        library_list.addClass("table table-striped table-bordered");
+        library_list.DataTable();
 
-    jQuery('[data-toggle="tooltip"]').tooltip();
-  });
+        const tooltip_elements =  jQuery('[data-toggle="tooltip"]');
+        tooltip_elements.tooltip();
+        tooltip_elements.click(function ()
+        {
+            jQuery(this).tooltip("hide");
+        });
+    });
 </script>

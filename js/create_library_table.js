@@ -161,7 +161,7 @@ function add_design_to_table(row)
     // Add the DESIGNER column.
     if (row.designer)
     {
-        table_row.append(`<td><a href="/library/reference/${row.designer}.html">${prettify_title(row.designer)}</a></td>`);
+        table_row.append(`<td class="text-center"><a href="/library/reference/${row.designer}.html" data-toggle="tooltip" title="Documentation"><span class="fas fa-book fa-lg"></span></a></td>`);
     }
     else
     {
@@ -198,7 +198,7 @@ function add_design_to_table(row)
     // Add the EXAMPLE DESIGN column.
     if (row.design)
     {
-        table_row.append(`<td><a href="/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
+        table_row.append(`<td class="text-center"><a href="/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
     }
     else
     {
@@ -207,7 +207,7 @@ function add_design_to_table(row)
 
     if (row.shiny)
     {
-        table_row.append(`<td><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Open Shiny app"><span class="fas fa-info-circle fa-lg"></span></a></td>`);
+        table_row.append(`<td class="text-center"><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Open Shiny app"><span class="fas fa-info-circle fa-lg"></span></a></td>`);
     }
     else
     {

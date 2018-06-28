@@ -4,7 +4,7 @@ requireNamespace("blogdown") # Using requireNamespace because pkgdown and blogdo
 build_package <- function(pkg, out, parent_directory)
 {
   github_dir <- file.path(out, paste0(pkg, "_github"))
-  
+
   # It is very, very, very important to keep all folder names lowercase.
   # Uppercase filenames create bad bugs when building on Travis. When Hugo runs
   # on Travis and there are uppercase folder names, Hugo will create two
@@ -14,12 +14,12 @@ build_package <- function(pkg, out, parent_directory)
   # duplicate folders.
   pkg_original_case <- pkg
   pkg <- tolower(pkg)
-  
+
   # Put the reference pages and vignettes in their own folders under the main package folder.
   main_outdir <- file.path(getwd(), parent_directory)
   outdir_reference <- file.path(getwd(), parent_directory, "reference")
   outdir_vignettes <- file.path(getwd(), parent_directory, "articles")
-  
+
   # We use pkgdown to render the reference pages for packages. For most
   # packages, the default options and templates for pkgdown are OK. These
   # options are in the folder pkgdown_templates. For some packages, we want more
@@ -36,7 +36,7 @@ build_package <- function(pkg, out, parent_directory)
     cat("Using standard templates for", pkg, "\n")
     system(sprintf("cp -r pkgdown_templates/* %s", github_dir))
   }
-  
+
   # We want pkgdown to build the references, but do not let it build the
   # vignettes. Blogdown will take care of them, so just copy them over without
   # touching them.
@@ -48,7 +48,7 @@ build_package <- function(pkg, out, parent_directory)
 build_packages <- function(out, packages)
 {
   print(out)
-  
+
   for (pkg in names(packages))
   {
     build_package(pkg, out, parent_directory = packages[[pkg]])
@@ -64,7 +64,8 @@ packages <-
     fabricatr = "content/r/fabricatr",
     estimatr = "content/r/estimatr",
     DeclareDesign = "content/r/declaredesign",
-    DesignLibrary = "content/library"
+    DesignLibrary = "content/library",
+    strandomizr = "content/stata/randomizr"
   )
 
 build_packages(out, packages)

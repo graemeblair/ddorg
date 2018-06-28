@@ -4,8 +4,8 @@ set -e
 # Cleanup This is important because if a file is removed from the real package,
 # it will not automatically be removed from our content folder unless we clean
 # it out ourselves.
-rm -rf 'content/r' 'public/' 'content/library' 'static/designs'
-mkdir -p 'content/r' 'public/' 'content/library' 'static/designs'
+rm -rf 'content/r' 'content/stata' 'public/' 'content/library' 'static/designs'
+mkdir -p 'content/r' 'content/stata' 'public/' 'content/library' 'static/designs'
 
 declare -A packages
 
@@ -14,7 +14,8 @@ packages=(
 [fabricatr]='public/r/fabricatr'
 [estimatr]='public/r/estimatr'
 [DeclareDesign]='public/r/declaredesign'
-[DesignLibrary]='public/library')
+[DesignLibrary]='public/library'
+[strandomizr]='public/stata/randomizr')
 
 temporary_directory=$(mktemp --directory)
 pushd "$temporary_directory"
@@ -22,8 +23,13 @@ pushd "$temporary_directory"
 pwd
 
 for package in "${!packages[@]}"; do
-  URLS+="https://api.github.com/repos/DeclareDesign/${package}/tarball"
-  URLS+=$'\n'
+  if [[ "$package" == "strandomizr" ]]; then
+    URLS+="https://api.github.com/repos/DeclareDesign/${package}/tarball/web" # TODO: Remove once on main branch.
+    URLS+=$'\n'
+  else
+    URLS+="https://api.github.com/repos/DeclareDesign/${package}/tarball"
+    URLS+=$'\n'
+  fi
 done
 
 printf "${URLS}" | xargs --max-args=1 --max-procs=8 -d '\n' wget --header="Authorization: token ${GITHUB_API_TOKEN}" # Passes the URLs to wget one at a time (--max-args=1). Runs a maximum of 8 wgets in parallel (--max-procs=8).
@@ -32,6 +38,8 @@ printf "${URLS}" | xargs --max-args=1 --max-procs=8 -d '\n' wget --header="Autho
 for tar_file in tarball*; do
   tar xf "$tar_file"
 done
+
+tar xf "web" # TODO: Remove once on main branch.
 
 for package in "${!packages[@]}"; do
   mv DeclareDesign-${package}* "${package}_github"
@@ -54,7 +62,7 @@ Rscript -e 'blogdown::build_site()'
 find ./public -type f -name 'readme.html'
 find ./public -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
 mv ./public/blog.html ./public/blog/index.html # By hand adjustments
-rm ./public/categories.html ./public/conduct.html ./public/idea.html  ./public/r.html  ./public/about.html ./public/library.html # By hand adjustments
+rm ./public/categories.html ./public/conduct.html ./public/idea.html  ./public/r.html  ./public/about.html ./public/library.html ./public/stata.html # By hand adjustments
 mkdir -p ./public/r/estimatr/vignettes && cp ./public/r/estimatr/articles/lm_speed.png ./public/r/estimatr/articles/lm_speed_covars.png ./public/r/estimatr/vignettes # By hand adjustments
 
 cp '_redirects' './public/_redirects'

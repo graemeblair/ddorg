@@ -71,20 +71,23 @@ uglyurls = true
   url = "/R/DeclareDesign/reference/"
   weight = 3
 
-# randomizr
+# randomizr for R
 #################
 [[menu.randomizr]]
-  name = "Getting Started in R"
+  name = "Getting Started"
   url = "/R/randomizr/articles/randomizr_vignette.html"
   weight = 1
 [[menu.randomizr]]
-  name = "Getting Started in Stata"
-  url = "/R/randomizr/articles/srandomizr_vignette.html"
-  weight = 2
-[[menu.randomizr]]
   name = "Reference"
   url = "/R/randomizr/reference/"
-  weight = 3
+  weight = 2
+
+# randomizr for Stata
+#################
+[[menu.strandomizr]]
+  name = "Getting Started"
+  url = "/stata/randomizr/articles/strandomizr_vignette.html"
+  weight = 1
 
 # fabricatr
 #################
@@ -214,19 +217,25 @@ uglyurls = true
   weight = 1
 [[menu.packagelist]]
   parent = "package_list"
-  name = "randomizr"
+  name = "randomizr for R"
   url = "/R/randomizr/"
   weight = 2
 [[menu.packagelist]]
   parent = "package_list"
+  name = "randomizr for Stata"
+  url = "/stata/randomizr/"
+  weight = 3
+[[menu.packagelist]]
+  parent = "package_list"
   name = "fabricatr"
   url = "/R/fabricatr/"
-  weight = 3
+  weight = 4
 [[menu.packagelist]]
   parent = "package_list"
   name = "estimatr"
   url = "/R/estimatr/"
-  weight = 4
+  weight = 5
+
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"

@@ -129,7 +129,7 @@ const table = $(`<table id="design_library_list">
         <th>Author</th>
         <th>Keywords</th>
         <th>Example Design</th>
-        <th>Shiny App</th>
+        <th>Shiny Inspector</th>
     </tr>
     </thead>
     <tbody>
@@ -207,7 +207,7 @@ function add_design_to_table(row)
 
     if (row.shiny)
     {
-        table_row.append(`<td><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Open Shiny app"><i class="fas fa-mobile-alt fa-lg"></i></a></td>`);
+        table_row.append(`<td><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Open Shiny app"><span class="fas fa-info-circle fa-lg"></span></a></td>`);
     }
     else
     {

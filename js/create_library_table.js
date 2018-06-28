@@ -129,6 +129,7 @@ const table = $(`<table id="design_library_list">
         <th>Author</th>
         <th>Keywords</th>
         <th>Example Design</th>
+        <th>Shiny App</th>
     </tr>
     </thead>
     <tbody>
@@ -197,7 +198,16 @@ function add_design_to_table(row)
     // Add the EXAMPLE DESIGN column.
     if (row.design)
     {
-        table_row.append(`<td><a href="/library/reference/${row.design}.html">${prettify_title(row.design)}</a></td>`);
+        table_row.append(`<td><a href="/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
+    }
+    else
+    {
+        table_row.append(`<td></td>`);
+    }
+
+    if (row.shiny)
+    {
+        table_row.append(`<td><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Open Shiny app"><i class="fas fa-mobile-alt fa-lg"></i></a></td>`);
     }
     else
     {

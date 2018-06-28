@@ -150,7 +150,7 @@ function add_design_to_table(row)
     }
     else if (row.design)
     {
-        table_row.append(`<td>${designs_and_designers.get(row.design).title}</td>`);
+        table_row.append(`<td>${prettify_title(row.design)}</td>`);
     }
     else
     {
@@ -182,18 +182,13 @@ function add_design_to_table(row)
     // extracting the keywords from the set is a trick to remove all duplicate keywords.
     const row_keywords    = extract_keywords(row.keywords, ",");
     let designer_keywords = [];
-    let design_keywords   = [];
 
     if (designs_and_designers.get(row.designer))
     {
         designer_keywords = designs_and_designers.get(row.designer).concept;
     }
-    if (designs_and_designers.get(row.design))
-    {
-        design_keywords = designs_and_designers.get(row.design).concept;
-    }
 
-    let all_keywords = [...new Set(row_keywords.concat(designer_keywords, design_keywords))];
+    let all_keywords = [...new Set(row_keywords.concat(designer_keywords))];
     all_keywords     = all_keywords.filter(keyword => keyword !== "");
     all_keywords     = all_keywords.join(", ");
 

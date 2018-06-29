@@ -25,7 +25,7 @@ DeclareDesign has benefited from the contributions of many researchers and coder
 
 `DeclareDesignShiny`: Clara Bicalho, Neal Fultz
 
-`DesignLibrary`: Lily Medina, Tara Slough
+`DesignLibrary`: Clara Bicalho, Lily Medina, Tara Slough
 
 declaredesign.org: Nicholas Rivera
 

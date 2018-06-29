@@ -4,8 +4,6 @@ set -e
 # Cleanup This is important because if a file is removed from the real package,
 # it will not automatically be removed from our content folder unless we clean
 # it out ourselves.
-rm -rf 'content/r' 'content/stata' 'public/' 'content/library' 'static/designs'
-mkdir -p 'content/r' 'content/stata' 'public/' 'content/library' 'static/designs'
 rm -rf 'content/r' 'content/stata' 'public/' 'content/library' 'content/library/designs'
 mkdir -p 'content/r' 'content/stata' 'public/' 'content/library' 'content/library/designs'
 
@@ -80,8 +78,8 @@ unset IFS; set +f
 
 # Add authors
 
-echo "Running add_authors.js $(pwd)/index.html 'Home' $(pwd)/authors.yml Authors"
-node js/add_authors.js "$(pwd)/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
+echo "Running add_authors.js $(pwd)/public/index.html 'Home' $(pwd)/authors.yml Authors"
+node js/add_authors.js "$(pwd)/public/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
 
 for package in "${!packages[@]}"; do
   echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml Developers"

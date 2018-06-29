@@ -125,11 +125,12 @@ const table = $(`<table id="design_library_list">
     <thead>
     <tr>
         <th>Design</th>
+        <th>Vignette</th>
+        <th>Design Inspector</th>
         <th>Designer</th>
-        <th>Author</th>
-        <th>Keywords</th>
         <th>Example Design</th>
-        <th>Shiny Inspector</th>
+        <th>Contributor</th>
+        <th>Keywords</th>
     </tr>
     </thead>
     <tbody>
@@ -147,7 +148,7 @@ function add_design_to_table(row)
     // Add the DESIGN column.
     if (row.vignette)
     {
-        table_row.append(`<td><a href="/library/articles/${row.vignette}.html">${vignettes.get(row.vignette).title}</a></td>`);
+        table_row.append(`<td>${vignettes.get(row.vignette).title}</td>`);
     }
     else if (row.design)
     {
@@ -158,17 +159,47 @@ function add_design_to_table(row)
         table_row.append(`<td></td>`);
     }
 
-    // Add the DESIGNER column.
-    if (row.designer)
+    // Add the VIGNETTE column.
+    if (row.vignette)
     {
-        table_row.append(`<td class="text-center"><a href="/library/reference/${row.designer}.html" data-toggle="tooltip" title="Documentation"><span class="fas fa-book fa-lg"></span></a></td>`);
+        table_row.append(`<td class="text-center"><a href="/library/articles/${row.vignette}.html" data-toggle="tooltip" title="Read description of design"><span class="fab fa-readme fa-lg"></span></a></td>`);
     }
     else
     {
         table_row.append(`<td></td>`);
     }
 
-    // Add the AUTHOR column.
+    // Add the DESIGNER column.
+    if (row.designer)
+    {
+        table_row.append(`<td class="text-center"><a href="/library/reference/${row.designer}.html" data-toggle="tooltip" title="Open designer function documentation"><span class="fas fa-pencil-alt fa-lg"></span></a></td>`);
+    }
+    else
+    {
+        table_row.append(`<td></td>`);
+    }
+
+    // Add the DESIGN INSPECTOR column.
+    if (row.shiny)
+    {
+        table_row.append(`<td class="text-center"><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Go to design inspector"><span class="fas fa-info-circle fa-lg"></span></a></td>`);
+    }
+    else
+    {
+        table_row.append(`<td></td>`);
+    }
+
+    // Add the EXAMPLE DESIGN column.
+    if (row.design)
+    {
+        table_row.append(`<td class="text-center"><a href="/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
+    }
+    else
+    {
+        table_row.append(`<td></td>`);
+    }
+
+    // Add the CONTRIBUTOR column.
     if (row.author && row.author_url)
     {
         table_row.append(`<td><a href="${row.author_url}">${row.author}</a></td>`)
@@ -195,24 +226,8 @@ function add_design_to_table(row)
 
     table_row.append(`<td>${all_keywords}</td>`);
 
-    // Add the EXAMPLE DESIGN column.
-    if (row.design)
-    {
-        table_row.append(`<td class="text-center"><a href="/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
-    }
-    else
-    {
-        table_row.append(`<td></td>`);
-    }
 
-    if (row.shiny)
-    {
-        table_row.append(`<td class="text-center"><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Open Shiny app"><span class="fas fa-info-circle fa-lg"></span></a></td>`);
-    }
-    else
-    {
-        table_row.append(`<td></td>`);
-    }
+
 
     $("#design_library_list > tbody").append(table_row);
 }

@@ -126,8 +126,8 @@ const table = $(`<table id="design_library_list">
     <tr>
         <th>Design</th>
         <th>Vignette</th>
-        <th>Design Inspector</th>
         <th>Designer</th>
+        <th>Design Inspector</th>
         <th>Example Design</th>
         <th>Contributor</th>
         <th>Keywords</th>

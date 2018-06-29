@@ -6,6 +6,8 @@ set -e
 # it out ourselves.
 rm -rf 'content/r' 'content/stata' 'public/' 'content/library' 'static/designs'
 mkdir -p 'content/r' 'content/stata' 'public/' 'content/library' 'static/designs'
+rm -rf 'content/r' 'content/stata' 'public/' 'content/library' 'content/library/designs'
+mkdir -p 'content/r' 'content/stata' 'public/' 'content/library' 'content/library/designs'
 
 declare -A packages
 

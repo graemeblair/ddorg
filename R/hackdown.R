@@ -68,6 +68,8 @@ packages <-
     strandomizr = "content/stata/randomizr"
   )
 
+devtools::install_github("DeclareDesign/DesignLibrary", keep_source = TRUE, force = TRUE)
+
 build_packages(out, packages)
 
 blogdown::build_site()

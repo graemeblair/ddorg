@@ -6,7 +6,20 @@
     {
         const library_list = jQuery("#design_library_list");
         library_list.addClass("table table-striped table-bordered");
-        library_list.DataTable();
+        library_list.DataTable(
+            {
+                "columns":
+                    [
+                        null,
+                        {"width": "5rem"},
+                        {"width": "5rem"},
+                        {"width": "5rem"},
+                        {"width": "5rem"},
+                        {"width": "8rem"},
+                        null
+                    ]
+            }
+        );
 
         const tooltip_elements =  jQuery('[data-toggle="tooltip"]');
         tooltip_elements.tooltip();

@@ -11,12 +11,13 @@ const web_page       = fs.readFileSync(html_file_name, "utf8");
 const $ = cheerio.load(web_page);
 
 const package_name = process.argv[3];
-const header_text = process.argv[4];
 
 
 const authors_file_name = process.argv[4];
 const authors_yaml      = fs.readFileSync(authors_file_name, "utf8");
 const authors           = yaml.safeLoad(authors_yaml);
+const header_text = process.argv[5];
+
 
 if (authors[package_name] === undefined)
 {
@@ -45,7 +46,7 @@ for (const [key, value] of Object.entries(authors[package_name]))
     $("#developers_list", authors_list).append(`<li>
     <ul class="list-unstyled">
         <li><a href="${value["contact"]}">${value["given"]} ${value["family"]}</a></li>
-        <li class="small"> ${roles}</li>
+        <li class="small"> ${roles || ""}</li>
     </ul>
 </li>`);
 }

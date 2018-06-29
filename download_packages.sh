@@ -76,9 +76,14 @@ for file in $(find $(pwd)/public -type f -name '*.html'); do
 done
 unset IFS; set +f
 
+# Add authors
+
+echo "Running add_authors.js $(pwd)/index.html 'Home' $(pwd)/authors.yml Authors"
+node js/add_authors.js "$(pwd)/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
+
 for package in "${!packages[@]}"; do
-  echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml"
-  node js/add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml"
+  echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml Developers"
+  node js/add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml" 'Developers'
 done
 
 # Temporary hack until the final Design Library homepage vignette is ready...

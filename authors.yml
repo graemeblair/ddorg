@@ -100,3 +100,20 @@ strandomizr:
     family: Coppock
     role: Author
     contact: http://alexandercoppock.com
+Home:
+    - given: Graeme
+      family: Blair
+      role:
+      contact: https://graemeblair.com
+    - given: Jasper
+      family: Cooper
+      role:
+      contact: http://jasper-cooper.com
+    - given: Alexander
+      family: Coppock
+      role:
+      contact: http://alexandercoppock.com
+    - given: Macartan
+      family: Humphreys
+      role:
+      contact: http://www.macartan.nyc

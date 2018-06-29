@@ -11,6 +11,8 @@ const web_page       = fs.readFileSync(html_file_name, "utf8");
 const $ = cheerio.load(web_page);
 
 const package_name = process.argv[3];
+const header_text = process.argv[4];
+
 
 const authors_file_name = process.argv[4];
 const authors_yaml      = fs.readFileSync(authors_file_name, "utf8");
@@ -31,7 +33,7 @@ if ($("#toc_column").length === 0)
 }
 
 const authors_list = $(`<div>
-    <p class="h2">Developers</p>
+    <p class="h2">${header_text}</p>
     <ul class='list-unstyled' id="developers_list"></ul>
 </div>
 `);

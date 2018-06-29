@@ -192,7 +192,7 @@ function add_design_to_table(row)
     // Add the EXAMPLE DESIGN column.
     if (row.design)
     {
-        table_row.append(`<td class="text-center"><a href="/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
+        table_row.append(`<td class="text-center"><a href="/library/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
     }
     else
     {

@@ -97,8 +97,8 @@ h6, .h6 {
     font-size: 1rem;
 }
 
-/* Adjust the front page authors. */
+/* Indent the role next under authors'/developers' names. */
 
-.authors_class {
-    font-size: .9rem;
+.role_text {
+    padding-left: .7rem;
 }

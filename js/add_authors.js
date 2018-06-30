@@ -42,12 +42,11 @@ const authors_list = $(`<div>
 for (const [key, value] of Object.entries(authors[package_name]))
 {
     const roles = Array.isArray(value["role"]) ? value["role"].join(", ") : value["role"];
-    const css_class = header_text.toLowerCase().replace(/ /, "_") + "_class";
 
     $("#developers_list", authors_list).append(`<li>
     <ul class="list-unstyled">
-        <li><a href="${value["contact"]}" class="${css_class}">${value["given"]} ${value["family"]}</a></li>
-        <li class="small"> ${roles || ""}</li>
+        <li><a href="${value["contact"]}">${value["given"]} ${value["family"]}</a></li>
+        <li class="small role_text"> ${roles || ""}</li>
     </ul>
 </li>`);
 }

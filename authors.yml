@@ -103,17 +103,17 @@ strandomizr:
 Home:
     - given: Graeme
       family: Blair
-      role:
+      role: UCLA
       contact: https://graemeblair.com
     - given: Jasper
       family: Cooper
-      role:
+      role: Columbia University
       contact: http://jasper-cooper.com
     - given: Alexander
       family: Coppock
-      role:
+      role: Yale University
       contact: http://alexandercoppock.com
     - given: Macartan
       family: Humphreys
-      role:
+      role: Columbia University
       contact: http://www.macartan.nyc

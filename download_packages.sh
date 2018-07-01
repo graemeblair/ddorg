@@ -84,6 +84,9 @@ node js/add_authors.js "$(pwd)/public/index.html" 'Home' "$(pwd)/authors.yml" 'A
 for package in "${!packages[@]}"; do
   echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml Developers"
   node js/add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml" 'Developers'
+
+  echo "Running js/move_pill_badges.js $(pwd)/${packages[$package]}/index.html"
+  node js/move_pill_badges.js "$(pwd)/${packages[$package]}/index.html"
 done
 
 # Temporary hack until the final Design Library homepage vignette is ready...

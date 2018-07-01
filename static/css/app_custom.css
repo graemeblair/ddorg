@@ -98,7 +98,12 @@ h6, .h6 {
 }
 
 /* Indent the role next under authors'/developers' names. */
-
 .role_text {
     padding-left: .7rem;
+}
+
+/* Style pill badges */
+.pill_badge {
+    display: block;
+    margin-bottom: .5rem;
 }

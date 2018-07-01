@@ -50,22 +50,17 @@ uglyurls = true
 # DeclareDesign
 #################
 [[menu.declaredesign]]
-  name = "Getting Started"
-  url = "/R/DeclareDesign/articles/DeclareDesign.html"
+  name = "The Idea"
+  url = "/idea/"
   weight = 1
 [[menu.declaredesign]]
-  name = "Tutorials"
+  name = "Using DeclareDesign"
   weight = 2
   [[menu.declaredesign]]
-    parent = "Tutorials"
-    name = "Use Your Own Functions"
+    parent = "Using DeclareDesign"
+    name = "Custom Functions"
     url = "/R/DeclareDesign/articles/custom_functions.html"
     weight = 1
-  [[menu.declaredesign]]
-    parent = "Tutorials"
-    name = "Advanced Features"
-    url = "/R/DeclareDesign/articles/advanced_features.html"
-    weight = 2
 [[menu.declaredesign]]
   name = "Reference"
   url = "/R/DeclareDesign/reference/"

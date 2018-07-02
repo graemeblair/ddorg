@@ -238,5 +238,6 @@ for (const row of library_table_rows)
     add_design_to_table(row);
 }
 
+$("h1.article-title").addClass("design_library_title");
 
 fs.writeFileSync(library_file_name, $.html());

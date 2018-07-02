@@ -32,10 +32,6 @@ uglyurls = true
   url = "/library/"
   weight = 3
 [[menu.main]]
-  name = "Ask for Help"
-  url = "http://discuss.declaredesign.org"
-  weight = 4
-[[menu.main]]
   name = "About"
   url = "/about/"
   weight = 5
@@ -202,35 +198,39 @@ uglyurls = true
 
 # Package List
 #################
-[[menu.packagelist]]
+[[menu.general]]
   identifier = "package_list"
   name = "Software"
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "DeclareDesign"
-  url = "/R/DeclareDesign/"
   weight = 1
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "randomizr for R"
-  url = "/R/randomizr/"
+  [[menu.general]]
+    parent = "package_list"
+    name = "DeclareDesign"
+    url = "/R/DeclareDesign/"
+    weight = 1
+  [[menu.general]]
+    parent = "package_list"
+    name = "randomizr for R"
+    url = "/R/randomizr/"
+    weight = 2
+  [[menu.general]]
+    parent = "package_list"
+    name = "randomizr for Stata"
+    url = "/stata/randomizr/"
+    weight = 3
+  [[menu.general]]
+    parent = "package_list"
+    name = "fabricatr"
+    url = "/R/fabricatr/"
+    weight = 4
+  [[menu.general]]
+    parent = "package_list"
+    name = "estimatr"
+    url = "/R/estimatr/"
+    weight = 5
+[[menu.general]]
+  name = "Ask for Help"
+  url = "http://discuss.declaredesign.org"
   weight = 2
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "randomizr for Stata"
-  url = "/stata/randomizr/"
-  weight = 3
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "fabricatr"
-  url = "/R/fabricatr/"
-  weight = 4
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "estimatr"
-  url = "/R/estimatr/"
-  weight = 5
-
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"

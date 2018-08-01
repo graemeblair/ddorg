@@ -1,3 +1,5 @@
+devtools::install_github("DeclareDesign/DesignLibrary", keep_source = TRUE, force = TRUE)
+
 library(DesignLibrary)
 
 functions <- ls("package:DesignLibrary")

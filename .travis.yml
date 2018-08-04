@@ -107,7 +107,7 @@ deploy:
     skip_cleanup: true
     on:
       repo: DeclareDesign/declaredesign.org
-      branch: parallel_travis_builds
+      branch: master
       condition: $TRAVIS_BUILD_STAGE_NAME = Test
   - provider: script
     script:

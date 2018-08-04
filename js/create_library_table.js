@@ -25,29 +25,6 @@ const vignettes             = new Map();
 // Process the man pages
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function get_text_from_document(your_regex, text, capturing_group_number)
-{
-    const regex_result = your_regex.exec(text);
-    if (regex_result)
-    {
-        return regex_result[capturing_group_number].trim();
-    }
-
-    return null;
-}
-
-function extract_keywords(keywords, separator)
-{
-    if (!keywords)
-    {
-        return [];
-    }
-
-    keywords = keywords.split(separator);
-    keywords = keywords.filter(keyword => keyword !== "");
-    return keywords;
-}
-
 const man_page_file_names = fs.readdirSync(man_page_directory);
 
 for (const man_page of man_page_file_names)
@@ -65,7 +42,7 @@ for (const man_page of man_page_file_names)
 
     const get_title_regex   = /\\title{\s*(.*?)\s*}/;
     const get_author_regex  = /\\author{\s*\\href{(.*?)}\s*{(.*?)}\s*}/;
-    const get_concept_regex = /\\concept{\s*(.*?)\s*}/;
+    const get_concept_regex = /\\concept{\s*(.*?)\s*}/g; // Global regex because there might be multiple matches.
 
     metadata.title          = get_text_from_document(get_title_regex, man_page_text, 1);
     metadata.author         = get_text_from_document(get_author_regex, man_page_text, 2);
@@ -75,7 +52,7 @@ for (const man_page of man_page_file_names)
     // within a keyword (e.g. "regression discontinuity), I can tell the difference between a newline in the original
     // document and a space within a keyword.
     man_page_text    = man_page_text_original.replace(/[\n\t]/g, ",");
-    metadata.concept = extract_keywords(get_text_from_document(get_concept_regex, man_page_text, 1), ",");
+    metadata.concept = extract_keywords_from_array(get_text_from_document_multiple_matches(get_concept_regex, man_page_text, 1), ",");
 
     designs_and_designers.set(path.parse(man_page).name, metadata);
 }
@@ -110,17 +87,6 @@ for (const vignette of vignette_file_names)
 // Create and fill in the table
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function prettify_title(title)
-{
-    // Replace all spaces with underscores.
-    title = title.replace(/_/g, " ");
-
-    // Capitalize the first word of the title.
-    title = title.charAt(0).toUpperCase() + title.slice(1);
-
-    return title;
-}
-
 const table = $(`<table id="design_library_list">
     <thead>
     <tr>
@@ -139,6 +105,83 @@ const table = $(`<table id="design_library_list">
 
 $("body > div > main > article").append(table);
 
+for (const row of library_table_rows)
+{
+    add_design_to_table(row);
+}
+
+// Add a title to the reference page.
+$("body > div > main > article").prepend(`<h1 class="article-title design_library_title">DesignLibrary</h1>`);
+
+fs.writeFileSync(library_file_name, $.html());
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Helper Functions
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+function get_text_from_document(your_regex, text, capturing_group_number)
+{
+    const regex_result = your_regex.exec(text);
+    if (regex_result)
+    {
+        return regex_result[capturing_group_number].trim();
+    }
+
+    return null;
+}
+
+function get_text_from_document_multiple_matches(your_regex, text, capturing_group_number)
+{
+    let regex_match;
+    const all_matches = [];
+
+    do
+    {
+        regex_match = your_regex.exec(text);
+        if (regex_match)
+        {
+            all_matches.push(regex_match[capturing_group_number].trim());
+        }
+    } while (regex_match);
+
+    return all_matches;
+}
+
+function extract_keywords_from_string(keywords, separator)
+{
+    if (!keywords)
+    {
+        return [];
+    }
+
+    keywords = keywords.split(separator);
+    keywords = keywords.map(keyword => keyword.trim());
+    keywords = keywords.filter(keyword => keyword !== "");
+    return keywords;
+}
+
+function extract_keywords_from_array(keywords)
+{
+    if (!keywords)
+    {
+        return [];
+    }
+
+    keywords = keywords.map(keyword => keyword.trim());
+    keywords = keywords.filter(keyword => keyword !== "");
+    return keywords;
+}
+
+function prettify_title(title)
+{
+    // Replace all spaces with underscores.
+    title = title.replace(/_/g, " ");
+
+    // Capitalize the first word of the title.
+    title = title.charAt(0).toUpperCase() + title.slice(1);
+
+    return title;
+}
 
 function add_design_to_table(row)
 {
@@ -212,7 +255,7 @@ function add_design_to_table(row)
     // Add the KEYWORDS column.
     // Combine all keywords from the CSV file, the designer, and the design. Adding and then immediately
     // extracting the keywords from the set is a trick to remove all duplicate keywords.
-    const row_keywords    = extract_keywords(row.keywords, ",");
+    const row_keywords    = extract_keywords_from_string(row.keywords, ",");
     let designer_keywords = [];
 
     if (designs_and_designers.get(row.designer))
@@ -221,24 +264,10 @@ function add_design_to_table(row)
     }
 
     let all_keywords = [...new Set(row_keywords.concat(designer_keywords))];
-    all_keywords     = all_keywords.filter(keyword => keyword !== "");
     all_keywords     = all_keywords.join(", ");
 
     table_row.append(`<td>${all_keywords}</td>`);
 
 
-
-
     $("#design_library_list > tbody").append(table_row);
 }
-
-
-for (const row of library_table_rows)
-{
-    add_design_to_table(row);
-}
-
-// Add a title to the reference page.
-$("body > div > main > article").prepend(`<h1 class="article-title design_library_title">DesignLibrary</h1>`);
-
-fs.writeFileSync(library_file_name, $.html());

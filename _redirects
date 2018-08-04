@@ -1,8 +1,0 @@
-http://fabricatr.declaredesign.org/* https://declaredesign.org/R/fabricatr/:splat 301!
-http://randomizr.declaredesign.org/* https://declaredesign.org/R/randomizr/:splat 301!
-http://estimatr.declaredesign.org/* https://declaredesign.org/R/estimatr/:splat 301!
-https://fabricatr.declaredesign.org/* https://declaredesign.org/R/fabricatr/:splat 301!
-https://randomizr.declaredesign.org/* https://declaredesign.org/R/randomizr/:splat 301!
-https://estimatr.declaredesign.org/* https://declaredesign.org/R/estimatr/:splat 301!
-
-/pass-through https://nytimes.com    200

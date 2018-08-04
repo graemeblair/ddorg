@@ -55,22 +55,22 @@ uglyurls = true
   [[menu.declaredesign]]
     parent = "Using DeclareDesign"
     name = "Custom Functions"
-    url = "/R/DeclareDesign/articles/custom_functions.html"
+    url = "/r/DeclareDesign/articles/custom_functions.html"
     weight = 1
 [[menu.declaredesign]]
   name = "Reference"
-  url = "/R/DeclareDesign/reference/"
+  url = "/r/DeclareDesign/reference/"
   weight = 3
 
 # randomizr for R
 #################
 [[menu.randomizr]]
   name = "Getting Started"
-  url = "/R/randomizr/articles/randomizr_vignette.html"
+  url = "/r/randomizr/articles/randomizr_vignette.html"
   weight = 1
 [[menu.randomizr]]
   name = "Reference"
-  url = "/R/randomizr/reference/"
+  url = "/r/randomizr/reference/"
   weight = 2
 
 # randomizr for Stata
@@ -89,51 +89,51 @@ uglyurls = true
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Getting Started with fabricatr"
-    url = "/R/fabricatr/articles/getting_started.html"
+    url = "/r/fabricatr/articles/getting_started.html"
     weight = 1
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Building and Importing Data"
-    url = "/R/fabricatr/articles/building_importing.html"
+    url = "/r/fabricatr/articles/building_importing.html"
     weight = 2
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Common Social Science Variables"
-    url = "/R/fabricatr/articles/common_social.html"
+    url = "/r/fabricatr/articles/common_social.html"
     weight = 3
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Generating Variables"
-    url = "/R/fabricatr/articles/variable_generation.html"
+    url = "/r/fabricatr/articles/variable_generation.html"
     weight = 4
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Panel and Cross-Classified Data"
-    url = "/R/fabricatr/articles/cross_classified.html"
+    url = "/r/fabricatr/articles/cross_classified.html"
     weight = 5
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Resampling"
-    url = "/R/fabricatr/articles/resampling.html"
+    url = "/r/fabricatr/articles/resampling.html"
     weight = 6
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Time Series Data"
-    url = "/R/fabricatr/articles/time_series.html"
+    url = "/r/fabricatr/articles/time_series.html"
     weight = 7
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Advanced Features for fabricatr"
-    url = "/R/fabricatr/articles/advanced_features.html"
+    url = "/r/fabricatr/articles/advanced_features.html"
     weight = 8
   [[menu.fabricatr]]
     parent = "getting_started"
     name = "Other Packages"
-    url = "/R/fabricatr/articles/other_packages.html"
+    url = "/r/fabricatr/articles/other_packages.html"
     weight = 9
 [[menu.fabricatr]]
   name = "Reference"
-  url = "/R/fabricatr/reference/"
+  url = "/r/fabricatr/reference/"
   weight = 2
 
 # estimatr
@@ -145,22 +145,22 @@ uglyurls = true
   [[menu.estimatr]]
     parent = "getting_started"
     name = "Getting Started with estimatr"
-    url = "/R/estimatr/articles/getting-started.html"
+    url = "/r/estimatr/articles/getting-started.html"
     weight = 1
   [[menu.estimatr]]
     parent = "getting_started"
     name = "Regression Tables with estimatr"
-    url = "/R/estimatr/articles/regression-tables.html"
+    url = "/r/estimatr/articles/regression-tables.html"
     weight = 2
   [[menu.estimatr]]
     parent = "getting_started"
     name = "Absorbing Fixed Effects with estimatr"
-    url = "/R/estimatr/articles/absorbing-fixed-effects.html"
+    url = "/r/estimatr/articles/absorbing-fixed-effects.html"
   weight = 3
   [[menu.estimatr]]
     parent = "getting_started"
     name = "estimatr in the Tidyverse"
-    url = "/R/estimatr/articles/estimatr-in-the-tidyverse.html"
+    url = "/r/estimatr/articles/estimatr-in-the-tidyverse.html"
     weight = 4
 [[menu.estimatr]]
   identifier = "technical_notes"
@@ -169,31 +169,31 @@ uglyurls = true
   [[menu.estimatr]]
     parent = "technical_notes"
     name = "Mathematical Notes"
-    url = "/R/estimatr/articles/mathematical-notes.html"
+    url = "/r/estimatr/articles/mathematical-notes.html"
     weight = 1
   [[menu.estimatr]]
     parent = "technical_notes"
     name = "Simulations - Speed Comparisons"
-    url = "/R/estimatr/articles/benchmarking-estimatr.html"
+    url = "/r/estimatr/articles/benchmarking-estimatr.html"
     weight = 2
   [[menu.estimatr]]
     parent = "technical_notes"
     name = "Simulations - OLS and Variance"
-    url = "/R/estimatr/articles/simulations-ols-variance.html"
+    url = "/r/estimatr/articles/simulations-ols-variance.html"
     weight = 3
   [[menu.estimatr]]
     parent = "technical_notes"
     name = "Simulations - Debiasing Difference-in-Means"
-    url = "/R/estimatr/articles/simulations-debiasing-dim.html"
+    url = "/r/estimatr/articles/simulations-debiasing-dim.html"
     weight = 4
   [[menu.estimatr]]
     parent = "technical_notes"
     name = "How Stata’s hat matrix differs with weights"
-    url = "/R/estimatr/articles/stata-wls-hat.html"
+    url = "/r/estimatr/articles/stata-wls-hat.html"
     weight = 5
 [[menu.estimatr]]
   name = "Reference"
-  url = "/R/estimatr/reference/"
+  url = "/r/estimatr/reference/"
   weight = 3
 
 # Package List
@@ -205,12 +205,12 @@ uglyurls = true
   [[menu.general]]
     parent = "package_list"
     name = "DeclareDesign"
-    url = "/R/DeclareDesign/"
+    url = "/r/DeclareDesign/"
     weight = 1
   [[menu.general]]
     parent = "package_list"
     name = "randomizr for R"
-    url = "/R/randomizr/"
+    url = "/r/randomizr/"
     weight = 2
   [[menu.general]]
     parent = "package_list"
@@ -220,12 +220,12 @@ uglyurls = true
   [[menu.general]]
     parent = "package_list"
     name = "fabricatr"
-    url = "/R/fabricatr/"
+    url = "/r/fabricatr/"
     weight = 4
   [[menu.general]]
     parent = "package_list"
     name = "estimatr"
-    url = "/R/estimatr/"
+    url = "/r/estimatr/"
     weight = 5
 [[menu.general]]
   name = "Ask for Help"

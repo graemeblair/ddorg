@@ -1,3 +1,6 @@
+/* GENERAL */
+
+/* Fonts */
 @import url('https://fonts.googleapis.com/css?family=IBM+Plex+Mono|IBM+Plex+Sans');
 
 body {
@@ -8,6 +11,7 @@ pre {
     font-family: 'IBM Plex Mono', monospace;
 }
 
+/* Spacing */
 main {
     margin-top: 2rem;
     margin-bottom: 2rem;
@@ -20,7 +24,52 @@ table, img {
     display: inline-block;
 }
 
-/* Blog page styles */
+/* Adjust header sizes. */
+h1, .h1 {
+    font-size: 1.6rem
+}
+
+h2, .h2 {
+    font-size: 1.3rem
+}
+
+h3, .h3 {
+    font-size: 1.15rem
+}
+
+h4, .h4 {
+    font-size: 0.98rem
+}
+
+h5, .h5 {
+    font-size: 0.82rem
+}
+
+h6, .h6 {
+    font-size: 0.66rem
+}
+
+/* MENUS */
+
+/* Adds a space between the fixed and changing portions of the main menu. */
+@media (min-width: 992px) {
+    #package_list_navbarDropdown {
+        margin-left: 1.3rem;
+    }
+}
+
+/* Adjust the main menu font color. */
+#navbarContent > ul > li > a {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* Add a top line to the table of contents. */
+.navbar {
+    border-style: solid;
+    border-width: 1px 1px 4px 1px;
+}
+
+/* BLOG PAGE STYLES */
 .archive {
     margin: 0;
     padding: 0;
@@ -57,42 +106,9 @@ table, img {
     padding: 5px 0;
 }
 
-/* Add a top line to the navbar. */
-.navbar {
-    border-style: solid;
-    border-width: 1px 1px 4px 1px;
-}
+/* MISCELLANEOUS */
 
-/* Adjust header sizes. */
-h1, .h1 {
-    font-size: 1.6rem
-}
-
-h2, .h2 {
-    font-size: 1.3rem
-}
-
-h3, .h3 {
-    font-size: 1.15rem
-}
-
-h4, .h4 {
-    font-size: 0.98rem
-}
-
-h5, .h5 {
-    font-size: 0.82rem
-}
-
-h6, .h6 {
-    font-size: 0.66rem
-}
-
-/* Adjust the main menu font color. */
-#navbarContent > ul > li > a {
-    color: rgba(255, 255, 255, 0.85);
-}
-
+/* Adjusts the font size on the developer/author list. */
 #developers_list {
     font-size: 1rem;
 }
@@ -108,12 +124,7 @@ h6, .h6 {
     margin-bottom: .5rem;
 }
 
+/* Adds a space under the title on the Design Library home page. */
 .design_library_title {
     margin-bottom: 1.2rem;
-}
-
-@media (min-width: 992px) {
-    #package_list_navbarDropdown {
-        margin-left: 1.3rem;
-    }
 }

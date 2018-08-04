@@ -1,46 +1,118 @@
 language: r
-pandoc_version: 2.2.1
+pandoc_version: 2.2.2.1
 
 cache:
-  packages: yes
+  packages: true
   directories:
-  - $HOME/bin
+    - "$HOME/bin"
+
+env:
+  global:
+    # CONTENT_FOLDERS are the folders that we want to be cleared out and recreated every time the build runs. Put a folder
+    # here if your script depends on the existence of an empty folder at build-time.
+    # TOPLEVEL_FOLDERS are the folders that live at the toplevel of the website. For example, you can get to the folder
+    # `about` by going to `declaredesign.org/about`. This makes the `about` folder a toplevel folder.
+    # CONTENT_FOLDER is the folder where you want all the markdown files to live.
+    # PUBLISH_FOLDER is the folder where you want the rendered HTML files to be placed.
+    - CONTENT_FOLDERS='content/r content/stata public/ content/library public/library/designs'
+    - TOPLEVEL_FOLDERS='categories conduct idea  r  about library stata'
+    - CONTENT_FOLDER='content'
+    - PUBLISH_FOLDER='public'
+  matrix:
+    - PACKAGE='DesignLibrary'
+      GITHUB_OWNER='DeclareDesign'
+      BRANCH='master'
+      HOME_FOLDER='library'
+      PKGDOWN_TEMPLATES='DesignLibrary_pkgdown_templates'
+      CUSTOM_SCRIPT='design_library.sh'
+    - PACKAGE='randomizr'
+      GITHUB_OWNER='DeclareDesign'
+      BRANCH='master'
+      HOME_FOLDER='r/randomizr'
+      PKGDOWN_TEMPLATES='pkgdown_templates'
+      CUSTOM_SCRIPT=''
+    - PACKAGE='strandomizr'
+      GITHUB_OWNER='DeclareDesign'
+      BRANCH='web'
+      HOME_FOLDER='stata/randomizr'
+      PKGDOWN_TEMPLATES='pkgdown_templates'
+      CUSTOM_SCRIPT=''
+    - PACKAGE='fabricatr'
+      GITHUB_OWNER='DeclareDesign'
+      BRANCH='master'
+      HOME_FOLDER='r/fabricatr'
+      PKGDOWN_TEMPLATES='pkgdown_templates'
+      CUSTOM_SCRIPT=''
+    - PACKAGE='estimatr'
+      GITHUB_OWNER='DeclareDesign'
+      BRANCH='master'
+      HOME_FOLDER='r/estimatr'
+      PKGDOWN_TEMPLATES='pkgdown_templates'
+      CUSTOM_SCRIPT=''
+    - PACKAGE='DeclareDesign'
+      GITHUB_OWNER='DeclareDesign'
+      BRANCH='master' HOME_FOLDER='r/declaredesign'
+      PKGDOWN_TEMPLATES='pkgdown_templates'
+      CUSTOM_SCRIPT=''
 
 before_install:
-- nvm install node
-- nvm use node
-- npm install cheerio
-- npm install js-yaml
-- node --version
+  - nvm install node
+  - nvm use node
+  - npm install
+  - node --version
 
 before_script:
-- Rscript -e 'blogdown::install_hugo()'
+  - Rscript -e 'blogdown::install_hugo()'
 
 script:
-- ./download_packages.sh
+  - "./download_packages.sh"
 
-before_deploy:
-- wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz
-- ls -laR ./content
-- ls -laR ./public
+jobs:
+  include:
+    - stage: prepare cache
+      script: skip
 
-deploy:
-  provider: script
-  script:
-  - 'if [ "$TRAVIS_BRANCH" != "master" ]; then ./netlifyctl deploy --draft --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; else ./netlifyctl deploy --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"; fi'
-  skip_cleanup: true
-  on:
-    all_branches: true
+# Unfortunately, the default name in Travis for the stage that uses all the
+# options from our build matrix is called Test.
+stages:
+  - prepare cache
+  - test
 
 notifications:
   slack:
     rooms:
-    - secure: "Id0J750ZSethSxB4dkWeEYxGtERd7awjoQ4qUW69cdzVjyadKgVQASp+QDFSDC73TwPrunYrEE1qghu7CvEoDXLb1cAaJSNGknmkoZ7XqNYF6z2emdzMv0maJHYclyBoXDwp7ak96Z8tH0vR0kf8aFm3yVimg756yuHdd7Vo7L6NeUKnaojRsnQFPFKV0FxBvC8ge288OWcO9KwUOlwFZ+/LlCAG+5b0CJD7hfGZCiXmCMvFCC9lmneo/NaxIVN06BwYLYBF/OfN/qLhkV38ai2RJcTR5PRYsiajOC/r+UDD6zljnuSLG/00FcvNpA5DkjKYBTKXZZ9W4MLOfAxExdhWG2CQGeA9ulV4n9VsRXP4lTpgdNvmZZfQSGdJTcV3QKWX0PbfKIMc64UkbTrFerTwmwVmyaejR6gcjDyL3+a48IQ6Ugss6sQ+WA5J240ydjRI/5YX5KGpHocsA5kLo0TOlpxpCftQ3SU4hBcLzmhHFGtQdK4XVohXlWcEiocIffGsbKfxCBpTGZMF/ngawxjyolG8dE7Lq6v0rzY8A3t0CzFoL/eVe53qzjwHDInZcC1MzfhSzJ7Ndc+NExWX7PkV52Ne1ubiex9uyJlW8N9waLf2yaYxFhigQaq5dXL+vsgcyig1xRnDrdqoZByr+JytzdLXsmEKYWD8IQmvq7s="
+    - secure: Id0J750ZSethSxB4dkWeEYxGtERd7awjoQ4qUW69cdzVjyadKgVQASp+QDFSDC73TwPrunYrEE1qghu7CvEoDXLb1cAaJSNGknmkoZ7XqNYF6z2emdzMv0maJHYclyBoXDwp7ak96Z8tH0vR0kf8aFm3yVimg756yuHdd7Vo7L6NeUKnaojRsnQFPFKV0FxBvC8ge288OWcO9KwUOlwFZ+/LlCAG+5b0CJD7hfGZCiXmCMvFCC9lmneo/NaxIVN06BwYLYBF/OfN/qLhkV38ai2RJcTR5PRYsiajOC/r+UDD6zljnuSLG/00FcvNpA5DkjKYBTKXZZ9W4MLOfAxExdhWG2CQGeA9ulV4n9VsRXP4lTpgdNvmZZfQSGdJTcV3QKWX0PbfKIMc64UkbTrFerTwmwVmyaejR6gcjDyL3+a48IQ6Ugss6sQ+WA5J240ydjRI/5YX5KGpHocsA5kLo0TOlpxpCftQ3SU4hBcLzmhHFGtQdK4XVohXlWcEiocIffGsbKfxCBpTGZMF/ngawxjyolG8dE7Lq6v0rzY8A3t0CzFoL/eVe53qzjwHDInZcC1MzfhSzJ7Ndc+NExWX7PkV52Ne1ubiex9uyJlW8N9waLf2yaYxFhigQaq5dXL+vsgcyig1xRnDrdqoZByr+JytzdLXsmEKYWD8IQmvq7s=
     on_success: change
     on_failure: change
-email:
-  recipients:
-  - alex.coppock@yale.edu
-  - graeme.blair@ucla.edu
-  on_success: change
-  on_failure: change
+  email:
+    recipients:
+    - alex.coppock@yale.edu
+    - graeme.blair@ucla.edu
+    on_success: change
+    on_failure: change
+
+before_deploy:
+  - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.3.2/netlifyctl-linux-amd64-0.3.2.tar.gz' | tar xvz
+  - ls -laR ./content
+  - ls -laR ./public
+
+deploy:
+  - provider: s3
+    access_key_id: AKIAIS3NHLFYKA2D3D3Q
+    secret_access_key:
+      secure: yvyF2UvYhPDBgpkIP2Ipp6xElr8ETfAd2wx417CHbiAs7jR2kNmlk/0JjpPTnzEfvwiJbuvA6KNXuYLHYwNMRlUZMcjmp3F/IJTiKdO5q4NoQArWmK4yv6qeudrd4ZAaE8DyLeJW5tldRQN/w3efbz+94y6urr+2qzpicLJ1c3fV8UxtIgxS7iX4ynQbL6BsNUF1y8vzSh3eLem3c1kh1wRG3SZ6mCLQXH4P8FFPX6fYRahm1njE3mK7JqhXAXvOF42xPInaCR+Oql9rIbrArkBsREYd+bT//BIWnOolN3RUscZobW0MozUZAwUs93LfXWxBhaeymbf191+fpZK227E+kX/Li7ENBG/6+VL4sexfbKnu8mQ69hPWRQPNVgfOlwW6cVYASufup5JV6iXR4RmiB64OJreGolXs5TRpdbMRuSxErB6mhAnzTtR+2SOQt13luiFrjwvdcamyIjlGKPBFMOFIxJYQvteCgDtf2J1AVBiVsuGYF6fSg+TmhRy1BSuo28hIOKjikER0p3BUARy6IH8MiV8wfgI6gGIeul904e60U7t93NaTlLy9fhODX6b28bpLzORKpxLXUhht57jsQlQkQhl5trH49nASxr89dumJ0d/1+9Ww6TE5JllLKYzACEe4VZfu2NqBEaJGVMwtkIfSzsd8cptOEPcsA/s=
+    bucket: declaredesign.org
+    local-dir: public
+    region: us-west-1
+    skip_cleanup: true
+    on:
+      repo: DeclareDesign/declaredesign.org
+      branch: parallel_travis_builds
+      condition: $TRAVIS_BUILD_STAGE_NAME = Test
+  - provider: script
+    script:
+      - './netlifyctl deploy --draft --base-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"'
+    skip_cleanup: true
+    on:
+      all_branches: true
+      condition: $TRAVIS_BUILD_STAGE_NAME = Test

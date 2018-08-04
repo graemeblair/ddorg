@@ -1,7 +1,7 @@
 requireNamespace("pkgdown")
 requireNamespace("blogdown") # Using requireNamespace because pkgdown and blogdown have conflicting functions.
 
-build_package <- function(pkg, out, parent_directory)
+build_package <- function(pkg, out, parent_directory, pkgdown_templates)
 {
   github_dir <- file.path(out, paste0(pkg, "_github"))
 
@@ -25,17 +25,8 @@ build_package <- function(pkg, out, parent_directory)
   # options are in the folder pkgdown_templates. For some packages, we want more
   # customization. These packages will have custom pkgdown options and templates
   # in a special folder with the naming scheme MyPackageName_pkgdown_templates.
-  custom_pkgdown_templates_folder <- paste0(pkg_original_case, "_pkgdown_templates")
-  if (dir.exists(custom_pkgdown_templates_folder))
-  {
-    cat("Using custom templates for", pkg, "\n")
-    system(sprintf("cp -r %s_pkgdown_templates/* %s", pkg_original_case, github_dir))
-  }
-  else
-  {
-    cat("Using standard templates for", pkg, "\n")
-    system(sprintf("cp -r pkgdown_templates/* %s", github_dir))
-  }
+  system(sprintf("cp -r %s/* %s", pkgdown_templates, github_dir))
+
 
   # We want pkgdown to build the references, but do not let it build the
   # vignettes. Blogdown will take care of them, so just copy them over without
@@ -45,31 +36,12 @@ build_package <- function(pkg, out, parent_directory)
   system(sprintf("cp %s %s", file.path(github_dir, "README.Rmd"), main_outdir))
 }
 
-build_packages <- function(out, packages)
-{
-  print(out)
-
-  for (pkg in names(packages))
-  {
-    build_package(pkg, out, parent_directory = packages[[pkg]])
-  }
-}
-
 arguments <- commandArgs(trailingOnly = TRUE)
 out <- arguments[1] # Folder with our downloaded and untarred packages.
-
-packages <-
-  list(
-    randomizr = "content/r/randomizr",
-    fabricatr = "content/r/fabricatr",
-    estimatr = "content/r/estimatr",
-    DeclareDesign = "content/r/declaredesign",
-    DesignLibrary = "content/library",
-    strandomizr = "content/stata/randomizr"
-  )
+pkg <- arguments[2]
+parent_directory <- arguments[3] # Folder where we'll save rendered markdown files.
+pkgdown_templates <- arguments[4]
 
 devtools::install_github("DeclareDesign/DesignLibrary", keep_source = TRUE, force = TRUE)
 
-build_packages(out, packages)
-
-blogdown::build_site()
+build_package(pkg, out, parent_directory, pkgdown_templates)

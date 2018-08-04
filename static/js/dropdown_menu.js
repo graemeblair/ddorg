@@ -1,5 +1,8 @@
 "use strict";
 
+// This script makes it so that the main menu dropdowns will show up when you hover over the links (instead of having to
+// click on them).
+
 // Adapted from https://stackoverflow.com/a/48935028
 function handle_dropdown(event)
 {

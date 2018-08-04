@@ -192,7 +192,7 @@ function add_design_to_table(row)
     // Add the EXAMPLE DESIGN column.
     if (row.design)
     {
-        table_row.append(`<td class="text-center"><a href="/library/designs/${row.design}.rda" data-toggle="tooltip" title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
+        table_row.append(`<td class="text-center"><a href="/library/designs/${row.design}.rda" data-toggle="tooltip" download=${row.design} title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
     }
     else
     {
@@ -238,6 +238,7 @@ for (const row of library_table_rows)
     add_design_to_table(row);
 }
 
-$("h1.article-title").addClass("design_library_title");
+// Add a title to the reference page.
+$("body > div > main > article").prepend(`<h1 class="article-title design_library_title">DesignLibrary</h1>`);
 
 fs.writeFileSync(library_file_name, $.html());

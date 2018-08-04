@@ -1,4 +1,4 @@
-baseurl = "https://thirsty-morse-aa29ed.netlify.com"
+baseurl = "https://declaredesign.org/"
 languageCode = "en-us"
 title = "DeclareDesign"
 theme = "hugo-lithium-theme"

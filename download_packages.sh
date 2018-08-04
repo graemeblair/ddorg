@@ -1,93 +1,97 @@
 #!/bin/bash
+
+# This line causes all errors in Bash to fail the build. If we didn't have this line then Travis will
+# keep running even if there were an error somewhere else in the rest of the script.
 set -e
 
 # Cleanup This is important because if a file is removed from the real package,
 # it will not automatically be removed from our content folder unless we clean
-# it out ourselves.
-rm -rf 'content/r' 'content/stata' 'public/' 'content/library' 'content/library/designs'
-mkdir -p 'content/r' 'content/stata' 'public/' 'content/library' 'content/library/designs'
+# it out ourselves. Also, adding the folder back is important because other parts
+# of the script will error out, complaining that they can't find the right folders.
+for content_folder in $CONTENT_FOLDERS; do
+  echo "Removing $content_folder"
+  rm -rf "$content_folder"
+done
 
-declare -A packages
+for content_folder in $CONTENT_FOLDERS; do
+  echo "Creating $content_folder"
+  mkdir -p "$content_folder"
+done
 
-packages=(
-[randomizr]='public/r/randomizr'
-[fabricatr]='public/r/fabricatr'
-[estimatr]='public/r/estimatr'
-[DeclareDesign]='public/r/declaredesign'
-[DesignLibrary]='public/library'
-[strandomizr]='public/stata/randomizr')
-
+# Downloads and untars one package into a temporary directory.
 temporary_directory=$(mktemp --directory)
-pushd "$temporary_directory"
 
+pushd "$temporary_directory"
 pwd
 
-for package in "${!packages[@]}"; do
-  if [[ "$package" == "strandomizr" ]]; then
-    URLS+="https://api.github.com/repos/DeclareDesign/${package}/tarball/web" # TODO: Remove once on main branch.
-    URLS+=$'\n'
-  else
-    URLS+="https://api.github.com/repos/DeclareDesign/${package}/tarball"
-    URLS+=$'\n'
-  fi
-done
+wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xvz
 
-printf "${URLS}" | xargs --max-args=1 --max-procs=8 -d '\n' wget --header="Authorization: token ${GITHUB_API_TOKEN}" # Passes the URLs to wget one at a time (--max-args=1). Runs a maximum of 8 wgets in parallel (--max-procs=8).
-
-
-for tar_file in tarball*; do
-  tar xf "$tar_file"
-done
-
-tar xf "web" # TODO: Remove once on main branch.
-
-for package in "${!packages[@]}"; do
-  mv DeclareDesign-${package}* "${package}_github"
-done
+# All GitHub tar files begin with the name of the GitHub owner of the repository (e.g., DeclareDesign or Nick-Rivera),
+# followed by a dash, followed by the name of the package, and then followed by some junk characters. This line finds
+# the right tar file, then untars it to a folder that starts with the name of the page and ends with the suffix _github.
+# This suffix helps us to find the untarred folder in the R script. The suffix used to be important because we used to downloaded one package
+# from multiple sources. I'm leaving it in just in case we need to download the packages from multiple sources again.
+mv "${GITHUB_OWNER}-${PACKAGE}"* "${PACKAGE}_github"
 
 popd
-
 pwd
 
-Rscript 'R/create_rdata.R'
-Rscript 'R/hackdown.R' "$temporary_directory"
+# Runs the R script that builds the reference pages using pkgdown.
+Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"
+
 
 # Rename the reference index pages because right now they are named index.html.
 # index.html files have a special meaning to Hugo. Leaving reference index pages
 # as index.html will mess up Hugo's build process.
-find ./content/ -type f -name 'index.html' -execdir mv '{}' 'readme.html' ';'
+find "./${CONTENT_FOLDER}/" -type 'f' -name 'index.html' -execdir mv '{}' 'readme.html' ';'
 
 Rscript -e 'blogdown::build_site()'
 
-find ./public -type f -name 'readme.html'
-find ./public -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
-mv ./public/blog.html ./public/blog/index.html # By hand adjustments
-rm ./public/categories.html ./public/conduct.html ./public/idea.html  ./public/r.html  ./public/about.html ./public/library.html ./public/stata.html # By hand adjustments
-mkdir -p ./public/r/estimatr/vignettes && cp ./public/r/estimatr/articles/lm_speed.png ./public/r/estimatr/articles/lm_speed_covars.png ./public/r/estimatr/vignettes # By hand adjustments
+# Changes all the readme.html packages back to index.html.
+find "./${PUBLISH_FOLDER}" -type f -name 'readme.html'
+find "./${PUBLISH_FOLDER}" -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
 
-cp '_redirects' './public/_redirects'
+# Hugo puts its generated index.html page for the blog in a strange place. We're moving it here
+# so that users land on the blog page when they go to https://declaredesign.org/blog/.
+# If we didn't make this move, then users would have to go to https://declaredesign.org/blog.html instead.
+mv "./${PUBLISH_FOLDER}/blog.html" "./${PUBLISH_FOLDER}/blog/index.html"
 
-node js/create_library_table.js "$(pwd)/${packages[DesignLibrary]}/reference/index.html" "${temporary_directory}/DesignLibrary_github/man" "${temporary_directory}/DesignLibrary_github/vignettes" "${temporary_directory}/DesignLibrary_github/inst/extdata/overview.csv"
+for toplevel_folder in $TOPLEVEL_FOLDERS; do
+  # Remove these files that Hugo autogenerates so that our pretty URLs work.
+  rm -f "${PUBLISH_FOLDER}/${toplevel_folder}.html"
+done
 
+
+# Runs custom steps for individual packages.
+# For example, the Design Library package uses a custom script to build its interactive library table.
+if [ -n "$CUSTOM_SCRIPT" ]; then
+  source "scripts/${CUSTOM_SCRIPT}"
+fi
+
+# Finds all .html files in our content folder and runs the clean_pages.js script on them. This script
+# (1) Adds Bootstrap styling to all tables
+# (2) Fixes code blocks on reference pages
+# (3) Creates the table of contents on all pages
+# The goofy IFS=$'\n'; set -f line prevents problems when using the find command with for loops in bash.
+# See https://stackoverflow.com/a/5247919.
 IFS=$'\n'; set -f
-for file in $(find $(pwd)/public -type f -name '*.html'); do
+for file in $(find $(pwd)/"${PUBLISH_FOLDER}" -type f -name '*.html'); do
   echo "Cleaning $file"
-  node js/clean_nonlibrary_pages.js "$file"
+  node js/clean_pages.js "$file"
 done
 unset IFS; set +f
 
-# Add authors
+# Adds authors to the homepage of the entire website (i.e. https://declaredesign.org/index.html).
+# This is a little bit of a cheat. I'm running the same script as I run for all the homepages of the other packages,
+# except instead of passing in the name of a package to the script, I pass in the string 'Home'. In the author.yml
+# file I have a section titled Home, which has the authors' university affiliations for the home page.
+echo "Running add_authors.js $(pwd)/${PUBLISH_FOLDER}/index.html 'Home' $(pwd)/authors.yml Authors"
+node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
 
-echo "Running add_authors.js $(pwd)/public/index.html 'Home' $(pwd)/authors.yml Authors"
-node js/add_authors.js "$(pwd)/public/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
+# Adds developer names to each of the package homepages. Edit these names in the authors.yml file.
+echo "Running add_authors.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html ${PACKAGE} $(pwd)/authors.yml Developers"
+node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html" "${PACKAGE}" "$(pwd)/authors.yml" 'Developers'
 
-for package in "${!packages[@]}"; do
-  echo "Running add_authors.js $(pwd)/${packages[$package]}/index.html ${package} $(pwd)/authors.yml Developers"
-  node js/add_authors.js "$(pwd)/${packages[$package]}/index.html" "${package}" "$(pwd)/authors.yml" 'Developers'
-
-  echo "Running js/move_pill_badges.js $(pwd)/${packages[$package]}/index.html"
-  node js/move_pill_badges.js "$(pwd)/${packages[$package]}/index.html"
-done
-
-# Temporary hack until the final Design Library homepage vignette is ready...
-cp ./public/library/reference/index.html ./public/library/index.html
+# Move pill badges to a sidebar on the package homepages.
+echo "Running js/move_pill_badges.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
+node js/move_pill_badges.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"

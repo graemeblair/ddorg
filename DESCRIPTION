@@ -44,7 +44,7 @@ Imports:
   texreg
 Remotes:
   rstudio/rmarkdown,
-  Nick-Rivera/blogdown,
+  rstudio/blogdown,
   aaronrudkin/pkgdown,
   DeclareDesign/randomizr,
   DeclareDesign/fabricatr,

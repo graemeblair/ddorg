@@ -18,32 +18,40 @@ for content_folder in $CONTENT_FOLDERS; do
   mkdir -p "$content_folder"
 done
 
-# Downloads and untars one package into a temporary directory.
-temporary_directory=$(mktemp --directory)
+if [ -n "$PACKAGE" ]; then
+  # When building a package, remove the blog posts and other folders in the content
+  # folder (e.g., the about page, the code of conduct, etc.) so that they are not built.
+  # This prevents a bad blog post from causing the build of a package to fail.
+  echo "Removing content folders"
+  rm -rf "${CONTENT_FOLDER}"/*/
 
-pushd "$temporary_directory"
-pwd
+  # Downloads and untars one package into a temporary directory.
+  temporary_directory=$(mktemp --directory)
 
-wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xvz
+  pushd "$temporary_directory"
+  pwd
 
-# All GitHub tar files begin with the name of the GitHub owner of the repository (e.g., DeclareDesign or Nick-Rivera),
-# followed by a dash, followed by the name of the package, and then followed by some junk characters. This line finds
-# the right tar file, then untars it to a folder that starts with the name of the page and ends with the suffix _github.
-# This suffix helps us to find the untarred folder in the R script. The suffix used to be important because we used to downloaded one package
-# from multiple sources. I'm leaving it in just in case we need to download the packages from multiple sources again.
-mv "${GITHUB_OWNER}-${PACKAGE}"* "${PACKAGE}_github"
+  wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xvz
 
-popd
-pwd
+  # All GitHub tar files begin with the name of the GitHub owner of the repository (e.g., DeclareDesign or Nick-Rivera),
+  # followed by a dash, followed by the name of the package, and then followed by some junk characters. This line finds
+  # the right tar file, then untars it to a folder that starts with the name of the page and ends with the suffix _github.
+  # This suffix helps us to find the untarred folder in the R script. The suffix used to be important because we used to downloaded one package
+  # from multiple sources. I'm leaving it in just in case we need to download the packages from multiple sources again.
+  mv "${GITHUB_OWNER}-${PACKAGE}"* "${PACKAGE}_github"
 
-# Runs the R script that builds the reference pages using pkgdown.
-Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"
+  popd
+  pwd
+
+  # Runs the R script that builds the reference pages using pkgdown.
+  Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"
 
 
-# Rename the reference index pages because right now they are named index.html.
-# index.html files have a special meaning to Hugo. Leaving reference index pages
-# as index.html will mess up Hugo's build process.
-find "./${CONTENT_FOLDER}/" -type 'f' -name 'index.html' -execdir mv '{}' 'readme.html' ';'
+  # Rename the reference index pages because right now they are named index.html.
+  # index.html files have a special meaning to Hugo. Leaving reference index pages
+  # as index.html will mess up Hugo's build process.
+  find "./${CONTENT_FOLDER}/" -type 'f' -name 'index.html' -execdir mv '{}' 'readme.html' ';'
+fi
 
 Rscript -e 'blogdown::build_site()'
 
@@ -51,10 +59,14 @@ Rscript -e 'blogdown::build_site()'
 find "./${PUBLISH_FOLDER}" -type f -name 'readme.html'
 find "./${PUBLISH_FOLDER}" -type f -name 'readme.html' -execdir mv '{}' 'index.html' ';'
 
-# Hugo puts its generated index.html page for the blog in a strange place. We're moving it here
-# so that users land on the blog page when they go to https://declaredesign.org/blog/.
-# If we didn't make this move, then users would have to go to https://declaredesign.org/blog.html instead.
-mv "./${PUBLISH_FOLDER}/blog.html" "./${PUBLISH_FOLDER}/blog/index.html"
+# If we are building the blog and not a package, move the blog's index page into place.
+if [ -z "$PACKAGE" ]; then
+  # Hugo puts its generated index.html page for the blog in a strange place. We're moving it here
+  # so that users land on the blog page when they go to https://declaredesign.org/blog/.
+  # If we didn't make this move, then users would have to go to https://declaredesign.org/blog.html instead.
+  echo "Moving blog index page..."
+  mv "./${PUBLISH_FOLDER}/${BLOG_FOLDER}.html" "./${PUBLISH_FOLDER}/${BLOG_FOLDER}/index.html"
+fi
 
 for toplevel_folder in $TOPLEVEL_FOLDERS; do
   # Remove these files that Hugo autogenerates so that our pretty URLs work.

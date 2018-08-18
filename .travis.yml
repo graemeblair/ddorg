@@ -18,6 +18,7 @@ env:
     - TOPLEVEL_FOLDERS='categories conduct idea  r  about library stata'
     - CONTENT_FOLDER='content'
     - PUBLISH_FOLDER='public'
+    - BLOG_FOLDER='blog'
   matrix:
     - PACKAGE='DesignLibrary'
       GITHUB_OWNER='DeclareDesign'
@@ -54,6 +55,15 @@ env:
       BRANCH='master' HOME_FOLDER='r/declaredesign'
       PKGDOWN_TEMPLATES='pkgdown_templates'
       CUSTOM_SCRIPT=''
+    # This empty package entry will build all non-package files on the website
+    # (e.g., the blog posts, the about page, the code of conduct...)
+    - PACKAGE=''
+      GITHUB_OWNER=''
+      BRANCH=''
+      HOME_FOLDER=''
+      PKGDOWN_TEMPLATES=''
+      CUSTOM_SCRIPT=''
+
 
 before_install:
   - nvm install node

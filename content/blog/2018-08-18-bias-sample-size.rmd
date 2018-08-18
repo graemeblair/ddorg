@@ -1,0 +1,48 @@
+---
+title: Bias and Sample Size
+author: ''
+date: '2018-08-18'
+slug: bias-sample-size
+categories: []
+tags: []
+---
+
+```{r}
+library(DeclareDesign)
+library(tidyverse)
+
+bias_designer <- function(N) {
+  pop <- declare_population(N = N, u = rnorm(N), e = rnorm(N))
+  pos <- declare_potential_outcomes(Y ~ 0 * Z + u + e)
+  assignment <- declare_assignment(
+    handler = function(data) {
+      within(data, {
+        Z = rbinom(n = nrow(data),
+                   size = 1,
+                   prob = pnorm(u))
+      })
+    }
+  )
+  reveal <- declare_reveal()
+  estimand <- declare_estimand(ATE = 0)
+  estimator <- declare_estimator(Y ~ Z, estimand = estimand)
+  
+  design <- pop + pos + assignment + reveal + estimand + estimator
+  design
+}
+
+designs <- expand_design(designer = bias_designer, N = seq(10, 10000, by = 500))
+
+diags <- declare_diagnosands(select = "bias")
+dx <- diagnose_design(designs, diagnosands = diags, sims = 10, bootstrap_sims = FALSE)
+```
+
+
+```{r}
+ggplot(dx$simulations_df, aes(x = N, y = estimate)) +
+  geom_point() +
+  geom_hline(yintercept = 0, color = "red") +
+  coord_cartesian(ylim = c(-2, 2))
+```
+
+

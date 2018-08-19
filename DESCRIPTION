@@ -41,7 +41,8 @@ Imports:
   stargazer,
   systemfit,
   testthat,
-  texreg
+  texreg,
+  tidyverse
 Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,

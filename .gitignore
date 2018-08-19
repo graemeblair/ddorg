@@ -49,3 +49,8 @@ content/library
 static/r
 static/library
 static/designs
+.idea/workspace.xml
+.idea/vcs.xml
+.idea/modules.xml
+.idea/misc.xml
+.idea/declaredesign.org.iml

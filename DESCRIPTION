@@ -46,7 +46,7 @@ Imports:
 Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,
-  aaronrudkin/pkgdown,
+  Nick-Rivera/pkgdown,
   DeclareDesign/randomizr,
   DeclareDesign/fabricatr,
   DeclareDesign/estimatr,

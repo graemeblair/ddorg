@@ -55,11 +55,11 @@ uglyurls = true
   [[menu.declaredesign]]
     parent = "Using DeclareDesign"
     name = "Custom Functions"
-    url = "/r/DeclareDesign/articles/custom_functions.html"
+    url = "/r/declaredesign/articles/custom_functions.html"
     weight = 1
 [[menu.declaredesign]]
   name = "Reference"
-  url = "/r/DeclareDesign/reference/"
+  url = "/r/declaredesign/reference/"
   weight = 3
 
 # randomizr for R
@@ -205,7 +205,7 @@ uglyurls = true
   [[menu.general]]
     parent = "package_list"
     name = "DeclareDesign"
-    url = "/r/DeclareDesign/"
+    url = "/r/declaredesign/"
     weight = 1
   [[menu.general]]
     parent = "package_list"

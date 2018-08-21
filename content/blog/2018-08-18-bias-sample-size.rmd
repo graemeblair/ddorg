@@ -1,5 +1,5 @@
 ---
-title: Bias and Sample Size
+title: Big Data, Big Bias
 author: ''
 date: '2018-08-18'
 slug: bias-sample-size
@@ -7,42 +7,86 @@ categories: []
 tags: []
 ---
 
+A recent [study in the Lancet](https://doi.org/10.1016/S2215-0366(18)30227-X) used information on 1.2 million individuals to describe the "association" between physical exercise and mental health, finding that even after controlling for demographics and health indicators like body mass index (BMI), people who exercise more have better mental health. 
+
+The study is observational; people who do and do not come to take the treatment (exercise) may be different in a huge variety of ways, both observable and unobservable. Many observational studies that seek to draw causal claims make a "selection on observables" assumption that, conditional on a set of characteristics, the treatment is as-if randomly assigned. The authors of the Lancet study are careful not to make explict causal claims by using descriptive language like "association" but see [this thread](https://twitter.com/annemscheel/status/1029006357603786752) from @annemscheel on how the authors veer pretty directly into causal language when giving policy recommendations and promoting their commercial products.
+
+For the purposes of this blog post, let's suppose (perhaps ungenerously) that the goal of the study is not descriptive but is in fact causal. Let's also ignore the trouble that comes from conditioning on post-treatment variables like BMI by imagining that all such variables were measured **before** subjects did or did not choose to exercise.
+
+The goal here is to show that even an enormous sample size doesn't mitigate bias from unobserved confounding. 1.2 million observations may be small by the standards of giant tech firms, but is in our view, definitively "big data." The well-known point that "bigger data" won't help if the identification assumptions are wrong is of course not novel, but we recaptitualte it here, once again with feeling.
+
+We use [DeclareDesign](declaredesign.org) to run a quick simulation. The "designer" is a function that returns a design. The design involves estimating a treatment effect in an observational study (i.e., the researcher did not assign subjects to exercise or not). We want to know two things about this design: what's the bias, and what's the power, and do either of these depend on sample size.
+
 ```{r}
 library(DeclareDesign)
-library(tidyverse)
 
-bias_designer <- function(N) {
-  pop <- declare_population(N = N, u = rnorm(N), e = rnorm(N))
+big_data_designer <- function(N) {
+  
+  pop <- declare_population(
+    N = N,  # sample size will grow
+    u = rnorm(N), # unobserved heterogeneity that affects outcome and assignment
+    e = rnorm(N, sd = 4) # ideosyncratic error
+    )
+  
+  # outcomes depend on "u" and "e" (but not Z)
   pos <- declare_potential_outcomes(Y ~ 0 * Z + u + e)
+  
+  # Assignment is a function of "u"
   assignment <- declare_assignment(
     handler = function(data) {
       within(data, {
-        Z = rbinom(n = nrow(data),
-                   size = 1,
-                   prob = pnorm(u))
+        Z = rbinom(n = nrow(data), size = 1, prob = pnorm(u))
       })
     }
+    
   )
   reveal <- declare_reveal()
-  estimand <- declare_estimand(ATE = 0)
+  
+  # true effect is zero
+  estimand <- declare_estimand(ATE = 0) 
+  
+  # use difference-in-means to estimate effect
   estimator <- declare_estimator(Y ~ Z, estimand = estimand)
   
+  # declare the design
   design <- pop + pos + assignment + reveal + estimand + estimator
   design
 }
 
-designs <- expand_design(designer = bias_designer, N = seq(10, 10000, by = 500))
 
-diags <- declare_diagnosands(select = "bias")
-dx <- diagnose_design(designs, diagnosands = diags, sims = 10, bootstrap_sims = FALSE)
+# all sample sizes from 10 to 5,000 (we don't need to go bigger)
+designs <- expand_design(designer = big_data_designer, N = seq(100, 5000, by = 100))
+
+# we want to know about bias and power
+diags <- declare_diagnosands(select = c("bias", "power"))
+
+# this actually runs the simulations
+dx <- diagnose_design(designs, diagnosands = diags, sims = 100, bootstrap_sims = FALSE)
 ```
 
+## Bias
+
+The figure below shows the estimated treatment effects in each simulation, for a series of sample sizes. The red line is the truth -- the real average treatment effect is zero in this simulation. But the estimates are all well above zero, and the problem doesn't go away as the sample size increases.
 
 ```{r}
+library(ggplot2)
 ggplot(dx$simulations_df, aes(x = N, y = estimate)) +
   geom_point() +
   geom_hline(yintercept = 0, color = "red") +
-  coord_cartesian(ylim = c(-2, 2))
+  coord_cartesian(ylim = c(-2, 2)) +
+  theme_bw() +
+  ggtitle("Big data doesn't help with bias", "...even with huge sample sizes")
 ```
 
+## Power
 
+And it gets worse!  As sample size increases, so does power, or the probability of getting a "statistically significant"" result. The p-values will indicate that the estimate is significant **even though** it is very badly biased away from the truth.
+
+```{r}
+ggplot(dx$diagnosands_df, aes(x = N, y = power)) +
+  geom_point() +
+  theme_bw() +
+  ggtitle("Big data does help with statistical power", "... so you can **very confidently** be wrong")
+```
+
+In summary, enormous sample sizes won't solve the fundamental inference problem that units that do and do not come to take treatment can be different in both observed and unobserved ways.

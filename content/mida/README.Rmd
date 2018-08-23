@@ -1,8 +1,8 @@
 ---
-title: "The Idea"
+title: "Model-Inquiry-Data Strategy-Analysis Strategy"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Key Idea}
+  %\VignetteIndexEntry{MIDA}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -96,14 +96,11 @@ temp_d[2,] <- paste0("(",temp_d[2,],")")
 kable(temp_d, align = c("cccccccc"),row.names = F)
 ```
 
-- The diagnosis here confirms the fact that random assignment to treatment allows for unbiased estimates of treatment effects. 
-- We can also observe that under the current design, coverage is higher than the nominal 95% rate. 
+- The diagnosis here confirms the fact that random assignment to treatment allows for unbiased estimates of treatment effects.
+- We can also observe that under the current design, coverage is higher than the nominal 95% rate.
     - The high coverage rate arises because conventional standard error estimators are are positively biased when treatment effects are heterogeneous ([see page 852 of Aronow, Green and Lee]( https://projecteuclid.org/download/pdfview_1/euclid.aos/1400592645))
    - This point is often underappreciated: without diagnosis we might not be aware that our design is overly prone to null findings
-   
+
 ----
- 
-To go further, you can [get started using `DeclareDesign` in `R`](https://declaredesign.org/r/declaredesign/), [check out our design library](https://declaredesign.org/library/) for more diagnoses of common designs, and [read our working paper](https://declaredesign.org/paper.pdf) for an overview of the conceptual framework behind `DeclareDesign`. 
 
-
-
+To go further, you can [get started using `DeclareDesign` in `R`](https://declaredesign.org/r/declaredesign/), [check out our design library](https://declaredesign.org/library/) for more diagnoses of common designs, and [read our working paper](https://declaredesign.org/paper.pdf) for an overview of the conceptual framework behind `DeclareDesign`.

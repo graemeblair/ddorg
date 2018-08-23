@@ -24,8 +24,8 @@ uglyurls = true
 #     weight = 1
 
 [[menu.main]]
-  name = "The Idea"
-  url = "/idea/"
+  name = "MIDA"
+  url = "/mida/"
   weight = 2
 [[menu.main]]
   name = "Design Library"
@@ -47,7 +47,7 @@ uglyurls = true
 #################
 [[menu.declaredesign]]
   name = "The Idea"
-  url = "/idea/"
+  url = "/mida/"
   weight = 1
 [[menu.declaredesign]]
   name = "Using DeclareDesign"

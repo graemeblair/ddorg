@@ -1,15 +1,16 @@
 ---
 title: "Home Page"
+output:
+  blogdown::html_page:
+    toc: false
 ---
 # Declaring and Diagnosing Research Designs
 
 Empirical social scientists routinely face two research design problems. First, we need to select
 a high-quality design, given resource constraints. Second, we need to convince readers and
-reviewers of the design’s high quality. 
+reviewers of the design’s high quality.
 
-We describe in this Web site an approach to *declaring* the elements of a research design in 
-code and *diagnosing* the properties of the design, such as power and sampling bias, given 
-assumptions. We outline the [Model-Inquiry-Data Strategy-Analysis Strategy (MIDA) approach](/mida), with further details in our [working paper](/paper.pdf).
+We describe in this Web site an approach to *declaring* the elements of a research design in code and *diagnosing* the properties of the design, such as power and sampling bias, given assumptions. We outline the [Model-Inquiry-Data Strategy-Analysis Strategy (MIDA) approach](/mida), with further details in our [working paper](/paper.pdf).
 
 # Design library
 
@@ -18,14 +19,14 @@ diagnose, modify, and implement.
 
 # Software
 
-We provide four linked software packages to declare and diagnose research designs.
+We provide four software packages to declare and diagnose research designs.
 
-1. [randomizr](/R/randomizr/): Easy-to-use tools for common forms of random assignment and sampling.
-2. [fabricatr](/R/fabricatr/): Imagine your data before you collect it.
-3. [estimatr](/R/estimatr/): Fast estimators for design-based inference.
-4. [DeclareDesign](/R/DeclareDesign/): Declare and diagnose research designs.
+1. randomizr (for [R](/r/randomizr/) and for [Stata](/stata/randomizr)): Easy-to-use tools for common forms of random assignment and sampling.
+2. [fabricatr](/r/fabricatr/): Imagine your data before you collect it.
+3. [estimatr](/r/estimatr/): Fast estimators for design-based inference.
+4. [DeclareDesign](/r/declaredesign/): Declare and diagnose research designs.
 
-The [Getting Started](/R/DeclareDesign/) guide for DeclareDesign provides an overview of
+The [Getting Started](/r/declaredesign/) guide for DeclareDesign provides an overview of
 the capabilities of each package and how to declare and diagnose designs in our framework.
 
 # Getting help
@@ -35,8 +36,8 @@ we'll be happy to assist with our software or coding your design.
 
 # Contributing
 
-We  encourage you to contribute to our [design library](/library/), 
-as well as to submit bug reports and feature requests as [Github](https://github.com/DeclareDesign) issues. 
+We  encourage you to contribute to our [design library](/library/),
+as well as to submit bug reports and feature requests as [Github](https://github.com/DeclareDesign) issues.
 We ask that you agree to our [code of conduct](/conduct/).
 
 # Funding

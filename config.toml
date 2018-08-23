@@ -1,4 +1,4 @@
-baseurl = "https://thirsty-morse-aa29ed.netlify.com"
+baseurl = "https://declaredesign.org/"
 languageCode = "en-us"
 title = "DeclareDesign"
 theme = "hugo-lithium-theme"
@@ -24,179 +24,213 @@ uglyurls = true
 #     weight = 1
 
 [[menu.main]]
-    name = "MIDA"
-    url = "/mida/"
-    weight = 2
-
+  name = "The Idea"
+  url = "/idea/"
+  weight = 2
 [[menu.main]]
-    name = "Design Library"
-    url = "/library/"
-    weight = 3
-
+  name = "Design Library"
+  url = "/library/"
+  weight = 3
 [[menu.main]]
-    name = "Ask for Help"
-    url = "http://discuss.declaredesign.org"
-    weight = 5
+  name = "About"
+  url = "/about/"
+  weight = 5
 
-[[menu.main]]
-    name = "About"
-    url = "/about/"
-    weight = 6
+# Design Library
+#################
+[[menu.library]]
+  name = "Contributing"
+  url = "/library/articles/how_to_write_and_contribute_designers.html"
+  weight = 1
 
 # DeclareDesign
 #################
 [[menu.declaredesign]]
-  name = "Getting Started"
-  url = "/R/DeclareDesign/articles/DeclareDesign.html"
+  name = "The Idea"
+  url = "/idea/"
+  weight = 1
+[[menu.declaredesign]]
+  name = "Using DeclareDesign"
   weight = 2
-[[menu.declaredesign]]
-  name = "Custom Functions"
-  url = "/R/DeclareDesign/articles/custom_functions.html"
-  weight = 3
-[[menu.declaredesign]]
-  name = "Advanced Features"
-  url = "/R/DeclareDesign/articles/advanced_features.html"
-  weight = 4
-[[menu.declaredesign]]
-  name = "Companion Packages"
-  url = "/R/DeclareDesign/articles/companion_packages.html"
-  weight = 5
+  [[menu.declaredesign]]
+    parent = "Using DeclareDesign"
+    name = "Custom Functions"
+    url = "/r/declaredesign/articles/custom_functions.html"
+    weight = 1
 [[menu.declaredesign]]
   name = "Reference"
-  url = "/R/DeclareDesign/reference/"
-  weight = 6
+  url = "/r/declaredesign/reference/"
+  weight = 3
 
-# randomizr
+# randomizr for R
 #################
 [[menu.randomizr]]
-  name = "Getting Started in R"
-  url = "/R/randomizr/articles/randomizr_vignette.html"
-  weight = 2
-[[menu.randomizr]]
-  name = "Getting Started in Stata"
-  url = "/R/randomizr/articles/srandomizr_vignette.html"
-  weight = 3
+  name = "Getting Started"
+  url = "/r/randomizr/articles/randomizr_vignette.html"
+  weight = 1
 [[menu.randomizr]]
   name = "Reference"
-  url = "/R/randomizr/reference/"
-  weight = 4
+  url = "/r/randomizr/reference/"
+  weight = 2
+
+# randomizr for Stata
+#################
+[[menu.strandomizr]]
+  name = "Getting Started"
+  url = "/stata/randomizr/articles/strandomizr_vignette.html"
+  weight = 1
 
 # fabricatr
 #################
 [[menu.fabricatr]]
   identifier = "getting_started"
   name = "Getting Started"
-  weight = 2
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Getting Started with fabricatr"
-  url = "/R/fabricatr/articles/getting_started.html"
   weight = 1
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Building and Importing Data"
-  url = "/R/fabricatr/articles/building_importing.html"
-  weight = 2
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Common Social Science Variables"
-  url = "/R/fabricatr/articles/common_social.html"
-  weight = 3
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Generating Variables"
-  url = "/R/fabricatr/articles/variable_generation.html"
-  weight = 4
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Panel and Cross-Classified Data"
-  url = "/R/fabricatr/articles/cross_classified.html"
-  weight = 5
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Resampling"
-  url = "/R/fabricatr/articles/resampling.html"
-  weight = 6
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Time Series Data"
-  url = "/R/fabricatr/articles/time_series.html"
-  weight = 7
-[[menu.fabricatr]]
-  parent = "getting_started"
-  name = "Advanced Features for fabricatr"
-  url = "/R/fabricatr/articles/advanced_features.html"
-  weight = 8
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Getting Started with fabricatr"
+    url = "/r/fabricatr/articles/getting_started.html"
+    weight = 1
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Building and Importing Data"
+    url = "/r/fabricatr/articles/building_importing.html"
+    weight = 2
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Common Social Science Variables"
+    url = "/r/fabricatr/articles/common_social.html"
+    weight = 3
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Generating Variables"
+    url = "/r/fabricatr/articles/variable_generation.html"
+    weight = 4
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Panel and Cross-Classified Data"
+    url = "/r/fabricatr/articles/cross_classified.html"
+    weight = 5
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Resampling"
+    url = "/r/fabricatr/articles/resampling.html"
+    weight = 6
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Time Series Data"
+    url = "/r/fabricatr/articles/time_series.html"
+    weight = 7
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Advanced Features for fabricatr"
+    url = "/r/fabricatr/articles/advanced_features.html"
+    weight = 8
+  [[menu.fabricatr]]
+    parent = "getting_started"
+    name = "Other Packages"
+    url = "/r/fabricatr/articles/other_packages.html"
+    weight = 9
 [[menu.fabricatr]]
   name = "Reference"
-  url = "/R/fabricatr/reference/"
-  weight = 3
+  url = "/r/fabricatr/reference/"
+  weight = 2
 
 # estimatr
 #################
 [[menu.estimatr]]
+  identifier = "getting_started"
   name = "Getting Started"
-  url = "/R/estimatr/articles/getting-started.html"
-  weight = 2
+  weight = 1
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "Getting Started with estimatr"
+    url = "/r/estimatr/articles/getting-started.html"
+    weight = 1
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "Regression Tables with estimatr"
+    url = "/r/estimatr/articles/regression-tables.html"
+    weight = 2
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "Absorbing Fixed Effects with estimatr"
+    url = "/r/estimatr/articles/absorbing-fixed-effects.html"
+  weight = 3
+  [[menu.estimatr]]
+    parent = "getting_started"
+    name = "estimatr in the Tidyverse"
+    url = "/r/estimatr/articles/estimatr-in-the-tidyverse.html"
+    weight = 4
 [[menu.estimatr]]
   identifier = "technical_notes"
   name = "Technical Notes"
-  weight = 3
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Mathematical Notes"
-  url = "/R/estimatr/articles/mathematical-notes.html"
-  weight = 1
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Simulations - Speed Comparisons"
-  url = "/R/estimatr/articles/benchmarking-estimatr.html"
   weight = 2
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Simulations - OLS and Variance"
-  url = "/R/estimatr/articles/simulations-ols-variance.html"
-  weight = 3
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "Simulations - Debiasing Difference-in-Means"
-  url = "/R/estimatr/articles/simulations-debiasing-dim.html"
-  weight = 4
-[[menu.estimatr]]
-  parent = "technical_notes"
-  name = "How Stata’s hat matrix differs with weights"
-  url = "/R/estimatr/articles/stata-wls-hat.html"
-  weight = 5
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Mathematical Notes"
+    url = "/r/estimatr/articles/mathematical-notes.html"
+    weight = 1
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Simulations - Speed Comparisons"
+    url = "/r/estimatr/articles/benchmarking-estimatr.html"
+    weight = 2
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Simulations - OLS and Variance"
+    url = "/r/estimatr/articles/simulations-ols-variance.html"
+    weight = 3
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "Simulations - Debiasing Difference-in-Means"
+    url = "/r/estimatr/articles/simulations-debiasing-dim.html"
+    weight = 4
+  [[menu.estimatr]]
+    parent = "technical_notes"
+    name = "How Stata’s hat matrix differs with weights"
+    url = "/r/estimatr/articles/stata-wls-hat.html"
+    weight = 5
 [[menu.estimatr]]
   name = "Reference"
-  url = "/R/estimatr/reference/"
-  weight = 4
+  url = "/r/estimatr/reference/"
+  weight = 3
 
 # Package List
 #################
-[[menu.packagelist]]
+[[menu.general]]
   identifier = "package_list"
-  name = "Packages"
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "DeclareDesign"
-  url = "/R/DeclareDesign/"
+  name = "Software"
   weight = 1
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "randomizr"
-  url = "/R/randomizr/"
+  [[menu.general]]
+    parent = "package_list"
+    name = "DeclareDesign"
+    url = "/r/declaredesign/"
+    weight = 1
+  [[menu.general]]
+    parent = "package_list"
+    name = "randomizr for R"
+    url = "/r/randomizr/"
+    weight = 2
+  [[menu.general]]
+    parent = "package_list"
+    name = "randomizr for Stata"
+    url = "/stata/randomizr/"
+    weight = 3
+  [[menu.general]]
+    parent = "package_list"
+    name = "fabricatr"
+    url = "/r/fabricatr/"
+    weight = 4
+  [[menu.general]]
+    parent = "package_list"
+    name = "estimatr"
+    url = "/r/estimatr/"
+    weight = 5
+[[menu.general]]
+  name = "Ask for Help"
+  url = "http://discuss.declaredesign.org"
   weight = 2
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "fabricatr"
-  url = "/R/fabricatr/"
-  weight = 3
-[[menu.packagelist]]
-  parent = "package_list"
-  name = "estimatr"
-  url = "/R/estimatr/"
-  weight = 4
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"
@@ -215,138 +249,3 @@ uglyurls = true
     width = 222
     height = 476
     alt = "Logo"
-
-[Authors]
-
-  [[Authors.DeclareDesign]]
-  given = "Graeme"
-  family = "Blair"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "graeme.blair@ucla.edu"
-
-  [[Authors.DeclareDesign]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "aut"
-  email = "jjc2247@columbia.edu"
-
-  [[Authors.DeclareDesign]]
-  given = "Alexander"
-  family = "Coppock"
-  role = "aut"
-  email = "alex.coppock@yale.edu"
-
-  [[Authors.DeclareDesign]]
-  given = "Macartan"
-  family = "Humphreys"
-  role = "aut"
-  email = "macartan@gmail.com"
-
-  [[Authors.DeclareDesign]]
-  given = "Neal"
-  family = "Fultz"
-  role = "aut"
-  email = "nfultz@gmail.com"
-
-  [[Authors.randomizr]]
-  given = "Alexander"
-  family = "Coppock"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "acoppock@gmail.com"
-
-  [[Authors.randomizr]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "ctb"
-  email = "jaspercooper@gmail.com"
-
-  [[Authors.randomizr]]
-  given = "Neal"
-  family = "Fultz"
-  role = "ctb"
-  email = "nfultz@gmail.com"
-  comment = "C version of restricted partitions"
-
-  [[Authors.fabricatr]]
-  given = "Graeme"
-  family = "Blair"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "graeme.blair@ucla.edu"
-
-  [[Authors.fabricatr]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "aut"
-  email = "jjc2247@columbia.edu"
-
-  [[Authors.fabricatr]]
-  given = "Alexander"
-  family = "Coppock"
-  role = "aut"
-  email = "alex.coppock@yale.edu"
-
-  [[Authors.fabricatr]]
-  given = "Macartan"
-  family = "Humphreys"
-  role = "aut"
-  email = "macartan@gmail.com"
-
-  [[Authors.fabricatr]]
-  given = "Aaron"
-  family = "Rudkin"
-  role = "aut"
-  email = "rudkin@ucla.edu"
-
-  [[Authors.fabricatr]]
-  given = "Neal"
-  family = "Fultz"
-  role = "ctb"
-  email = "nfultz@gmail.com"
-
-  [[Authors.estimatr]]
-  given = "Graeme"
-  family = "Blair"
-  role = [
-    "aut",
-    "cre"
-  ]
-  email = "graeme.blair@ucla.edu"
-
-  [[Authors.estimatr]]
-  given = "Jasper"
-  family = "Cooper"
-  role = "aut"
-  email = "jjc2247@columbia.edu"
-
-  [[Authors.estimatr]]
-  given = "Alexander"
-  family = "Coppock"
-  role = "aut"
-  email = "alex.coppock@yale.edu"
-
-  [[Authors.estimatr]]
-  given = "Macartan"
-  family = "Humphreys"
-  role = "aut"
-  email = "macartan@gmail.com"
-
-  [[Authors.estimatr]]
-  given = "Luke"
-  family = "Sonnet"
-  role = "aut"
-  email = "luke.sonnet@gmail.com"
-
-  [[Authors.estimatr]]
-  given = "Neal"
-  family = "Fultz"
-  role = "ctb"
-  email = "nfultz@gmail.com"

@@ -1,8 +1,8 @@
 ---
-title: "Model-Inquiry-Data Strategy-Analysis Strategy"
+title: "The Idea"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{MIDA}
+  %\VignetteIndexEntry{Key Idea}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

@@ -103,4 +103,4 @@ kable(temp_d, align = c("cccccccc"),row.names = F)
 
 ----
 
-To go further, you can [get started using `DeclareDesign` in `R`](https://declaredesign.org/r/declaredesign/), [check out our design library](https://declaredesign.org/library/) for more diagnoses of common designs, and [read our working paper](https://declaredesign.org/paper.pdf) for an overview of the conceptual framework behind `DeclareDesign`.
+To go further, you can [get started using `DeclareDesign` in `R`](https://declaredesign.org/r/declaredesign/), [check out our design library](https://declaredesign.org/library/) for more diagnoses of common designs, and [read our working paper](https://paper.declaredesign.org/paper.pdf) for an overview of the conceptual framework behind `DeclareDesign`.

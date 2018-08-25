@@ -107,7 +107,17 @@ $("body > div > main > article").append(table);
 
 for (const row of library_table_rows)
 {
-    add_design_to_table(row);
+    try
+    {
+        add_design_to_table(row);
+    }
+    catch (exception)
+    {
+        console.log("Something went wrong when building the library table. " +
+            "See the documentation on the DeclareDesign.org GitHub wiki for tips on how to fix the problem.");
+        throw exception;
+    }
+
 }
 
 // Add a title to the reference page.
@@ -187,62 +197,87 @@ function add_design_to_table(row)
 {
     const table_row = $(`<tr></tr>`);
 
+    console.log(`Adding this row from the CSV file to the library table:
+     ${JSON.stringify(row)}`);
 
     // Add the DESIGN column.
+    console.log("Adding the DESIGN column.");
+
     if (row.vignette)
     {
+        console.log("A vignette was specified. Using the title of the vignette for this column...");
         table_row.append(`<td>${vignettes.get(row.vignette).title}</td>`);
     }
     else if (row.design)
     {
+        console.log("A design was specified. Using the name of the design for this column...");
         table_row.append(`<td>${prettify_title(row.design)}</td>`);
     }
     else
     {
+        console.log("No vignette or design was specified. This column will be empty.");
         table_row.append(`<td></td>`);
     }
 
     // Add the VIGNETTE column.
+    console.log("Adding the VIGNETTE column.");
+
     if (row.vignette)
     {
+        console.log("A vignette was specified. Adding a link to the vignette in this column...");
         table_row.append(`<td class="text-center"><a href="/library/articles/${row.vignette}.html" data-toggle="tooltip" title="Read description of design"><span class="fab fa-readme fa-lg"></span></a></td>`);
     }
     else
     {
+        console.log("No vignette was specified.");
         table_row.append(`<td></td>`);
     }
 
     // Add the DESIGNER column.
+    console.log("Adding the DESIGNER column.");
+
     if (row.designer)
     {
+        console.log("A designer was specified. Adding a link to the designer in this column...");
         table_row.append(`<td class="text-center"><a href="/library/reference/${row.designer}.html" data-toggle="tooltip" title="Open designer function documentation"><span class="fas fa-pencil-alt fa-lg"></span></a></td>`);
     }
     else
     {
+        console.log("No designer was specified.");
         table_row.append(`<td></td>`);
     }
 
     // Add the DESIGN INSPECTOR column.
+    console.log("Adding the DESIGN INSPECTOR column.");
+
     if (row.shiny)
     {
+        console.log("A link to the shiny app was specified. Adding the link in this column...");
         table_row.append(`<td class="text-center"><a href="https://eos.wzb.eu/ipi/DDinspector/?import_library=${row.shiny}" data-toggle="tooltip" title="Go to design inspector"><span class="fas fa-info-circle fa-lg"></span></a></td>`);
     }
     else
     {
+        console.log("No link to the shiny app was specified.");
         table_row.append(`<td></td>`);
     }
 
     // Add the EXAMPLE DESIGN column.
+    console.log("Adding the EXAMPLE DESIGN column.");
+
     if (row.design)
     {
+        console.log("A design was specified. Using that design to fetch the RDATA object.");
         table_row.append(`<td class="text-center"><a href="/library/designs/${row.design}.rda" data-toggle="tooltip" download=${row.design} title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
     }
     else
     {
+        console.log("No design was specified. A design is needed to find the corresponding RDATA object.");
         table_row.append(`<td></td>`);
     }
 
     // Add the CONTRIBUTOR column.
+    console.log("Adding the CONTRIBUTOR column.");
+
     if (row.author && row.author_url)
     {
         table_row.append(`<td><a href="${row.author_url}">${row.author}</a></td>`)
@@ -255,6 +290,8 @@ function add_design_to_table(row)
     // Add the KEYWORDS column.
     // Combine all keywords from the CSV file, the designer, and the design. Adding and then immediately
     // extracting the keywords from the set is a trick to remove all duplicate keywords.
+    console.log("Adding the KEYWORDS column.");
+
     const row_keywords    = extract_keywords_from_string(row.keywords, ",");
     let designer_keywords = [];
 

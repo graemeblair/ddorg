@@ -1,3 +1,6 @@
+{{/* --------------------------------------------------------------------------------------- */}}
+{{/* Creates the dropdown menu items that go along the website's main navbar. */}}
+{{/* --------------------------------------------------------------------------------------- */}}
 {{define "menu_items_template"}}
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
           aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -25,6 +28,9 @@
 
 {{end}}
 
+{{/* --------------------------------------------------------------------------------------- */}}
+{{/* Creates the list of packages in the website's main navbar. */}}
+{{/* --------------------------------------------------------------------------------------- */}}
 {{define "package_list_template"}}
   {{$menu_items := index .context.Site.Menus .section}}
   {{range $menu_items.ByWeight}}
@@ -43,6 +49,9 @@
   {{end}}
 {{end}}
 
+{{/* --------------------------------------------------------------------------------------- */}}
+{{/* Picks which menu items should be displayed depending on the package that is currently being viewed. */}}
+{{/* --------------------------------------------------------------------------------------- */}}
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <div class="container">
 

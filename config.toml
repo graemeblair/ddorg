@@ -242,10 +242,11 @@ uglyurls = true
     highlightjsTheme = "github"
 
     MathJaxCDN = "//cdn.bootcss.com"
-    MathJaxVersion = "2.7.3"
-
-    [params.logo]
-    url = "logo.png"
-    width = 222
-    height = 476
-    alt = "Logo"
+    MathJaxVersion = "2.7.5"
+    
+  # Save this for later.
+  #  [params.logo]
+  #  url = "logo.png"
+  #  width = 222
+  #  height = 476
+  #  alt = "Logo"

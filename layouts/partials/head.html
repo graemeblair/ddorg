@@ -21,11 +21,13 @@
 {{ end }}
 
 {{ partial "head_highlightjs" . }}
-{{ partial "head_font_awesome" }}
-<link rel="stylesheet" href="/css/bootstrap.min.css">
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+{{ partial "head_font_awesome" . }}
+{{ partial "head_bootstrap" . }}
+{{ partial "head_jquery" . }}
 
 {{ range .Site.Params.customCSS }}
 <link rel="stylesheet" href="{{ . | relURL }}">
 {{ end }}
+
+{{/* All non-library items will go in head_custom. */}}
 {{ partial "head_custom" . }}

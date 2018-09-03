@@ -1,5 +1,5 @@
 ---
-title: "Model-Inquiry-Data Strategy-Analysis Strategy (MIDA)"
+title: "Model-Inquiry-Data Strategy-Answer Strategy (MIDA)"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{MIDA}

@@ -98,7 +98,7 @@ kable(temp_d, align = c("cccccccc"),row.names = F)
 
 - The diagnosis here confirms the fact that random assignment to treatment allows for unbiased estimates of treatment effects.
 - We can also observe that under the current design, coverage is higher than the nominal 95% rate.
-    - The high coverage rate arises because conventional standard error estimators are are positively biased when treatment effects are heterogeneous ([see page 852 of Aronow, Green and Lee]( https://projecteuclid.org/download/pdfview_1/euclid.aos/1400592645))
+    - The high coverage rate arises because conventional standard error estimators are generally too large (though with some exceptions, for example, when treatment effects are constant) ([see page 852 of Aronow, Green and Lee]( https://projecteuclid.org/download/pdfview_1/euclid.aos/1400592645))
    - This point is often underappreciated: without diagnosis we might not be aware that our design is overly prone to null findings
 
 ----

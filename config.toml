@@ -241,9 +241,8 @@ uglyurls = true
     highlightjsLang = ["r", "yaml"]
     highlightjsTheme = "github"
 
-    MathJaxCDN = "//cdn.bootcss.com"
     MathJaxVersion = "2.7.5"
-    
+
   # Save this for later.
   #  [params.logo]
   #  url = "logo.png"

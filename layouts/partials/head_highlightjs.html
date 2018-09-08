@@ -1,0 +1,6 @@
+{{ if and (not .Params.disable_highlight) (in (string .Content) "</pre>") }}
+{{ $highTheme := .Site.Params.highlightjsTheme }}
+{{ with .Site.Params.highlightjsVersion }}
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{ . }}/styles/{{ $highTheme }}.min.css'>
+{{ end }}
+{{ end }}

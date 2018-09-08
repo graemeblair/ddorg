@@ -94,7 +94,6 @@ const table = $(`<table id="design_library_list">
         <th>Vignette</th>
         <th>Designer</th>
         <th>Design Inspector</th>
-        <th>Example Design</th>
         <th>Contributor</th>
         <th>Keywords</th>
     </tr>
@@ -260,21 +259,7 @@ function add_design_to_table(row)
         console.log("No link to the shiny app was specified.");
         table_row.append(`<td></td>`);
     }
-
-    // Add the EXAMPLE DESIGN column.
-    console.log("Adding the EXAMPLE DESIGN column.");
-
-    if (row.design)
-    {
-        console.log("A design was specified. Using that design to fetch the RDATA object.");
-        table_row.append(`<td class="text-center"><a href="/library/designs/${row.design}.rda" data-toggle="tooltip" download=${row.design} title="Download design"><span class="fas fa-download fa-lg"></span></a></td>`);
-    }
-    else
-    {
-        console.log("No design was specified. A design is needed to find the corresponding RDATA object.");
-        table_row.append(`<td></td>`);
-    }
-
+    
     // Add the CONTRIBUTOR column.
     console.log("Adding the CONTRIBUTOR column.");
 

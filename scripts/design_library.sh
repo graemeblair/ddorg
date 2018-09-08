@@ -6,5 +6,3 @@ node js/create_library_table.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/referen
 
 # Temporary hack until the final Design Library homepage vignette is ready...
 cp "${PUBLISH_FOLDER}/${HOME_FOLDER}/reference/index.html" "${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
-
-Rscript './R/create_rdata.R'

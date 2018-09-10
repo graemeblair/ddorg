@@ -78,7 +78,7 @@ before_script:
   - Rscript -e 'blogdown::install_hugo()'
 
 script:
-  - "./download_packages.sh"
+  - ./download_packages.sh
 
 jobs:
   include:
@@ -129,7 +129,7 @@ deploy:
       condition: $TRAVIS_BUILD_STAGE_NAME = Test
   - provider: script
     script:
-      - './netlifyctl deploy --draft --publish-directory "public" --site-id "$NETLIFY_SITE_ID" --access-token "$NETLIFY_ACCESS_TOKEN"'
+      -  ./scripts/deploy.sh "$GITHUB_API_TOKEN" "$TRAVIS_PULL_REQUEST" "$PACKAGE"
     skip_cleanup: true
     on:
       all_branches: true

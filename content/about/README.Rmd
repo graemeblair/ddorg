@@ -7,7 +7,7 @@ output:
 
 The DeclareDesign project is directed by [Graeme Blair](https://graemeblair.com) (UCLA), [Jasper Cooper](http://jasper-cooper.com) (Columbia University), [Alexander Coppock](http://alexandercoppock.com) (Yale University), and [Macartan Humphreys](http://macartan.nyc) (Columbia University and WZB).
 
-## Project contributors 
+## Project contributors
 
 DeclareDesign has benefited from the contributions of many researchers and coders. We recognize contributors in addition to the principal investigators to each component:
 
@@ -29,12 +29,11 @@ We thank contributors to earlier iterations of the project Thomas Leavitt, Tara 
 
 # Contributing
 
-We encourage you to contribute to our [design library](/library/), 
-as well as to submit bug reports and feature requests for our software as [Github](https://github.com/DeclareDesign) issues. 
+We encourage you to contribute to our [design library](/library/),
+as well as to submit bug reports and feature requests for our software as [Github](https://github.com/DeclareDesign) issues.
 We ask that contributors agree to our [code of conduct](/conduct/).
 
 # Funding
 
 We are grateful for major funding from the [Laura and John Arnold Foundation](http://www.arnoldfoundation.org/)
 and seed funding from [EGAP -- Evidence in Governance and Politics](http://egap.org).
-

@@ -259,7 +259,7 @@ function add_design_to_table(row)
         console.log("No link to the shiny app was specified.");
         table_row.append(`<td></td>`);
     }
-    
+
     // Add the CONTRIBUTOR column.
     console.log("Adding the CONTRIBUTOR column.");
 

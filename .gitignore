@@ -46,11 +46,8 @@ node_modules/
 content/r
 content/library
 
-static/r
-static/library
-static/designs
-.idea/workspace.xml
-.idea/vcs.xml
-.idea/modules.xml
-.idea/misc.xml
-.idea/declaredesign.org.iml
+# Ignore WebStorm files
+.idea/
+
+# Ignore RStudio Configuration
+declaredesign.org.Rproj

@@ -234,7 +234,7 @@ uglyurls = true
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"
-
+    
     # Options for highlight.js
     highlightjsVersion = "9.12.0"
     highlightjsLang = ["r", "yaml"]

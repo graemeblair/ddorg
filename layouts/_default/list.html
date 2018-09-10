@@ -11,13 +11,19 @@
   {{ else }}
   <div class="archive">
     {{ range (where .Data.Pages "Section" "!=" "").GroupByDate "2006" }}
-    <h2 class="archive-title">{{ .Key }}</h2>
+    <!--<h2 class="archive-title">{{ .Key }}</h2>-->
     {{ range .Pages }}
     <article class="archive-item">
       <a href="{{ .RelPermalink }}" class="archive-item-link">{{ .Title }}</a>
       <span class="archive-item-date">
         {{ .Date.Format "2006/01/02" }}
       </span>
+      {{ with .Description }}
+        {{ $.Scratch.Set "summary" (markdownify .) }}
+      {{ else }}
+        {{ $.Scratch.Set "summary" ((index (findRE "(<p.*?>(.|\n)*?</p>)" .Content 1) 0) | replaceRE "&amp;" "&" | safeHTML) }}
+      {{ end }}
+      {{ $.Scratch.Get "summary" }}
     </article>
     {{ end }}
     {{ end }}

@@ -11,10 +11,10 @@ bibliography: bib/blog.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-library(DeclareDesign)
-library(knitr)
-library(DesignLibrary)
-library(tidyverse)
+# library(DeclareDesign)
+# library(knitr)
+# library(DesignLibrary)
+# library(tidyverse)
 set.seed(1)
 theme_set(theme_bw())
 ```
@@ -34,7 +34,7 @@ Let's declare a design with a model of the form:
 In this world, $X$ is a function of background unobserved variables $U_1$ and $U_2$, a treatment variable $Z$ is a function of $U_2$, and an outcome $Y$ is a function of $Z$ and $U_1$. We can assume that that $X$ is determined prior to $Z$. We will use two answer strategies, one with a control and one without. Here is the full declaration:
 
 
-```{r}
+```{r, eval = FALSE}
 # Parameters
 b <- 1
 N <- 40

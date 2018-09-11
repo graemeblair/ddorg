@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 # library(DesignLibrary)
 # library(tidyverse)
 set.seed(1)
-theme_set(theme_bw())
+# theme_set(theme_bw())
 ```
 
 Consider an observational study looking at the effect of $Z$ on $Y$. Say you have a pretreatment covariate, $X$, that is correlated with both $Z$ and $Y$. Should you control for $X$ when you try to assess the effect of $Z$ on $Y$?

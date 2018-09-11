@@ -42,13 +42,13 @@ Imports:
   systemfit,
   testthat,
   texreg,
-  tidyverse,
-  fabricatr,
-  randomizr,
-  estimatr,
-  DeclareDesign,
-  DesignLibrary
+  tidyverse
 Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,
-  Nick-Rivera/pkgdown
+  Nick-Rivera/pkgdown,
+  DeclareDesign/fabricatr,
+  DeclareDesign/randomizr,
+  DeclareDesign/estimatr,
+  DeclareDesign/DeclareDesign,
+  DeclareDesign/DesignLibrary

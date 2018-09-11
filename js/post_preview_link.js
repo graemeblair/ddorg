@@ -34,7 +34,7 @@ const options = {
         "Authorization": `token ${API_KEY}`
     },
     body: {
-        "body": `# ${CURRENT_PACKAGE}\n[Preview link](${PREVIEW_URL})`
+        "body": `### ${CURRENT_PACKAGE}\n[Preview link](${PREVIEW_URL})`
     },
     json: true
 };

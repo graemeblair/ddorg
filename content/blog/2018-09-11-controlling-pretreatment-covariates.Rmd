@@ -21,7 +21,7 @@ set.seed(1)
 
 Consider an observational study looking at the effect of $Z$ on $Y$. Say you have a pretreatment covariate, $X$, that is correlated with both $Z$ and $Y$. Should you control for $X$ when you try to assess the effect of $Z$ on $Y$?
 
-This has been a question of some disagreement, with @rosenbaum2002observational, for instance, arguing that "there is little to no reason to avoid adjustment for a true covariate, a variable describing subjects before treatment" and @greenland1999causal and others arguing that you cannot answer this question without a causal model of how $Z$ relates to $X$ and $Y$. See also [this](!https://andrewgelman.com/2009/07/23/pearls_and_gelm/) discussion hosted by Andy Gelman.
+This has been a question of some disagreement, with @rosenbaum2002observational, for instance, arguing that "there is little to no reason to avoid adjustment for a true covariate, a variable describing subjects before treatment" and @greenland1999causal and others arguing that you cannot answer this question without a causal model of how $Z$ relates to $X$ and $Y$. See also [this](!https://andrewgelman.com/2009/07/23/pearls_and_gelm/) discussion hosted by Andy Gelman. Controlling for pretreatment covariates in a randomized experiment usually can't hurt and usually increases precision -- but what about in an observational study in which pretreatment covariates might be correlated with both the (nonrandomly assigned) treatment and the outcome?
 
 Design declaration and diagnosis makes it relatively simple to examine the kinds of cases that worry Greenland et al and see where risks of bias might come from. 
 
@@ -94,6 +94,6 @@ draw_data(null_design) %>%
 
 What we see here is that, overall, the red points are no higher or lower than the blue points --- indicating no treatment effect. Yet *within any vertical band* (i.e.  keeping $X$ fixed), the blue dots are generally higher than the red dots ---- that is, a non-causal correlation is artificially introduced through conditioning. 
 
-The implication is quite a deep one: models of data generating processes are sometimes required in order to justify the choice of statistical models.
+The implication is quite a deep one: models of data generating processes are sometimes required in order to justify the choice of statistical models. 
 
 # References

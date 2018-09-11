@@ -1,6 +1,6 @@
 ---
-title: "Controlling for pretreatment covariates can introduce bias"
-date: '2018-09-11'
+title: "How controlling for pretreatment covariates can introduce bias"
+date: '2018-09-13'
 output:
   html_document:
     highlight: tango
@@ -17,12 +17,13 @@ library(DesignLibrary)
 library(tidyverse)
 set.seed(1)
 theme_set(theme_bw())
-sims <- 100
+sims <- 3500
+do_diagnosis <- FALSE
 ```
 
-Consider an observational study looking at the effect of $Z$ on $Y$. Say you have a pretreatment covariate, $X$, that is correlated with both $Z$ and $Y$. Should you control for $X$ when you try to assess the effect of $Z$ on $Y$?
+Consider an observational study looking at the effect of a non-randomly assigned treatment, $Z$, on $Y$. Say you have a pretreatment covariate, $X$, that is correlated with both $Z$ and $Y$. Should you control for $X$ when you try to assess the effect of $Z$ on $Y$?
 
-This has been a question of some disagreement, with @rosenbaum2002observational, for instance, arguing that "there is little to no reason to avoid adjustment for a true covariate, a variable describing subjects before treatment" and @greenland1999causal and others arguing that you cannot answer this question without a causal model of how $Z$ relates to $X$ and $Y$. See also [this](!https://andrewgelman.com/2009/07/23/pearls_and_gelm/) discussion hosted by Andy Gelman. Controlling for pretreatment covariates in a randomized experiment usually can't hurt and usually increases precision -- but what about in an observational study in which pretreatment covariates might be correlated with both the (nonrandomly assigned) treatment and the outcome?
+This has been a question of some disagreement, with @rosenbaum2002observational, for instance, arguing that "there is little to no reason to avoid adjustment for a true covariate, a variable describing subjects before treatment," and @greenland1999causal and others arguing that you cannot answer this question without a causal model of how $Z$ relates to $X$ and $Y$. See also [this](https://andrewgelman.com/2009/07/23/pearls_and_gelm/) discussion hosted by Andy Gelman.  Controlling for pretreatment covariates in a randomized experiment usually can't hurt and usually increases precision -- but what about in an observational study in which pretreatment covariates might be correlated with both the (nonrandomly assigned) treatment and the outcome?
 
 Design declaration and diagnosis makes it relatively simple to examine the kinds of cases that worry Greenland et al and see where risks of bias might come from. 
 
@@ -32,8 +33,7 @@ Let's declare a design with a model of the form:
 * $Z = f_2(U_2)$
 * $Y = f_3(Z, U_1)$
 
-In this world, $X$ is a function of background unobserved variables $U_1$ and $U_2$, a treatment variable $Z$ is a function of $U_2$, and an outcome $Y$ is a function of $Z$ and $U_1$. We can assume that that $X$ is determined prior to $Z$. We will use two answer strategies, one with a control and one without. Here is the full declaration:
-
+In this world, $X$ is a function of background unobserved variables $U_1$ and $U_2$, a treatment variable $Z$ is a function of $U_2$, and an outcome $Y$ is a function of $Z$ and $U_1$. We can assume that that $X$ is determined prior to $Z$. We will use two answer strategies, both regression based approaches, one with a control and one without.^[In contrast to the regression approach examined here, Bayesian approaches that model the causal structure could use information on $Z$ without introducing the kinds of problems presented here.] Here is the full declaration:
 
 ```{r, eval = TRUE}
 # Parameters
@@ -51,8 +51,7 @@ answer_1   <- declare_estimator(Y ~ Z, estimand = "ate",
 answer_2   <- declare_estimator(Y ~ Z + X, estimand = "ate", 
                                 model = lm_robust, label =  "With control")
 
-design <- population + potentials + estimand + reveal_Y +
-          answer_1 + answer_2
+design <- population + potentials + estimand + reveal_Y + answer_1 + answer_2
 ```
 
 
@@ -62,9 +61,9 @@ Here is the diagnosis:
 diagnosis   <- diagnose_design(design)
 ```
 
-```{r, eval = FALSE, echo=FALSE}
-# diagnosis   <- diagnose_design(design, sims = sims, bootstrap_sims = FALSE)
-# write_rds(diagnosis, path = "rfiles/controlling_pretreatment_1.rds")
+```{r, eval = do_diagnosis, echo=FALSE}
+diagnosis   <- diagnose_design(design, sims = sims, bootstrap_sims = FALSE)
+write_rds(diagnosis, path = "rfiles/controlling_pretreatment_1.rds")
 ```
 
 
@@ -85,26 +84,25 @@ For a little more intuition, we can modify the design to look at a world in whic
 null_design <- redesign(design, N = 5000, b = 0)
 ```
 
-We diagnose the modified design:
-
-```{r, eval = FALSE}
+```{r, eval = FALSE, echo = FALSE}
 diagnosis   <- diagnose_design(null_design, sims = sims, bootstrap_sims = FALSE)
 ```
 
-```{r, eval = FALSE, echo=FALSE}
-# diagnosis   <- diagnose_design(null_design, sims = sims, bootstrap_sims = FALSE)
-# write_rds(diagnosis, path = "rfiles/controlling_pretreatment_2.rds")
+```{r, eval = do_diagnosis, echo=FALSE}
+diagnosis   <- diagnose_design(null_design, sims = sims, bootstrap_sims = FALSE)
+write_rds(diagnosis, path = "rfiles/controlling_pretreatment_2.rds")
 ```
 
+Diagnosis yields:
 
-```{r, echo = FALSE, eval = FALSE}
+```{r, echo = FALSE, eval = TRUE}
 diagnosis <- read_rds("rfiles/controlling_pretreatment_2.rds")
-kable(diagnosis$diagnosands[, c("estimator_label", "bias")], digits = 2, caption = "Note: Null design")
+kable(diagnosis$diagnosands[, c("estimator_label", "bias")], digits = 2)
 ```
 
 We still observe bias. To see where this bias is coming from let us draw data from this design and plot the relationship between $Z$ and $Y$. Doing so lets us see how $Z$ and $Y$ relate to to each other for different values of $X$.
 
-```{r, fig.cap="Note: Correlation between Z and Y introduced by controlling for X. Red dots for Z = 1 cases, blue for Z = 0", echo=TRUE, eval = TRUE}
+```{r, fig.cap="Note: Correlation between Z and Y introduced by controlling for X.", echo=TRUE, eval = TRUE, fig.align="center"}
 draw_data(null_design) %>%
   ggplot(aes(X, Y, color = as.factor(Z))) + 
   geom_point(alpha = 0.5) + 
@@ -112,8 +110,8 @@ draw_data(null_design) %>%
   scale_color_manual(values = c("blue", "red"))
 ```
 
-What we see here is that, overall, the red points are no higher or lower than the blue points --- indicating no treatment effect. Yet *within any vertical band* (i.e.  keeping $X$ fixed), the blue dots are generally higher than the red dots ---- that is, a non-causal correlation is artificially introduced through conditioning. 
+What we see here is that, overall, the red points are no higher or lower than the blue points --- indicating no treatment effect. Yet *within any vertical band* (i.e.,  keeping $X$ fixed), the blue dots are generally higher than the red dots. Conditioning induces a non-causal correlation. 
 
-The implication is quite a deep one: models of data generating processes are sometimes required in order to justify the choice of statistical models. 
+The implication is quite a deep one: models of data generating processes are sometimes required in order to justify the choice of statistical models.
 
 # References

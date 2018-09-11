@@ -43,13 +43,12 @@ Imports:
   testthat,
   texreg,
   tidyverse,
-  knitr
+  fabricatr,
+  randomizr,
+  estimatr,
+  DeclareDesign,
+  DesignLibrary
 Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,
-  Nick-Rivera/pkgdown,
-  DeclareDesign/randomizr,
-  DeclareDesign/fabricatr,
-  DeclareDesign/estimatr,
-  DeclareDesign/DeclareDesign
-  DeclareDesign/DesignLibrary
+  Nick-Rivera/pkgdown

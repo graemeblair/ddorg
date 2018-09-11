@@ -11,12 +11,13 @@ bibliography: bib/blog.bib
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-# library(DeclareDesign)
-# library(knitr)
-# library(DesignLibrary)
-# library(tidyverse)
+library(DeclareDesign)
+library(knitr)
+library(DesignLibrary)
+library(tidyverse)
 set.seed(1)
-# theme_set(theme_bw())
+theme_set(theme_bw())
+sims <- 100
 ```
 
 Consider an observational study looking at the effect of $Z$ on $Y$. Say you have a pretreatment covariate, $X$, that is correlated with both $Z$ and $Y$. Should you control for $X$ when you try to assess the effect of $Z$ on $Y$?
@@ -34,7 +35,7 @@ Let's declare a design with a model of the form:
 In this world, $X$ is a function of background unobserved variables $U_1$ and $U_2$, a treatment variable $Z$ is a function of $U_2$, and an outcome $Y$ is a function of $Z$ and $U_1$. We can assume that that $X$ is determined prior to $Z$. We will use two answer strategies, one with a control and one without. Here is the full declaration:
 
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 # Parameters
 b <- 1
 N <- 40
@@ -61,8 +62,15 @@ Here is the diagnosis:
 diagnosis   <- diagnose_design(design)
 ```
 
-```{r, echo = FALSE, eval = FALSE}
-kable(reshape_diagnosis(diagnose_design(design, sims = sims, bootstrap_sims = 0))[, -c(4,14)])
+```{r, eval = FALSE, echo=FALSE}
+# diagnosis   <- diagnose_design(design, sims = sims, bootstrap_sims = FALSE)
+# write_rds(diagnosis, path = "rfiles/controlling_pretreatment_1.rds")
+```
+
+
+```{r, echo = FALSE, eval = TRUE}
+diagnosis <- read_rds("rfiles/controlling_pretreatment_1.rds")
+kable(reshape_diagnosis(diagnosis)[, -c(4,14)])
 ```
 
 We see that the estimator without controls is unbiased while the one with controls is terribly biased. Clearly introducing a control was a mistake, even though the control was pretreatment. 
@@ -73,18 +81,30 @@ The reason why the estimator with controls behaves so poorly is not as obvious. 
 
 For a little more intuition, we can modify the design to look at a world in which $Z$ does not affect $Y$:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 null_design <- redesign(design, N = 5000, b = 0)
+```
+
+We diagnose the modified design:
+
+```{r, eval = FALSE}
 diagnosis   <- diagnose_design(null_design, sims = sims, bootstrap_sims = FALSE)
 ```
 
+```{r, eval = FALSE, echo=FALSE}
+# diagnosis   <- diagnose_design(null_design, sims = sims, bootstrap_sims = FALSE)
+# write_rds(diagnosis, path = "rfiles/controlling_pretreatment_2.rds")
+```
+
+
 ```{r, echo = FALSE, eval = FALSE}
+diagnosis <- read_rds("rfiles/controlling_pretreatment_2.rds")
 kable(diagnosis$diagnosands[, c("estimator_label", "bias")], digits = 2, caption = "Note: Null design")
 ```
 
 We still observe bias. To see where this bias is coming from let us draw data from this design and plot the relationship between $Z$ and $Y$. Doing so lets us see how $Z$ and $Y$ relate to to each other for different values of $X$.
 
-```{r, fig.cap="Note: Correlation between Z and Y introduced by controlling for X. Red dots for Z = 1 cases, blue for Z = 0", echo=TRUE, eval = FALSE}
+```{r, fig.cap="Note: Correlation between Z and Y introduced by controlling for X. Red dots for Z = 1 cases, blue for Z = 0", echo=TRUE, eval = TRUE}
 draw_data(null_design) %>%
   ggplot(aes(X, Y, color = as.factor(Z))) + 
   geom_point(alpha = 0.5) + 

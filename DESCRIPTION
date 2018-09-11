@@ -42,7 +42,8 @@ Imports:
   systemfit,
   testthat,
   texreg,
-  tidyverse
+  tidyverse,
+  knitr
 Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,
@@ -51,3 +52,4 @@ Remotes:
   DeclareDesign/fabricatr,
   DeclareDesign/estimatr,
   DeclareDesign/DeclareDesign
+  DeclareDesign/DesignLibrary

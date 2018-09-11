@@ -1,0 +1,15 @@
+---
+title: 'DeclareDesign: The Blog'
+slug: welcome
+data: '2018-09-12'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Welcome to the `DeclareDesign` blog! We have been working on developing the `DeclareDesign` family of packages to let researchers easily generate research designs and assess their properties.  Our plan  over the next six months is to put up weekly blog posts showing off features of the packages or highlighting the kinds of things you can learn about research design using these packages.
+
+Posts will go up here, but our very first blog post is kindly hosted not here but over at the World Bank Development Impact blog, here: https://blogs.worldbank.org/impactevaluations/ Big thanks to Berk Ozler and colleagues for hosting us there. That blog introduces the idea of design declaration and diagnosis.
+
+Our first post *here* will use `DeclareDesign` to shed light on what has been a point of disagreement between researchers trying to figure out whether there are ever risks of bias arising from taking account of control variables --- even "pretreatment" variables -- when assessing effects in observational research.  

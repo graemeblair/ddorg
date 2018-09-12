@@ -1,6 +1,6 @@
 ---
 title: 'DeclareDesign: The Blog'
-slug: welcome
+slug: declaredesign-blog
 data: '2018-09-12'
 ---
 

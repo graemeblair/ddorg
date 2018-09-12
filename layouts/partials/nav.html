@@ -74,6 +74,9 @@
             {{else if (hasPrefix .Dir "library")}}
               <a class="navbar-brand" href="/library/">Design Library</a>
               {{template "menu_items_template" dict "section" "library" "context" .}}
+            {{else if (hasPrefix .Dir "blog")}}
+              <a class="navbar-brand" href="/blog/">DeclareDesign Blog</a>
+              {{template "menu_items_template" dict "section" "main" "context" .}} {{/* Reuse the default menu layout */}}
             {{else}}
               <a class="navbar-brand" href="/">DeclareDesign</a>
               {{template "menu_items_template" dict "section" "main" "context" .}}

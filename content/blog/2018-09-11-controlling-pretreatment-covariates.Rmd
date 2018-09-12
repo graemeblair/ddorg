@@ -1,5 +1,6 @@
 ---
 title: "How controlling for pretreatment covariates can introduce bias"
+slug: "controlling-pretreatment-covariates"
 date: '2018-09-13'
 output:
   html_document:

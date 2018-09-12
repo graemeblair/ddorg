@@ -11,6 +11,7 @@ Imports:
   clubSandwich,
   data.table,
   DeclareDesign,
+  DesignLibrary,
   devtools,
   diagram,
   doParallel,
@@ -47,7 +48,8 @@ Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,
   Nick-Rivera/pkgdown,
-  DeclareDesign/randomizr,
   DeclareDesign/fabricatr,
+  DeclareDesign/randomizr,
   DeclareDesign/estimatr,
-  DeclareDesign/DeclareDesign
+  DeclareDesign/DeclareDesign,
+  DeclareDesign/DesignLibrary

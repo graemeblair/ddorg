@@ -10,12 +10,11 @@ Empirical social scientists routinely face two research design problems. First, 
 a high-quality design, given resource constraints. Second, we need to convince readers and
 reviewers of the design’s high quality.
 
-We describe in this Web site an approach to *declaring* the elements of a research design in code and *diagnosing* the properties of the design, such as power and sampling bias, given assumptions. We outline the [Model-Inquiry-Data Strategy-Analysis Strategy (MIDA) approach](/mida), with further details in our [working paper](https://paper.declaredesign.org/paper.pdf).
+We describe in this Web site an approach to *declaring* the elements of a research design in code and *diagnosing* the properties of the design, such as power and sampling bias, given assumptions. We outline the [Model-Inquiry-Data Strategy-Analysis Strategy (MIDA) approach](/mida), with further details in our [working paper](https://declaredesign.org/declare.pdf).
 
 # Design library
 
-To make getting started easy, we provide a [library of common research designs](/library/) that you can
-diagnose, modify, and implement.
+To make getting started easy, we provide a [library of common research designs](/library/) that you can diagnose, modify, and implement.
 
 # Software
 

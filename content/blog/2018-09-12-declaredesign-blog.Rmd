@@ -2,7 +2,7 @@
 title: 'DeclareDesign: The Blog'
 slug: declaredesign-blog
 date: '2018-09-12'
-weight: 1
+weight: 2
 ---
 
 ```{r setup, include=FALSE}

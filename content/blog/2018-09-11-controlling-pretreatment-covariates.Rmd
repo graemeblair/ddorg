@@ -7,7 +7,7 @@ output:
     theme: cerulean
     code_folding: show
 bibliography: bib/blog.bib
-weight: 2
+weight: 1
 ---
 
 ```{r setup, include=FALSE}

@@ -1,6 +1,6 @@
 ---
 title: "How controlling for pretreatment covariates can introduce bias"
-date: "2018-09-11"
+date: "2018-09-12"
 output:
   html_document:
     highlight: tango

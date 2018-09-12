@@ -11,6 +11,7 @@ Imports:
   clubSandwich,
   data.table,
   DeclareDesign,
+  DesignLibrary,
   devtools,
   diagram,
   doParallel,

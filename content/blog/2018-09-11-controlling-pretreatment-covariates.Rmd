@@ -8,6 +8,7 @@ output:
     code_folding: show
 bibliography: bib/blog.bib
 weight: 1
+enable_comments: true
 ---
 
 ```{r setup, include=FALSE}

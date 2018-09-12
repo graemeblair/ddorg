@@ -3,6 +3,7 @@ title: 'DeclareDesign: The Blog'
 slug: declaredesign-blog
 date: '2018-09-12'
 weight: 2
+enable_comments: true
 ---
 
 ```{r setup, include=FALSE}

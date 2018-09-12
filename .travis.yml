@@ -109,28 +109,19 @@ notifications:
     on_success: change
     on_failure: change
 
-before_deploy:
-  - wget -qO- 'https://github.com/netlify/netlifyctl/releases/download/v0.4.0/netlifyctl-linux-amd64-0.4.0.tar.gz' | tar xvz
-  - ls -laR ./content
-  - ls -laR ./public
+after_success:
+  - if [ "$TRAVIS_BUILD_STAGE_NAME" = Test ] && [ "$GITHUB_API_TOKEN" ]; then ./scripts/deploy.sh "$GITHUB_API_TOKEN" "$TRAVIS_PULL_REQUEST" "$PACKAGE"; fi
 
 deploy:
-  - provider: s3
-    access_key_id: AKIAIS3NHLFYKA2D3D3Q
-    secret_access_key:
-      secure: yvyF2UvYhPDBgpkIP2Ipp6xElr8ETfAd2wx417CHbiAs7jR2kNmlk/0JjpPTnzEfvwiJbuvA6KNXuYLHYwNMRlUZMcjmp3F/IJTiKdO5q4NoQArWmK4yv6qeudrd4ZAaE8DyLeJW5tldRQN/w3efbz+94y6urr+2qzpicLJ1c3fV8UxtIgxS7iX4ynQbL6BsNUF1y8vzSh3eLem3c1kh1wRG3SZ6mCLQXH4P8FFPX6fYRahm1njE3mK7JqhXAXvOF42xPInaCR+Oql9rIbrArkBsREYd+bT//BIWnOolN3RUscZobW0MozUZAwUs93LfXWxBhaeymbf191+fpZK227E+kX/Li7ENBG/6+VL4sexfbKnu8mQ69hPWRQPNVgfOlwW6cVYASufup5JV6iXR4RmiB64OJreGolXs5TRpdbMRuSxErB6mhAnzTtR+2SOQt13luiFrjwvdcamyIjlGKPBFMOFIxJYQvteCgDtf2J1AVBiVsuGYF6fSg+TmhRy1BSuo28hIOKjikER0p3BUARy6IH8MiV8wfgI6gGIeul904e60U7t93NaTlLy9fhODX6b28bpLzORKpxLXUhht57jsQlQkQhl5trH49nASxr89dumJ0d/1+9Ww6TE5JllLKYzACEe4VZfu2NqBEaJGVMwtkIfSzsd8cptOEPcsA/s=
-    bucket: declaredesign.org
-    local-dir: public
-    region: us-west-1
-    skip_cleanup: true
-    on:
-      repo: DeclareDesign/declaredesign.org
-      branch: master
-      condition: $TRAVIS_BUILD_STAGE_NAME = Test
-  - provider: script
-    script:
-      -  ./scripts/deploy.sh "$GITHUB_API_TOKEN" "$TRAVIS_PULL_REQUEST" "$PACKAGE"
-    skip_cleanup: true
-    on:
-      all_branches: true
-      condition: $TRAVIS_BUILD_STAGE_NAME = Test
+  provider: s3
+  access_key_id: AKIAIS3NHLFYKA2D3D3Q
+  secret_access_key:
+    secure: yvyF2UvYhPDBgpkIP2Ipp6xElr8ETfAd2wx417CHbiAs7jR2kNmlk/0JjpPTnzEfvwiJbuvA6KNXuYLHYwNMRlUZMcjmp3F/IJTiKdO5q4NoQArWmK4yv6qeudrd4ZAaE8DyLeJW5tldRQN/w3efbz+94y6urr+2qzpicLJ1c3fV8UxtIgxS7iX4ynQbL6BsNUF1y8vzSh3eLem3c1kh1wRG3SZ6mCLQXH4P8FFPX6fYRahm1njE3mK7JqhXAXvOF42xPInaCR+Oql9rIbrArkBsREYd+bT//BIWnOolN3RUscZobW0MozUZAwUs93LfXWxBhaeymbf191+fpZK227E+kX/Li7ENBG/6+VL4sexfbKnu8mQ69hPWRQPNVgfOlwW6cVYASufup5JV6iXR4RmiB64OJreGolXs5TRpdbMRuSxErB6mhAnzTtR+2SOQt13luiFrjwvdcamyIjlGKPBFMOFIxJYQvteCgDtf2J1AVBiVsuGYF6fSg+TmhRy1BSuo28hIOKjikER0p3BUARy6IH8MiV8wfgI6gGIeul904e60U7t93NaTlLy9fhODX6b28bpLzORKpxLXUhht57jsQlQkQhl5trH49nASxr89dumJ0d/1+9Ww6TE5JllLKYzACEe4VZfu2NqBEaJGVMwtkIfSzsd8cptOEPcsA/s=
+  bucket: declaredesign.org
+  local-dir: public
+  region: us-west-1
+  skip_cleanup: true
+  on:
+    repo: DeclareDesign/declaredesign.org
+    branch: master
+    condition: $TRAVIS_BUILD_STAGE_NAME = Test

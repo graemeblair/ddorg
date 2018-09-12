@@ -18,10 +18,10 @@ uglyurls = true
 
 # Home
 #################
-# [[menu.main]]
-#     name = "Blog"
-#     url = "/blog/"
-#     weight = 1
+ [[menu.main]]
+     name = "Blog"
+     url = "/blog/"
+     weight = 1
 
 [[menu.main]]
   name = "MIDA"
@@ -46,7 +46,7 @@ uglyurls = true
 # DeclareDesign
 #################
 [[menu.declaredesign]]
-  name = "The Idea"
+  name = "MIDA"
   url = "/mida/"
   weight = 1
 [[menu.declaredesign]]
@@ -188,7 +188,7 @@ uglyurls = true
     weight = 4
   [[menu.estimatr]]
     parent = "technical_notes"
-    name = "How Stata’s hat matrix differs with weights"
+    name = "How Stata's hat matrix differs with weights"
     url = "/r/estimatr/articles/stata-wls-hat.html"
     weight = 5
 [[menu.estimatr]]
@@ -227,6 +227,11 @@ uglyurls = true
     name = "estimatr"
     url = "/r/estimatr/"
     weight = 5
+  [[menu.general]]
+    parent = "package_list"
+    name = "DesignLibrary"
+    url = "/library/"
+    weight = 6
 [[menu.general]]
   name = "Ask for Help"
   url = "http://discuss.declaredesign.org"

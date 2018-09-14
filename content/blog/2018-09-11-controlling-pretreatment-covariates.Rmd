@@ -78,9 +78,9 @@ kable(reshape_diagnosis(diagnosis)[, -c(4,14)])
 
 We see that the estimator without controls is unbiased while the one with controls is very biased. Clearly, introducing a control was a mistake, even though the control was pretreatment. 
 
-The reason why the estimator without controls is unbiased is simple enough: although $X$ is indeed correlated with $Z$ and $Y$, it is not correlated with $Y$ given $Z$. Indeed, in the model given, it is as if $X$ is randomly assigned by the random variable $U_2$.
+The reason why the estimator without controls is unbiased is simple enough: $U_2$ is correlated with $X$ and $Y$ (via $Z$), however it is not correlated with $Y$ given $Z$. Indeed, in the model given, it is as if $Z$ is randomly assigned by $U_2$.
 
-The reason why the estimator with controls behaves so poorly is not as obvious. Conditioning on $X$ introduces a correlation between $Y$ and $Z$ that is not due to the effect of $Z$ on $Y$. In the language used by researchers working with graphical causal models, $X$ is a "collider" for $U_1$ and $U_2$ and so controlling for $X$ *introduces* a correlation between $U_1$ and $U_2$. Conditioning on $X$ creates a "backdoor path" between $Z$ and $Y$, inducing a correlation between them that is not a result of the causal effect.
+The reason why the estimator with controls behaves so poorly is not as obvious. Conditioning on $X$ *introduces* a correlation between $Y$ and $Z$ that is not due to the effect of $Z$ on $Y$. In the language used by researchers working with graphical causal models, $X$ is a "collider" for $U_1$ and $U_2$. Conditioning on $X$ creates a "backdoor path" between $Z$ and $Y$, inducing a correlation between them that is not a result of the causal effect.
 
 For a little more intuition, we can modify the design to look at a world in which $Z$ does not affect $Y$:
 

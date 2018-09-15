@@ -23,6 +23,7 @@ Imports:
   formatR,
   Formula,
   future.apply,
+  GGally,
   ggplot2,
   huxtable,
   ivpack,

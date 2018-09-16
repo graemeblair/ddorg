@@ -14,7 +14,7 @@ library(knitr)
 library(DeclareDesign)
 ```
 
-The idea motivating **DeclareDesign** is that the core analytic features of research designs can be declared in a complete manner and saved as an object. Once properly declared, a design can easily be shared, modified, improved, and used. A design contains the information needed to implement key parts of data generation and subsequent analysis. It also contains enough information to allow researchers or third parties to query it and determine whether it can support the claims it makes. We describe this framework in greater detail in [our paper](https://paper.declaredesign.org/paper.pdf).
+The idea motivating **DeclareDesign** is that the core analytic features of research designs can be declared in a complete manner and saved as an object. Once properly declared, a design can easily be shared, modified, improved, and used. A design contains the information needed to implement key parts of data generation and subsequent analysis. It also contains enough information to allow researchers or third parties to query it and determine whether it can support the claims it makes. We describe this framework in greater detail in [our paper](https://declaredesign.org/declare.pdf).
 
 ## Components of a research design
 
@@ -103,4 +103,4 @@ kable(temp_d, align = c("cccccccc"),row.names = F)
 
 ----
 
-To go further, you can [get started using `DeclareDesign` in `R`](https://declaredesign.org/r/declaredesign/), [check out our design library](https://declaredesign.org/library/) for more diagnoses of common designs, and [read our working paper](https://paper.declaredesign.org/paper.pdf) for an overview of the conceptual framework behind `DeclareDesign`.
+To go further, you can [get started using `DeclareDesign` in `R`](https://declaredesign.org/r/declaredesign/), [check out our design library](https://declaredesign.org/library/) for more diagnoses of common designs, and [read our working paper](https://declaredesign.org/declare.pdf) for an overview of the conceptual framework behind `DeclareDesign`.

@@ -1,7 +1,7 @@
 ---
 title: 'DeclareDesign: The Blog'
 slug: declaredesign-blog
-date: '2018-09-12'
+date: '2018-09-11'
 weight: 2
 enable_comments: true
 ---

@@ -108,7 +108,7 @@ write_rds(diagnosis, path = "rfiles/2_spillover_1.rds")
 
 ```{r, echo = FALSE, eval = TRUE}
 diagnosis <- read_rds("rfiles/2_spillover_1.rds")
-kable(reshape_diagnosis(diagnosis)[,-(2:3)], digits = 2)
+kable(reshape_diagnosis(diagnosis)[,-(1:5)], digits = 2)
 ```
 
 

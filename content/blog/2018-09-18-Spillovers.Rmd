@@ -1,0 +1,203 @@
+---
+title: "The importance of declaring estimands in designs with spillovers"
+date: "2018-09-18"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib
+---
+
+```{r setup, include=FALSE}
+rm(list = ls())
+knitr::opts_chunk$set(echo = TRUE)
+library(DeclareDesign)
+library(knitr)
+library(DesignLibrary)
+library(tidyverse)
+set.seed(1)
+sims = 1000
+do_diagnosis = FALSE
+```
+
+
+Surprisingly, it is quite possible to talk in a seemingly coherent way about a strategy to answer a research question without ever specifying what the research question is. 
+
+An example. You sometimes hear worries that estimates of average treatment effects are biased in the presence of spillovers. Try to state that claim formally, though, and you can run into some difficulties. In experimental designs, the assumption of no spillovers runs so deep that it is often invoked even *prior to the definition of estimands*. If you write the "average treatment effect" estimand using potential outcomes notation, as $E(Y(1) - Y(0))$, you are *already* assuming  that a unit's outcomes depend only on its own assignment to treatment and not on how other units are assigned to treatment. The definition of the estimand leaves no space to even describe spillovers.
+
+If there are in fact spillovers, then the estimand needs to be spelled out more carefully. In this case, the range of estimands to choose may be very wide. 
+
+This post shows how:
+
+* different types of spillover estimands might be formally declared
+* positive spillovers may produce under- *or* over-estimates of treatment effects
+* the merits of addressing spillovers through a sampling strategy depend on the estimand of interest
+
+Along the way, we show how to modify designs by switching up steps at different points.
+
+## Estimands given spillovers 
+
+There are many different estimands that allow for spillovers, but which correspond to the average treatment effect in the absence of spillovers as a specific case. For instance, we can define the difference for a unit when it---and only it---is treated, compared to a situation in which no unit is treated. In potential outcomes notation that could be written, for unit 3, say, as:
+
+$$\tau_3 = Y(0,0,1,0,0,\dots) -  Y(0,0,0,0,0,\dots)$$
+One could then define a population estimand that is the average of all these differences over a population. Note that these differences specify  different counterfactual assignment vectors for each individual. In the absence of spillovers, this estimand is equivalent to the usual average treatment effect. In the presence of spillovers, this estimand is well defined, whereas the usual average treatment effect estimand is not. 
+
+There are many other possibilities. For example, the difference in outcomes when no units are treated and all units are treated. Or the difference between not being treated when all others are, and being treated when all others are. Or, the difference a change in your own condition would make given that others are assigned to the value that they actually have (see e.g. @savje2017average). In fact, with $n$ units and binary assignments, we can define $2^n\times2^n$ simple comparisons for each unit.
+
+Below, we declare a design that allows for the possibility of spillovers. Diagnosing the design shows how severe the problem of spillovers can be for estimation. Modifying the design lets us explore different types of solutions. 
+
+## How spillovers make defining and estimating average effects hard
+
+Consider a situation in which units are grouped into triplets, indexed $G$. Suppose that there are 80 triplets. If any member of group $G$ is treated, then all of its members receive some equal benefit (with marginal gains possibly increasing or decreasing in the numbers treated). 
+ 
+We can declare this design as follows:^[In fact, here we just made some minor edits to the code pulled from the `DesignLibrary` package using `get_design_code(simple_spillover_designer())`.]
+
+```{r}
+N_groups <- 80
+N_i_group <- 3
+sd_i <- 0.2
+gamma <- 2
+
+population <- declare_population(G = add_level(N = N_groups,
+                                               n = N_i_group),
+                                 i = add_level(N = n, zeros = 0, ones = 1))
+dgp <- function(i, Z, G) mean(Z[G == G[i]]) ^ gamma + rnorm(1,0,sd_i)
+estimand <- declare_estimand(
+  Treat_1 = mean(
+    sapply(X = 1:length(G),
+           FUN =  function(i) {
+             Z_i <- (1:length(G)) == i
+             dgp(i, Z_i, G) - dgp(i, zeros, G)})
+    ), 
+  label = "estimand")
+assignment <- declare_assignment(prob = .5)
+reveal_Y <- declare_reveal(Y = sapply(1:N,function(i) dgp(i, Z, G)),
+                           handler = fabricate)
+estimator <- declare_estimator(Y ~ Z,
+                               estimand = estimand,
+                               model = lm_robust,
+                               label = "naive")
+simple_spillover_design <- population + estimand + assignment +
+  reveal_Y + estimator
+```
+
+The most complex part of this design declaration involves the specification of the estimand. We define a helper function, `dgp`, which reports an individual's outcome given the full treatment assignment vector. We then apply that function to each unit separately and take the average.
+
+This design produces data that looks like this:
+
+```{r, eval = FALSE}
+draw_data(simple_spillover_design)
+```
+
+```{r, echo = FALSE}
+kable(head(draw_data(simple_spillover_design)))
+```
+
+And we can diagnose the design like this:
+
+```{r, eval = FALSE}
+diagnosis <- diagnose_design(simple_spillover_design)
+```
+
+
+```{r, eval = do_diagnosis, echo=FALSE}
+diagnosis   <- diagnose_design(simple_spillover_design, sims = sims)
+write_rds(diagnosis, path = "rfiles/2_spillover_1.rds")
+```
+
+
+```{r, echo = FALSE, eval = TRUE}
+diagnosis <- read_rds("rfiles/2_spillover_1.rds")
+kable(reshape_diagnosis(diagnosis)[,-(2:3)], digits = 2)
+```
+
+
+We see considerable bias here because the difference-in-means estimator does not account for within-group spillovers. Many units in the control condition are affected by the treatments received by other members of their group. 
+
+Interestingly, in this case, we have an *over*estimate of the effect, even though there are *positive* spillovers. In the assumed model, there are increasing returns to spillovers. Units that are treated are also likely to be in groups with a higher proportion of treated units (since, by definition, at least one member of their group is already treated). On average, treated units thus receive more positive spillover than untreated units, leading to exaggerated estimates. 
+
+## Whether a sparser sample helps depends on the estimand of interest
+
+There are multiple solutions to this kind of problem. How well they work depends, however, on how well we understand the structure of spillover effects in the first place. 
+
+One approach is to alter assignment strategies (see, e.g., @bowers2018models). An even simpler one is to employ a sparser sample. This approach seems to go against one of the few near-universal principles of research design: study as many units as possible.
+
+But here there may be some wisdom to it --- more units means greater precision, generally. However, there may be an exception  when there are risks of spillovers. If a larger study means treating more units, and this means more units interfere with each other, you might end up with a spuriously precise, biased estimate. 
+
+Here is an alternative design that implements the original design on a sample of one subject per group:
+
+```{r, error = TRUE, warning = FALSE}
+sparse_design <- insert_step(simple_spillover_design, after = "Treat_1",
+                          declare_sampling(strata = G, prob = 1/3))
+```
+
+Note that it is important that the sampling takes place here *after* the definition of the estimand. Spillovers operate as a function of population characteristics, not just sample characteristics.
+
+```{r}
+diagnosis <- diagnose_design(sparse_design, sims = sims)
+```
+
+```{r, eval = do_diagnosis, echo=FALSE}
+diagnosis   <- diagnose_design(sparse_design, sims = sims)
+write_rds(diagnosis, path = "rfiles/2_spillover_2.rds")
+```
+
+```{r, echo = FALSE, eval = TRUE}
+diagnosis <- read_rds("rfiles/2_spillover_2.rds")
+kable(reshape_diagnosis(diagnosis)[,-(1:5)], digits = 2)
+```
+
+
+Our narrower sampling strategy reduces the `N` by two-thirds (from 240 to 80). But the results are now unbiased. Note that we did not change our original assignment strategy, in which units are assigned to treatment or to control with .5 probability. Rather, we changed the sampling strategy. Before we kept whole groups and assigned no members or several members to treatment. We now select one member per group and assign them to treatment or to control. Because we only select one member per group, and spillovers only go within and not between groups, there is no way for our treatment or control units to receive spillovers.
+
+Getting an unbiased result by using sparser data depended on having a good understanding of the nature of spillovers. In this case, we made use of the fact there would be no spillovers between groups.
+
+However, how good this solution is also depends on what exactly the estimand is. What if the estimand were the average difference in outcomes between a world in which no unit is treated and one in which all units are treated?
+
+We answer this question by declaring a new design that adds in the new  estimand and links it to the estimator. 
+
+We first define the steps:
+
+```{r}
+new_estimand  <- declare_estimand(
+  Treat_all = mean(
+    sapply(1:length(G), function(i) {
+      dgp(i,ones,G) - dgp(i, zeros, G)})),
+  label = "ge_estimand")
+new_estimator <- declare_estimator(Y ~ Z, model = lm_robust, 
+                                   estimand = list("Treat_1", "Treat_all"))
+```
+
+We then splice the steps in where we want them (estimand before the sampling, estimator after the sampling):
+
+```{r}
+sparse_design <- insert_step(sparse_design, after = "Treat_1", new_estimand)
+sparse_design <- replace_step(sparse_design, "naive", new_estimator)
+```
+
+
+The diagnosis highlights how poorly the sampling solution works for this new estimand:
+
+
+```{r, eval = FALSE}
+diagnose_design(sparse_design)
+```
+
+
+```{r, eval = do_diagnosis, echo=FALSE}
+diagnosis   <- diagnose_design(sparse_design, sims = sims)
+write_rds(diagnosis, path = "rfiles/2_spillover_3.rds")
+```
+
+```{r, echo = FALSE, eval = TRUE}
+diagnosis <- read_rds("rfiles/2_spillover_3.rds")
+kable(reshape_diagnosis(diagnose_design(sparse_design, sims = sims))[,-c(1,3:5)], digits = 2)
+```
+
+
+The sparser design fails because the treatment density is insufficient to reveal the potential outcomes required by the estimand: *you cannot figure out the effects of saturation if you do not saturate*.
+
+A future post will describe approaches to addressing spillovers that work through estimation strategies, rather than through sampling and assignment strategies. 
+
+# References

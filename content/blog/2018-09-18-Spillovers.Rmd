@@ -122,7 +122,7 @@ There are multiple solutions to this kind of problem. How well they work depends
 
 One approach is to alter assignment strategies (see, e.g., @bowers2018models). An even simpler one is to employ a sparser sample. This approach seems to go against one of the few near-universal principles of research design: study as many units as possible.
 
-But here there may be some wisdom to it --- more units means greater precision, generally. However, there may be an exception  when there are risks of spillovers. If a larger study means treating more units, and this means more units interfere with each other, you might end up with a spuriously precise, biased estimate. 
+But here there may be some wisdom to it. Although more units generally means greater precision, there may be a cost to this when there are risks of spillovers. If a larger study means treating more units, and this means more units interfere with each other, you might end up with a spuriously precise, biased estimate. 
 
 Here is an alternative design that implements the original data and analysis strategies on a sample of one subject per group:
 

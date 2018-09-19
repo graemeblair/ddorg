@@ -133,7 +133,7 @@ sparse_design <- insert_step(simple_spillover_design, after = "Treat_one",
 
 Note that it is important that the sampling takes place here *after* the definition of the estimand. Spillovers operate as a function of population characteristics, not just sample characteristics.
 
-Our narrower sampling strategy reduces the `N` by two-thirds (from 240 to 80). But the results are now unbiased. Note that we did not change our original assignment strategy, in which units are assigned to treatment or to control with .5 probability. Rather, we changed the sampling strategy. Before we kept whole groups and assigned no members or several members to treatment. We now select one member per group and assign them to treatment or to control. Because we only select one member per group, and spillovers only go within and not between groups, there is no way for our treatment or control units to receive spillovers.
+Our narrower sampling strategy reduces the `N` by two-thirds (from 240 to 80). But the results are now unbiased. Note that we did not change our original assignment strategy, in which units are assigned to treatment or to control with .5 probability. Rather, we changed the sampling strategy. Before, we kept whole groups and assigned no members or several members to treatment. We now select one member per group and assign them to treatment or to control. Because we only select one member per group, and spillovers only go within and not between groups, there is no way for our treatment or control units to receive spillovers.
 
 Here is a diagnosis of this sparser design:
 
@@ -152,7 +152,7 @@ kable(reshape_diagnosis(diagnosis)[,-(1:5)], digits = 2)
 ```
 
 
-We have an unbiased design. Her though getting an unbiased design  depended on having a good understanding of the nature of spillovers. In this case, we made use of the fact there would be no spillovers between groups.
+We have an unbiased design. Here though getting an unbiased design  depended on having a good understanding of the nature of spillovers. In this case, we made use of the fact there would be no spillovers between groups.
 
 However, how good this solution is also depends on what exactly the estimand is. What if the estimand were the average difference in outcomes between a world in which no unit is treated and one in which all units are treated?
 

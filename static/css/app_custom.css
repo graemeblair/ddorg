@@ -123,6 +123,14 @@ hr {
     margin-right: auto;
 }
 
+/* REFERENCE INDEX PAGE STYLES */
+
+/* Make the links to functions stack on top of each other instead of displaying in a line. */
+.ref-index .alias_column code {
+    display: block;
+    margin-bottom: 0.3rem;
+}
+
 /* MISCELLANEOUS */
 
 /* Adjusts the font size on the developer/author list. */

@@ -1,5 +1,5 @@
 ---
-title: "The importance of declaring estimands in designs with spillovers"
+title: "You can't speak meaningfully about spillovers without specifying an estimand"
 date: "2018-09-18"
 output:
   html_document:

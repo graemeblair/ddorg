@@ -4,6 +4,7 @@ Title: Declare Design Blog.
 Version: 1.1.7
 Imports:
   AER,
+  bfe,
   blockTools,
   blogdown,
   broom,
@@ -55,4 +56,5 @@ Remotes:
   DeclareDesign/randomizr,
   DeclareDesign/estimatr,
   DeclareDesign/DeclareDesign,
-  DeclareDesign/DesignLibrary
+  DeclareDesign/DesignLibrary,
+  gibbonscharlie/bfe

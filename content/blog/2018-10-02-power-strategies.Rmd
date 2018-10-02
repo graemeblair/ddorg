@@ -123,7 +123,7 @@ diagnoses$diagnosands_df %>%
   geom_line(aes(color = estimator_label))
 ```
 
-We see here that if you had 45 units and wanted to use simple differences in means your power would be around 80%. You could up your power to 90% by increasing the size of the experiment to about 55 units. Or, given speculations about the heterogeneous effects of treatment, you could do the same thing by staying at 45 but switching over to the Lin estimator. 
+We see here that if you had 45 units and wanted to use simple differences in means your power would be around 80%. You could up your power to just over 90% by increasing the size of the experiment to about 60 units. Or, conditional on speculations about the heterogeneous effects of treatment, you could do the same thing by staying at 45 but switching over to the Lin estimator. 
 
 # A puzzle
 

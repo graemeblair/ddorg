@@ -1,6 +1,6 @@
 ---
 title: "Improve power using your answer strategy, not just your data strategy"
-date: "2018-09-24"
+date: "2018-10-02"
 output:
   html_document:
     highlight: tango

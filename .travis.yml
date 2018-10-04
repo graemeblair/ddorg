@@ -52,7 +52,8 @@ env:
       CUSTOM_SCRIPT=''
     - PACKAGE='DeclareDesign'
       GITHUB_OWNER='DeclareDesign'
-      BRANCH='master' HOME_FOLDER='r/declaredesign'
+      BRANCH='master'
+      HOME_FOLDER='r/declaredesign'
       PKGDOWN_TEMPLATES='pkgdown_templates'
       CUSTOM_SCRIPT=''
     # This empty package entry will build all non-package files on the website

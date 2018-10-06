@@ -181,17 +181,6 @@ function extract_keywords_from_array(keywords)
     return keywords;
 }
 
-function prettify_title(title)
-{
-    // Replace all spaces with underscores.
-    title = title.replace(/_/g, " ");
-
-    // Capitalize the first word of the title.
-    title = title.charAt(0).toUpperCase() + title.slice(1);
-
-    return title;
-}
-
 function add_design_to_table(row)
 {
     const table_row = $(`<tr></tr>`);
@@ -210,7 +199,7 @@ function add_design_to_table(row)
     else if (row.design)
     {
         console.log("A design was specified. Using the name of the design for this column...");
-        table_row.append(`<td>${prettify_title(row.design)}</td>`);
+        table_row.append(`<td>${title_caps(row.design)}</td>`);
     }
     else
     {
@@ -292,4 +281,63 @@ function add_design_to_table(row)
 
 
     $("#design_library_list > tbody").append(table_row);
+}
+
+/*
+ * Title Caps
+ *
+ * Ported to JavaScript By John Resig - http://ejohn.org/ - 21 May 2008
+ * Original by John Gruber - http://daringfireball.net/ - 10 May 2008
+ * License: http://www.opensource.org/licenses/mit-license.php
+ */
+
+function title_caps(title)
+{
+    // First, replace all underscores with spaces.
+    title = title.replace(/_/g, " ");
+
+    const small = "(a|an|and|as|at|but|by|en|for|if|in|of|on|or|the|to|v[.]?|via|vs[.]?)";
+    const punct = "([!\"#$%&'()*+,./:;<=>?@[\\\\\\]^_`{|}~-]*)";
+
+    const parts = [];
+    const split = /[:.;?!] |(?: |^)["Ò]/g;
+    let index   = 0;
+
+    while (true)
+    {
+        const m = split.exec(title);
+
+        parts.push(title.substring(index, m ? m.index : title.length)
+                        .replace(/\b([A-Za-z][a-z.'Õ]*)\b/g, all => /[A-Za-z]\.[A-Za-z]/.test(all) ? all : upper(all))
+                        .replace(RegExp("\\b" + small + "\\b", "ig"), lower)
+                        .replace(RegExp("^" + punct + small + "\\b", "ig"), (all, punct, word) => punct + upper(word))
+                        .replace(RegExp("\\b" + small + punct + "$", "ig"), upper));
+
+        index = split.lastIndex;
+
+        if (m)
+        {
+            parts.push(m[0]);
+        }
+        else
+        {
+            break;
+        }
+    }
+
+    return parts.join("").replace(/ V(s?)\. /ig, " v$1. ")
+                .replace(/(['Õ])S\b/ig, "$1s")
+                .replace(/\b(AT&T|Q&A|IV)\b/ig, all => all.toUpperCase()); // Add abbreviations that you want to be
+                                                                           // upper case here!
+
+}
+
+function lower(word)
+{
+    return word.toLowerCase();
+}
+
+function upper(word)
+{
+    return word.substr(0, 1).toUpperCase() + word.substr(1);
 }

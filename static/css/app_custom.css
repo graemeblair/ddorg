@@ -153,3 +153,9 @@ hr {
 .design_library_title {
     margin-bottom: 1.2rem;
 }
+
+/* Fixes a problem in the tooltip library where tooltips are off-center when there is no scroll bar on the page. */
+/* https://github.com/FezVrasta/popper.js/issues/457#issuecomment-367692177 */
+.tooltip {
+    top: 0;
+}

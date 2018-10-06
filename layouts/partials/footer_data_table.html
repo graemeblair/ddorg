@@ -8,7 +8,7 @@
         library_list.addClass("table table-striped table-bordered");
         library_list.DataTable(
             {
-               "autoWidth": false,
+                "autoWidth": false,
                 "columns":
                     [
                         {"width": "30%"}, // Design
@@ -17,17 +17,21 @@
                         {"width": "10%"}, // Design Inspector
                         {"width": "15%"}, // Contributor
                         {"width": "25%"}, // Keywords
-                    ]
+                    ],
+                "drawCallback": initialize_tooltips
             }
         );
 
-        const tooltip_elements =  jQuery('[data-toggle="tooltip"]');
+        library_list.css("width", "");
+    });
+
+    function initialize_tooltips()
+    {
+        const tooltip_elements = jQuery('[data-toggle="tooltip"]');
         tooltip_elements.tooltip();
         tooltip_elements.click(function ()
         {
             jQuery(this).tooltip("hide");
         });
-
-        jQuery("#design_library_list").css("width", "");
-    });
+    }
 </script>

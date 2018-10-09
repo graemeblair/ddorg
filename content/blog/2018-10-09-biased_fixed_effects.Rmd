@@ -1,0 +1,230 @@
+---
+title: "The trouble with 'controlling for blocks'"
+author: "Declare Design Team"
+slug: biased-fixed-effects
+date: "2018-10-09"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+set.seed(1)
+sims <- 10000
+do_diagnosis = FALSE
+library(DeclareDesign)
+library(estimatr)
+library(knitr)
+library(tidyverse)
+library(DesignLibrary)
+library(ggrepel)
+theme_set(theme_bw())
+```
+
+In many experiments, different groups of units get assigned to treatment with different probabilities. This can give rise to misleading results unless you properly take account of possible differences between the groups. How best to do this?  The go-to approach is to "control" for groups by introducing "fixed-effects" in a regression set-up. The bad news is that this procedure is prone to bias. The good news is that there's an even simpler and more intuitive approach that gets it right: estimate the difference-in-means within each group, then average over these group-level estimates weighting according to the size of the group. We'll use design declaration to show the problem and to compare the performance of this and an array of other proposed solutions.
+
+# The trouble
+
+For intuition, imagine a design that has experimental blocks (these might correspond to geographic regions or gender groups, for example). In block A, we treat 1/3 of the units and in block B, we treat 1/2. We are interested in an outcome $Y$, income, for example. We worry though that if income is higher in group B than group A that we will have introduced a correlation between treatment and outcomes even if there is no causal effect of treatment on income. We want to avoid that kind of false inference.
+
+A good way to think about the problem is to recognize that the overall average treatment effect can be thought of as an average of the average treatment effects in each block. Luckily, figuring out the average effect within a block is not hard. We can  think of each block as its own mini-experiment. Within each block all units are treated with the same probability and so difference-in-means estimation *within* a block works fine to get at the average effect for units in that block. In order to get an overall ATE estimate, we then just have to average the block level estimates together. So if we weight the within-group effects together by $n_j$ (the size of block $j$), we have an unbiased estimator of the ATE. 
+
+Simple enough. 
+
+But in practice researchers often try to do this calculation using "block fixed effects," i.e., include a set of block dummies in a regression of the outcome on treatment assignment. The problem though is that while fixed-effects regression does average across within-block effects, it does so using the wrong weighting scheme. The regression weights are $p_j(1-p_j)n_j$, where share $p_j$ of $n_j$ units are treated within block $j$. Fixed-effects OLS essentially puts more weight on the blocks with the greatest variance in the treatment variable.^[This is a well known problem. See, for instance, @angrist1998estimating.]
+
+Let's demonstrate the issue using DeclareDesign and then move on to examining different solutions. 
+
+First, we declare a design that has three equally-sized blocks, with block-specific effects (`tau`) and assignment probabilities (`prob`). We will use three answer strategies: simple regression of the outcome on the treatment indicator (Naive Pooled), a regression of the outcome on the treatment indicator and block fixed effects (Least Squares Dummy Variables), and a sample-weighted average of the within-block difference-in-means (Blocked DIM). We will use a design where the noise is quite small relative to the error to clarify that that the problem is not about precision.
+
+Here's the design declaration:
+
+```{r}
+# Model ------------------------------------------------------------------------
+U <- declare_population(block = add_level(N = 3, 
+                                          prob = c(.5, .7, .9), 
+                                          tau = c(4, 2, 0)),
+                        indiv = add_level(N = 100,e = rnorm(N)))
+
+Y <- declare_potential_outcomes(Y_Z_0 = e, 
+                                Y_Z_1 = e + tau)
+
+# Inquiry ----------------------------------------------------------------------
+Q <- declare_estimand(ATE = mean(Y_Z_1 - Y_Z_0))
+
+# Data Strategy ----------------------------------------------------------------
+Z <- declare_assignment(blocks = block, block_prob = c(.5, .7, .9))
+R <- declare_reveal(Y, Z)
+
+# Answer Strategy --------------------------------------------------------------
+A0 <- declare_estimator(Y ~ Z, estimand = Q,  
+                        model =  lm_robust, label = "A0: Naive (Pooled)")
+A1 <- declare_estimator(Y ~ Z + block, estimand = Q,  
+                        model =  lm_robust, label = "A1: LSDV")
+A2 <- declare_estimator(Y ~ Z, blocks = block, estimand = Q,  
+                        model =  difference_in_means, label = "A2: Blocked DIM")
+
+# Design -----------------------------------------------------------------------
+design <- U + Y + Z + Q + R + A0 + A1 + A2 
+```
+
+Diagnosis of this design lets us see how these different strategies perform:
+
+```{r, warning = FALSE, message = FALSE, eval = FALSE}
+diagnose_design(design, sims = sims)
+```
+```{r, eval = do_diagnosis, echo=FALSE}
+diagnosis <- diagnose_design(design, sims = sims, bootstrap_sims = 0)
+write_rds(diagnosis, path = "rfiles/fe_diagnosis.rds")
+```
+```{r, echo = FALSE, eval = TRUE}
+diagnosis <- read_rds("rfiles/fe_diagnosis.rds") 
+kable(reshape_diagnosis(diagnosis)[,-c(1:2, 4)])
+```
+
+The difference-in-means approach does a good job of estimating the true average treatment effect in the sample. The two other approaches get it terribly wrong.
+
+It's easy enough to see why the pooled estimator gets things wrong. In this design, the blocks with bigger treatment probabilities also have smaller outcomes in the treatment condition. This creates a negative relation between treatment and outcomes that pulls down the estimate of effects.
+
+But, oddly, the fixed effects estimators is not just biased, it is biased in the opposite direction of the bias of the pooled estimator. Why is that? 
+
+# Why do fixed effects get it wrong?
+
+We can use the design to drill down and see where this bias from the fixed effects estimator is coming from. We will use the design to generate simulated data and to run estimation on this data.^[Functions in `DeclareDesign` create functions that take dataframes and return dataframes or statistics. Thus, we could also have taken one draw of the data using `one_draw <- U() %>% Y %>% Z %>% R`. The first five variables were created by `U()`: `block` indicates the block to which the unit belongs, `prob` indicates the probability of assignment to treatment, `tau` indicates the block-level treatment effect, `indiv` indicates the individual ID, and `e` is the error term. The function `Y()` appends the potential outcomes, `Y_Z_0` and `Y_Z_1`, by taking `e` and adding `tau` in treatment. The function `Z()` appends two variables: `Z` is a vector of treatment assignments, block-randomized as a function of the block probabilities, while `Z_cond_prob` indicates the probability that a given unit is observed in the condition to which they were actually assigned. `R()` reveals the potential outcomes corresponding to the assignment.]
+
+```{r,eval = FALSE}
+set.seed(1)
+one_draw <- draw_data(design)
+get_estimates_data(design = design, data = one_draw)
+```
+
+```{r, echo = FALSE}
+set.seed(1)
+one_draw <- draw_data(design)
+kable(get_estimates_data(design = design, data = one_draw)[,c(1,3,4)],digits = 3)
+```
+
+With this simulated data we can calculate the within block effects and the block weights "by hand" to see how the differences-in-means approach and the fixed effects approach do things differently. For this we use `dplyr` functionality which makes it easy to operate within multiple blocks in parallel.
+
+```{r}
+within_block <- one_draw %>%
+  group_by(block) %>%
+  summarise(block_ATE     = mean(Y_Z_1 - Y_Z_0),
+            block_ATE_est = mean(Y[Z == 1]) - mean(Y[Z == 0]),
+            size          = n(),
+            var_p         = mean(Z) * (1 - mean(Z))) %>% 
+  mutate(sample_weight    = size / sum(size),
+         fe_weight        = (size*var_p) / sum(size*var_p))
+```
+```{r,echo = FALSE}
+kable(within_block, digits = 2)
+```
+
+This table helps explain the bias: one-third of the sample has an ATE estimate of `r round(within_block$block_ATE_est[1], 2)`, one-third has an ATE estimate of `r round(within_block$block_ATE_est[2], 2)`, and one-third an estimate of `r round(within_block$block_ATE_est[3], 2)`. Yet, the fixed effects estimator attributes those block-level estimated effects weights of 45%, 38%, and 16%, respectively: it exaggerates the true average effect by overweighting blocks with large effects and underweighting blocks with small effects. 
+
+# A horserace between different approaches
+
+In addition to block-wise difference-in-means, there are many other solutions that have been proposed to the problem outlined above. One might use a saturated regression  [@lin2013agnostic], inverse propensity-weighted (IPW) regression, IPW with fixed effects, fixed effects regression with units reweighted by the inverse variance of assignment in their block, or a Horvitz-Thompson estimator. A recent contribution by @gibbons2014broken suggests two new estimators ("interaction-weighted" and "regression-weighted" estimators) and provides a package to estimate them (`bfe`).  
+ 
+Less clear, however, is how these different approaches compare against each other.
+
+```{r, include = FALSE}
+if(!("bfe" %in% row.names(installed.packages()))) devtools::install_github('gibbonscharlie/bfe')
+library(bfe)
+```
+
+We can address this question for any design using design diagnosis. We add the different estimation approaches to our design:
+
+
+```{r}
+A3 <- declare_estimator(Y ~ Z, covariates = ~ block, estimand = Q, 
+                        model = lm_lin,
+                        label = "A3: Interaction (Lin)")
+A4 <- declare_estimator(Y ~ Z, estimand = Q, 
+                        model = lm_robust, weight = 1/Z_cond_prob,
+                        label = "A4: IPW")
+A5 <- declare_estimator(Y ~ Z, fixed_effects = ~block, estimand = Q, 
+                        model = lm_robust, weight = 1/Z_cond_prob,
+                        label = "A5: IPW + FE")
+A6 <- declare_estimator(Y ~ Z, fixed_effects = ~block, estimand = Q, 
+                        model = lm_robust, weight = 1/(Z_cond_prob*(1-Z_cond_prob)),
+                        label = "A6: Var weight + FE")
+A7 <- declare_estimator(Y ~ Z, estimand = Q, blocks = block, simple = FALSE,
+                        model = horvitz_thompson, condition_prs = prob,
+                        label = "A7: Horvitz-Thompson")
+IWE <- function(data) {
+          M <- EstimateIWE("Y", "Z", "block", controls = NULL, data = data)
+          data.frame(term = "Z" ,estimate = M$swe.est, std.error = M$swe.var^.5)}
+
+RWE <- function(data) {
+          M <- EstimateRWE("Y", "Z", "block", controls = NULL, data = data)
+          data.frame(term = "Z", estimate = M$swe.est, std.error = M$swe.var^.5)}
+
+A8 <- declare_estimator(handler = tidy_estimator(IWE), estimand = Q,
+                        label = "A8: IWE")
+A9 <- declare_estimator(handler = tidy_estimator(RWE), estimand = Q, 
+                        label = "A9: RWE")
+
+# Augmented Design ---------------------------------------------------------------
+
+design <- design + A3 + A4 + A5 + A6 + A7 + A8 + A9
+```
+
+And we can then simulate and plot the estimates:
+
+```{r, warning = FALSE, message = FALSE, eval = FALSE}
+simulations <- simulate_design(design,sims = sims)
+```
+```{r, eval = do_diagnosis, echo=FALSE}
+simulations <- simulate_design(design,sims = sims)
+write_rds(simulations, path = "rfiles/fe_simulations.rds")
+```
+```{r, echo = FALSE, eval = TRUE}
+simulations <- read_rds("rfiles/fe_simulations.rds") 
+```
+
+```{r, warning = FALSE, message = FALSE}
+simulations %>% 
+  group_by(estimator_label) %>% 
+  summarize(SE_bias = mean(std.error - sd(estimate)), 
+            ATE_bias = mean(estimate - estimand)) %>% 
+  ggplot(aes(x = ATE_bias, y = SE_bias)) +
+  geom_point() +
+  geom_hline(yintercept = 0, size = .1, linetype = "dashed") +
+  geom_vline(xintercept = 0, size = .1, linetype = "dashed") +
+  geom_text_repel(aes(label = estimator_label),
+                  point.padding = .5, segment.alpha = .5)
+```
+
+Interestingly, the largest differences between the approaches appear to arise from the way in which they calculate the standard error. A great thing about design diagnosis is that one can assess the performance not just of estimates but also of standard errors. We use standard errors as a measure of the standard deviation of the estimates under repeated experiments. This is a quantity we have access to from simulation and so for each approach we can compare the estimated standard error to the standard deviation of the sampling distribution of effects. 
+
+We see that many approaches appear overly conservative -- particularly the weighting approaches, though one approach estimates, on average, a standard error that is marginally smaller than the real standard deviation of the sampling distribution of estimated effects.
+
+In terms of estimates, however, there are no real differences in performance between approaches 2-9. The block-specific difference-in-means approach has the merit of conceptual simplicity and great performance. The IPW and Horvitz-Thompson approaches have the advantage that they can be used even if the heterogeneity in assignment propensities is at the unit-level, and not at the block-level. And regression-based approaches have the merit of making it simple to condition on available covariates. 
+
+# This issue is surprisingly common
+
+Many designs face this issue, where assignment propensities are different in different groups. Often the issue might not be immediately apparent. Some examples:
+
+* Subjects are randomly matched to play a game and you are interested in assessing the difference in play between single gender and mixed gender pairings. There are different numbers of men and women in the group.
+* A random set of children in a school are given some treatment and you are interested in seeing the effects on siblings of having another sibling treated. Families are of different sizes. 
+* One village in each parish is selected for a treatment. But parishes are of different sizes. 
+<!-- * Countries have a reform at different points in a time series. You want to estimate the generalized difference-in-differences between countries that have or have not yet had the reform (See: @goodmanbackon2018). -->
+
+In all these cases there is what looks at first glance to be equal assignment propensities across units but on closer inspection assignment propensities in fact depend on group size in some way. 
+
+See @gibbons2014broken for many examples in economics research and assessments of the implications of ignoring this issue.
+
+
+# References 
+
+
+
+
+
+
+

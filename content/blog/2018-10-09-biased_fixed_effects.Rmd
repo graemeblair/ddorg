@@ -48,7 +48,7 @@ Here's the design declaration:
 U <- declare_population(block = add_level(N = 3, 
                                           prob = c(.5, .7, .9), 
                                           tau = c(4, 2, 0)),
-                        indiv = add_level(N = 100,e = rnorm(N)))
+                        indiv = add_level(N = 100, e = rnorm(N)))
 
 Y <- declare_potential_outcomes(Y_Z_0 = e, 
                                 Y_Z_1 = e + tau)
@@ -94,37 +94,54 @@ But, oddly, the fixed effects estimators is not just biased, it is biased in the
 
 # Why do fixed effects get it wrong?
 
-We can use the design to drill down and see where this bias from the fixed effects estimator is coming from. We will use the design to generate simulated data and to run estimation on this data.^[Functions in `DeclareDesign` create functions that take dataframes and return dataframes or statistics. Thus, we could also have taken one draw of the data using `one_draw <- U() %>% Y %>% Z %>% R`. The first five variables were created by `U()`: `block` indicates the block to which the unit belongs, `prob` indicates the probability of assignment to treatment, `tau` indicates the block-level treatment effect, `indiv` indicates the individual ID, and `e` is the error term. The function `Y()` appends the potential outcomes, `Y_Z_0` and `Y_Z_1`, by taking `e` and adding `tau` in treatment. The function `Z()` appends two variables: `Z` is a vector of treatment assignments, block-randomized as a function of the block probabilities, while `Z_cond_prob` indicates the probability that a given unit is observed in the condition to which they were actually assigned. `R()` reveals the potential outcomes corresponding to the assignment.]
+We can use the design to drill down and see where this bias from the fixed effects estimator is coming from. We will use the design to generate simulated data and to run our estimators on that single draw.^[Functions in `DeclareDesign` create functions that take dataframes and return dataframes or statistics. Thus, we could also have taken one draw of the data using `one_draw <- U() %>% Y %>% Z %>% R`. The first five variables were created by `U()`: `block` indicates the block to which the unit belongs, `prob` indicates the probability of assignment to treatment, `tau` indicates the block-level treatment effect, `indiv` indicates the individual ID, and `e` is the error term. The function `Y()` appends the potential outcomes, `Y_Z_0` and `Y_Z_1`, by taking `e` and adding `tau` in treatment. The function `Z()` appends two variables: `Z` is a vector of treatment assignments, block-randomized as a function of the block probabilities, while `Z_cond_prob` indicates the probability that a given unit is observed in the condition to which they were actually assigned. `R()` reveals the potential outcomes corresponding to the assignment.]
 
 ```{r,eval = FALSE}
 set.seed(1)
 one_draw <- draw_data(design)
-get_estimates(design = design, data = one_draw)
+A1(one_draw)
+A2(one_draw)
 ```
 
 ```{r, echo = FALSE}
 set.seed(1)
 one_draw <- draw_data(design)
-kable(get_estimates(design = design, data = one_draw)[,c(1,3,4)],digits = 3)
+kable(A1(one_draw)[c(1, 3)], digits = 3)
+kable(A2(one_draw)[c(1, 3)], digits = 3)
 ```
 
 With this simulated data we can calculate the within block effects and the block weights "by hand" to see how the differences-in-means approach and the fixed effects approach do things differently. For this we use `dplyr` functionality which makes it easy to operate within multiple blocks in parallel.
 
 ```{r}
-within_block <- one_draw %>%
+within_block <- 
+  one_draw %>%
   group_by(block) %>%
   summarise(block_ATE     = mean(Y_Z_1 - Y_Z_0),
             block_ATE_est = mean(Y[Z == 1]) - mean(Y[Z == 0]),
-            size          = n(),
-            var_p         = mean(Z) * (1 - mean(Z))) %>% 
-  mutate(sample_weight    = size / sum(size),
-         fe_weight        = (size*var_p) / sum(size*var_p))
+            n_j = n(),
+            p_j = mean(Z),
+            sample_weight = n_j,
+            fe_weight     = p_j * (1 - p_j) * n_j) %>%
+  # divide by the sum of the weights
+  mutate(sample_weight = sample_weight/sum(sample_weight),
+         fe_weight = fe_weight/sum(fe_weight))
 ```
 ```{r,echo = FALSE}
 kable(within_block, digits = 2)
 ```
 
 This table helps explain the bias: one-third of the sample has an ATE estimate of `r round(within_block$block_ATE_est[1], 2)`, one-third has an ATE estimate of `r round(within_block$block_ATE_est[2], 2)`, and one-third an estimate of `r round(within_block$block_ATE_est[3], 2)`. Yet, the fixed effects estimator attributes those block-level estimated effects weights of 45%, 38%, and 16%, respectively: it exaggerates the true average effect by overweighting blocks with large effects and underweighting blocks with small effects. 
+
+To finish the example, see that we can recover the fixed effects and block DIM estimates from the within block estimates, just by choosing a different weighting strategy.
+
+```{r}
+within_block %>%
+  summarize(LDSV = weighted.mean(block_ATE_est, fe_weight),
+            Blocked_DIM = weighted.mean(block_ATE_est, sample_weight)) %>%
+  kable(digits = 1)
+```
+
+
 
 # A horserace between different approaches
 

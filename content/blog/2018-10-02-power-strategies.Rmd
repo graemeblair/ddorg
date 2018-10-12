@@ -20,13 +20,13 @@ theme_set(theme_bw())
 
 ```
 
-Most power calculators take a small number of inputs: sample size, effect size, and variance. Some also allow for number of blocks or cluster size as well as the overall sample size. All of these inputs relate to your data strategy. Unless you can control the effect size and the noise, you are left with sample size and data structure (blocks and clusters) as the only levers to play with to try to improve your power. 
+Most power calculators take a small number of inputs: sample size, effect size, and variance. Some also allow for number of blocks or cluster size as well as the overall sample size. All of these inputs relate to your data strategy. Unless you can control the effect size and the noise, you are left with sample size and data structure (blocks and clusters) as the only levers to play with to try to improve your power.
 
-In fact, though, power depends on your answer strategy and not just your data strategy and so you might do better putting resources into improving what you do with your data rather than the amount of data you have. 
+In fact, though, power depends on your answer strategy and not just your data strategy and so you might do better putting resources into improving what you do with your data rather than the amount of data you have.
 
 # Power from the answer strategy
 
-Random assignment generally means that you do not have to include control variables in an analysis in order to achieve unbiasedness. But including controls can improve precision and increase power. If you are trying to improve your power but adding observations is expensive, perhaps you should first explore whether you can improve power by adjusting the estimation approach. 
+Random assignment generally means that you do not have to include control variables in an analysis in order to achieve unbiasedness. But including controls can improve precision and increase power. If you are trying to improve your power but adding observations is expensive, perhaps you should first explore whether you can improve power by adjusting the estimation approach.
 
 Here is an illustration of a two-arm trial with 40 units in which 20 units are assigned to treatment, blocking on a binary pre-treatment covariate $W$. We'll let the treatment effects vary according to $W$, but the true average treatment effect (our estimand in this case) is equal to 1.
 
@@ -41,7 +41,7 @@ potentials <- declare_potential_outcomes(Y ~ 2 * Z * W + u)
 estimand   <- declare_estimand(ate = 1)  
 
 # Data strategy
-assignment <- declare_assignment(assignment_variable = "Z", blocks = W) 
+assignment <- declare_assignment(assignment_variable = "Z", blocks = W)
 reveal     <- declare_reveal(Y, Z)
 
 # Answer strategy
@@ -64,7 +64,7 @@ write_rds(diagnosis, path = "rfiles/4_power_1.rds")
 
 
 ```{r, echo = FALSE, eval = TRUE}
-diagnosis <- read_rds("rfiles/4_power_1.rds") 
+diagnosis <- read_rds("rfiles/4_power_1.rds")
 kable(reshape_diagnosis(diagnosis)[, -c(1, 3:5)])
 ```
 
@@ -76,10 +76,10 @@ Here is the expanded design and the diagnosis:
 
 ```{r}
 new_design <- design +
-              declare_estimator(Y ~ Z + W,  model = lm_robust, 
+              declare_estimator(Y ~ Z + W,  model = lm_robust,
                                 estimand = "ate", label = "OLS: Control for W") +
-              declare_estimator(Y ~ Z, covariates = ~ W, model = lm_lin, 
-                                estimand = "ate", label = "Lin: Control + Interaction") 
+              declare_estimator(Y ~ Z, covariates = ~ W, model = lm_lin,
+                                estimand = "ate", label = "Lin: Control + Interaction")
 ```
 
 
@@ -90,13 +90,13 @@ write_rds(diagnosis_2, path = "rfiles/4_power_2.rds")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
-diagnosis_2 <- read_rds("rfiles/4_power_2.rds") 
+diagnosis_2 <- read_rds("rfiles/4_power_2.rds")
 kable(reshape_diagnosis(diagnosis_2)[1:3, -c(1:2, 4)])
 ```
 
 We see here a clear ranking of the three estimation strategies in terms of power. You will notice that the coverage also varies across designs: the simple difference in means approach is actually overly conservative in part because it does not take account of the blocked randomization. The OLS model that in some sense "controls for blocks" does better, but is still above the nominal coverage of 95%. In this case, the coverage of the Lin model is excellent.
 
-# Tradeoffs 
+# Tradeoffs
 
 To figure out how these gains in power from switching up estimation strategies compare with gains from increasing $N$ we declare a sequence of designs, differing only in values for $N$. We do that in two steps:
 
@@ -112,21 +112,21 @@ write_rds(diagnoses, path = "rfiles/4_power_3.rds")
 ```
 
 ```{r, echo = FALSE, eval = TRUE}
-diagnoses <- read_rds("rfiles/4_power_3.rds") 
+diagnoses <- read_rds("rfiles/4_power_3.rds")
 ```
 
 The diagnoses object now contains full diagnoses for a whole sequence of designs that assume different $N$s and that each contain multiple estimation strategies. Here is a graph of the output showing trade-offs between design size and estimation strategy.
 
 ```{r, fig.align="center"}
 diagnoses$diagnosands_df %>%
-  ggplot(aes(N, power)) + 
+  ggplot(aes(N, power)) +
   geom_line(aes(color = estimator_label))
 ```
 
-We see here that if you had 45 units and wanted to use simple differences in means your power would be around 80%. You could up your power to just over 90% by increasing the size of the experiment to about 60 units. Or, conditional on speculations about the heterogeneous effects of treatment, you could do the same thing by staying at 45 but switching over to the Lin estimator. 
+We see here that if you had 45 units and wanted to use simple differences in means your power would be around 80%. You could up your power to just over 90% by increasing the size of the experiment to about 60 units. Or, conditional on speculations about the heterogeneous effects of treatment, you could do the same thing by staying at 45 but switching over to the Lin estimator.
 
 # A puzzle
 
-Sometimes researchers coarsen control variables, for example turning a 10 point democracy scale into a binary variable, because they believe the finer scale is noisier. Can you declare a design to assess whether dichotomizing an outcome variable increases or decreases power? 
+Sometimes researchers coarsen control variables, for example turning a 10 point democracy scale into a binary variable, because they believe the finer scale is noisier. Can you declare a design to assess whether dichotomizing an outcome variable increases or decreases power?
 
 # References

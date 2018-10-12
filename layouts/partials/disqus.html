@@ -1,4 +1,4 @@
-{{ if and (not (eq .Site.DisqusShortname "")) (not .Params.disable_comments) }}
+{{ if and (not (eq .Site.DisqusShortname "")) (.Params.enable_comments) }}
 <section id="comments">
   <div id="disqus_thread"></div>
   <script>

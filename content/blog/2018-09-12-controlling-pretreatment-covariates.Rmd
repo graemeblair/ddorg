@@ -7,6 +7,8 @@ output:
     theme: cerulean
     code_folding: show
 bibliography: bib/blog.bib
+weight: 1
+enable_comments: true
 ---
 
 ```{r setup, include=FALSE}
@@ -25,7 +27,7 @@ Consider an observational study looking at the effect of a non-randomly assigned
 
 This has been a question of some disagreement, with @rosenbaum2002observational, for instance, arguing that "there is little to no reason to avoid adjustment for a true covariate, a variable describing subjects before treatment," and @greenland1999causal and others arguing that you cannot answer this question without a causal model of how $Z$ relates to $X$ and $Y$. See also [this](https://andrewgelman.com/2009/07/23/pearls_and_gelm/) discussion hosted by Andy Gelman.  Controlling for pretreatment covariates in a randomized experiment usually can't hurt and usually increases precision -- but what about in an observational study in which pretreatment covariates might be correlated with both the (nonrandomly assigned) treatment and the outcome?
 
-Design declaration and diagnosis makes it relatively simple to examine the kinds of cases that worry Greenland et al and see where risks of bias might come from.
+Design declaration and diagnosis makes it relatively simple to examine the kinds of cases that worry Greenland et al and see where risks of bias might come from. 
 
 Let's declare a design with a model of the form:
 
@@ -45,10 +47,10 @@ population <- declare_population(N = N, U_1 = rnorm(N), U_2 = rnorm(N),
                                  X = U_1 + U_2, Z  = 1 * (U_2 > 0))
 potentials <- declare_potential_outcomes(Y ~ b * Z + U_1)
 estimand   <- declare_estimand(ate = mean(Y_Z_1 - Y_Z_0))
-reveal_Y   <- declare_reveal()
-answer_1   <- declare_estimator(Y ~ Z, estimand = "ate",
+reveal_Y   <- declare_reveal() 
+answer_1   <- declare_estimator(Y ~ Z, estimand = "ate", 
                                 model = lm_robust, label = "No control")
-answer_2   <- declare_estimator(Y ~ Z + X, estimand = "ate",
+answer_2   <- declare_estimator(Y ~ Z + X, estimand = "ate", 
                                 model = lm_robust, label = "With control")
 
 design <- population + potentials + estimand + reveal_Y + answer_1 + answer_2
@@ -72,7 +74,7 @@ diagnosis <- read_rds("rfiles/controlling_pretreatment_1.rds")
 kable(reshape_diagnosis(diagnosis)[, -c(4,14)])
 ```
 
-We see that the estimator without controls is unbiased while the one with controls is very biased. Clearly, introducing a control was a mistake, even though the control was pretreatment.
+We see that the estimator without controls is unbiased while the one with controls is very biased. Clearly, introducing a control was a mistake, even though the control was pretreatment. 
 
 The reason why the estimator without controls is unbiased is simple enough: $U_2$ is correlated with $X$ and $Y$ (via $Z$), however it is not correlated with $Y$ given $Z$. Indeed, in the model given, it is as if $Z$ is randomly assigned by $U_2$.
 
@@ -104,13 +106,13 @@ We still observe bias. To see where this bias is coming from, let us draw data f
 
 ```{r, fig.cap="Note: Correlation between Z and Y introduced by controlling for X.", echo=TRUE, eval = TRUE, fig.align="center"}
 draw_data(null_design) %>%
-  ggplot(aes(X, Y, color = as.factor(Z))) +
-  geom_point(alpha = 0.5) +
+  ggplot(aes(X, Y, color = as.factor(Z))) + 
+  geom_point(alpha = 0.5) + 
   geom_vline(xintercept = seq(-4, 4, 2)) +
   scale_color_manual(values = c("blue", "red"))
 ```
 
-What we see here is that, overall, the red points are no higher or lower than the blue points --- indicating no treatment effect. Yet *within any vertical band* (i.e.,  keeping $X$ fixed), the blue dots are generally higher than the red dots. Conditioning induces a non-causal correlation.
+What we see here is that, overall, the red points are no higher or lower than the blue points --- indicating no treatment effect. Yet *within any vertical band* (i.e.,  keeping $X$ fixed), the blue dots are generally higher than the red dots. Conditioning induces a non-causal correlation. 
 
 The implication is quite a deep one: models of data generating processes are sometimes required in order to justify the choice of statistical models.
 

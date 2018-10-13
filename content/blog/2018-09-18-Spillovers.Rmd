@@ -7,7 +7,6 @@ output:
     theme: cerulean
     code_folding: show
 bibliography: bib/blog.bib
-enable_comments: true
 ---
 
 ```{r setup, include=FALSE}
@@ -27,7 +26,7 @@ A dangerous fact: it is quite possible to talk in a seemingly coherent way about
 
 By spillovers we mean situations where one unit's outcome depends upon how another unit is assigned to treatment. You often hear worries that estimates of average treatment effects are biased in the presence of such spillovers. And in particular that when there are positive spillovers, estimates will be biased downwards. Sensible as these worries sound, try to state them formally and you can run into some difficulties. The key issue is that the assumption of no spillovers runs so deep that it is often invoked even *prior to the definition of estimands*. If you write the "average treatment effect" estimand using potential outcomes notation, as $E(Y(1) - Y(0))$, you are *already* assuming  that a unit's outcomes depend only on its own assignment to treatment and not on how other units are assigned to treatment. The definition of the estimand leaves no space to even describe spillovers.
 
-If there are in fact spillovers, then the estimand needs to be spelled out more carefully. In this case, the range of estimands to choose may be very wide and the appropriateness of different strategies is going to depend on which estimand you are shooting for. 
+If there are in fact spillovers, then the estimand needs to be spelled out more carefully. In this case, the range of estimands to choose may be very wide and the appropriateness of different strategies is going to depend on which estimand you are shooting for.
 
 This post shows how:
 
@@ -37,22 +36,22 @@ This post shows how:
 
 Along the way, we show how to modify designs by switching up steps at different points.
 
-## Estimands given spillovers 
+## Estimands given spillovers
 
 There are many different estimands that can take account of spillover effects, if there are any, but that correspond to the usual average treatment effects estimand when there are no spillovers. For instance, we can define the difference for a unit when it---and only it---is treated, compared to a situation in which no unit is treated. In potential outcomes notation that could be written, for unit 3, say, as:
 
 $$\tau_3 = Y(0,0,1,0,0,\dots) -  Y(0,0,0,0,0,\dots)$$
 
-One could then define a population estimand that is the average of all these differences over a population. Note that these differences specify  different counterfactual assignment vectors for each individual. In the absence of spillovers, this estimand is equivalent to the usual average treatment effect. In the presence of spillovers, this estimand is well defined, whereas the usual average treatment effect estimand is not. 
+One could then define a population estimand that is the average of all these differences over a population. Note that these differences specify  different counterfactual assignment vectors for each individual. In the absence of spillovers, this estimand is equivalent to the usual average treatment effect. In the presence of spillovers, this estimand is well defined, whereas the usual average treatment effect estimand is not.
 
 There are many other possibilities. For example, the difference in outcomes when no units are treated and all units are treated. Or the difference between not being treated when all others are, and being treated when all others are. Or, the difference a change in your own condition would make given that others are assigned to the value that they actually have (see e.g. @savje2017average). In fact, with $n$ units and binary assignments, we can define $2^n\times2^n$ simple comparisons for each unit.
 
-Below, we declare a design that allows for the possibility of spillovers. Diagnosing the design shows how severe the problem of spillovers can be for estimation. Modifying the design lets us explore different types of solutions. 
+Below, we declare a design that allows for the possibility of spillovers. Diagnosing the design shows how severe the problem of spillovers can be for estimation. Modifying the design lets us explore different types of solutions.
 
 ## How spillovers make defining and estimating average effects hard
 
-Consider a situation in which units are grouped into triplets, indexed $G$. Suppose that there are 80 triplets. If any member of group $G$ is treated, then all of its members receive some equal benefit (with marginal gains possibly increasing or decreasing in the numbers treated). 
- 
+Consider a situation in which units are grouped into triplets, indexed $G$. Suppose that there are 80 triplets. If any member of group $G$ is treated, then all of its members receive some equal benefit (with marginal gains possibly increasing or decreasing in the numbers treated).
+
 We can declare this design as follows:^[In fact, here we just made some minor edits to the code pulled from the `DesignLibrary` package using `get_design_code(simple_spillover_designer())`.]
 
 ```{r}
@@ -113,17 +112,17 @@ kable(reshape_diagnosis(diagnosis)[,-(1:5)], digits = 2)
 ```
 
 
-We see considerable bias here because the difference-in-means estimator does not account for within-group spillovers. Many units in the control condition are affected by the treatments received by other members of their group. 
+We see considerable bias here because the difference-in-means estimator does not account for within-group spillovers. Many units in the control condition are affected by the treatments received by other members of their group.
 
-Interestingly, in this case, we have an *over*estimate of the effect, even though there are *positive* spillovers. In the assumed model, there are increasing returns to spillovers. Units that are treated are also likely to be in groups with a higher proportion of treated units (since, by definition, at least one member of their group is already treated). On average, treated units thus receive more positive spillover than untreated units, leading to exaggerated estimates. 
+Interestingly, in this case, we have an *over*estimate of the effect, even though there are *positive* spillovers. In the assumed model, there are increasing returns to spillovers. Units that are treated are also likely to be in groups with a higher proportion of treated units (since, by definition, at least one member of their group is already treated). On average, treated units thus receive more positive spillover than untreated units, leading to exaggerated estimates.
 
 ## Whether a sparser sample helps depends on the estimand of interest
 
-There are multiple solutions to this kind of problem. How well they work depends, however, on how well we understand the structure of spillover effects in the first place. 
+There are multiple solutions to this kind of problem. How well they work depends, however, on how well we understand the structure of spillover effects in the first place.
 
 One approach is to alter assignment strategies (see, e.g., @bowers2018models). An even simpler one is to employ a sparser sample. This approach seems to go against one of the few near-universal principles of research design: study as many units as possible.
 
-But here there may be some wisdom to it. Although more units generally means greater precision, there may be a cost to this when there are risks of spillovers. If a larger study means treating more units, and this means more units interfere with each other, you might end up with a spuriously precise, biased estimate. 
+But here there may be some wisdom to it. Although more units generally means greater precision, there may be a cost to this when there are risks of spillovers. If a larger study means treating more units, and this means more units interfere with each other, you might end up with a spuriously precise, biased estimate.
 
 Here is an alternative design that implements the original data and analysis strategies on a sample of one subject per group:
 
@@ -157,7 +156,7 @@ We have an unbiased design. Here though getting an unbiased design  depended on 
 
 However, how good this solution is also depends on what exactly the estimand is. What if the estimand were the average difference in outcomes between a world in which no unit is treated and one in which all units are treated?
 
-We answer this question by declaring a new design that adds in the new  estimand and links it to the estimator. 
+We answer this question by declaring a new design that adds in the new  estimand and links it to the estimator.
 
 We first define the steps:
 
@@ -166,7 +165,7 @@ new_estimand  <- declare_estimand(Treat_all = mean(
                   sapply(I, function(i) dgp(i,ones,G,n) - dgp(i, zeros, G,n))
                   ))
 
-new_estimator <- declare_estimator(Y ~ Z, model = lm_robust, 
+new_estimator <- declare_estimator(Y ~ Z, model = lm_robust,
                                    estimand = list("Treat_one", "Treat_all"))
 ```
 
@@ -199,6 +198,6 @@ kable(reshape_diagnosis(diagnose_design(sparse_design, sims = sims))[,-c(1,3:5)]
 
 The sparser design fails because the treatment density is insufficient to reveal the potential outcomes required by the estimand: *you cannot figure out the effects of saturation if you do not saturate*.
 
-A future post will describe approaches to addressing spillovers that work through estimation strategies, rather than through sampling and assignment strategies. 
+A future post will describe approaches to addressing spillovers that work through estimation strategies, rather than through sampling and assignment strategies.
 
 # References

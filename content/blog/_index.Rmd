@@ -1,3 +1,4 @@
 ---
 title: "The Blog"
+disable_comments: true
 ---

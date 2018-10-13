@@ -1,4 +1,10 @@
-{{ if and (not (eq .Site.DisqusShortname "")) (.Params.enable_comments) }}
+{{/* Only show Disqus comments if
+  (1) there's a Disqus shortname and
+  (2) if we're on the blog section and
+  (3) disable_comments=true is not set in the YAML header.
+  */}}
+
+{{ if and (not (eq .Site.DisqusShortname "")) (eq .Section "blog") (not .Params.disable_comments) }}
 <section id="comments">
   <div id="disqus_thread"></div>
   <script>

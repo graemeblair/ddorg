@@ -74,6 +74,7 @@ before_install:
   - npm --version
   - npm install
   - npm install Nick-Rivera/broken-link-checker -g
+  - npm install netlify-cli -g
 
 before_script:
   - Rscript -e 'blogdown::install_hugo()'

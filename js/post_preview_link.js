@@ -5,9 +5,11 @@ const request = require("request");
 const API_KEY             = process.argv[2];
 const PULL_REQUEST_NUMBER = process.argv[3];
 const CURRENT_PACKAGE     = process.argv[4] === "" ? "Blog Pages" : process.argv[4]; // An empty package name means
-                                                                                     // that we're building the blog
+let PREVIEW_URL           = process.argv[5];                                         // that we're building the blog
                                                                                      // pages.
-const PREVIEW_URL         = process.argv[5];
+
+// Extract the preview URL from whatever garbage is before and after it.
+PREVIEW_URL = PREVIEW_URL.replace(/.*(https.*\.com).*/, "$1");
 
 console.log("CURRENT_PACKAGE:", CURRENT_PACKAGE);
 console.log("PREVIEW_URL:", PREVIEW_URL);
@@ -19,7 +21,7 @@ if (PREVIEW_URL === "")
     throw new Error("No preview URL was given. There was a problem uploading the files to Netlify.")
 }
 
-// This build is not for a pull request, so the pull request ID will be an empty string.
+// If this build is not for a pull request, then the pull request number will be equal to the string `false`.
 if (PULL_REQUEST_NUMBER === "false")
 {
     console.log("No pull request number was given, so no preview link will be posted to GitHub.");

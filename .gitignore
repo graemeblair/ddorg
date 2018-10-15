@@ -50,3 +50,6 @@ content/library
 
 # Ignore RStudio Configuration
 declaredesign.org.Rproj
+
+# Ignore Python's virtual environment files
+venv/

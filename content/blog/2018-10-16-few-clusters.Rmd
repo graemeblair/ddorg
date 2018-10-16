@@ -1,0 +1,149 @@
+---
+title: "Poor performance of clustered SEs with too few clusters"
+date: "2018-10-16"
+author: "Declare Design Team"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib  
+---
+
+```{r setup, include=FALSE}
+library(DeclareDesign)
+library(knitr)
+library(tidyverse)
+
+set.seed(1)
+sims <- 2000
+do_diagnosis = FALSE
+```
+
+Cluster-robust standard errors are known to behave badly with too few clusters. The topic is discussed for instance by Berk &Ouml;zler ["Beware of studies with a small number of clusters"](https://blogs.worldbank.org/impactevaluations/beware-of-studies-with-a-small-number-of-clusters)  drawing on studies by @cameron2008bootstrap. See also a a recent treatment by @esarey2018practical.
+
+So how badly?
+
+We can see the problem immediately by looking at a small-scale example and estimating Stata's default cluster-robust standard errors. We fabricate a dataset with two clusters, each containing three units:
+
+```{r}
+dat <- fabricate(N = 6,
+                 cl = c(0, 0, 0, 1, 1, 1),
+                 Z = cl,
+                 Y = Z + rnorm(N))
+fit <- lm_robust(Y ~ Z, clusters = cl, data = dat, se_type = "stata")
+kable(tidy(fit)[, c("term", "estimate", "std.error")], digits = 2)
+```
+
+The estimated standard error is essentially zero. Such precision is implasible with just two clusters. 
+
+Let's look more systematically across a range of cluster randomized trials by writing a "designer," which in DeclareDesign-speak is a function that returns a design. We're setting this up in a designer so we can vary the number of clusters and the number of units per cluster without re-declaring the design each time. We draw separate errors at the individual and cluster levels so that outcomes are correlated with the clusters.
+
+```{r}
+cluster_designer <- 
+  function(N_clusters, N_per_cluster){
+    declare_population(
+      clusters = add_level(
+        N = N_clusters,
+        u_c = rnorm(N, sd = 0.5^0.5)),
+      individuals = add_level(
+        N = N_per_cluster,
+        u_0 = rnorm(N, sd = 0.5^0.5),
+        u_1 = rnorm(n = N, mean = u_0, sd = 0.5^0.5))) +
+      
+      declare_potential_outcomes(Y_Z_0 = u_0 + u_c, 
+                                 Y_Z_1 = u_1 + u_c) +
+      
+      declare_estimand(ATE = mean(Y_Z_1 - Y_Z_0)) +
+      
+      # cluster assignment
+      declare_assignment(clusters = clusters, prob = 0.5) +
+      
+      declare_reveal(Y, Z) +
+      
+      # three flavors of clustered standard errors
+      declare_estimator(Y ~ Z, model = lm_robust, clusters = clusters, 
+                        estimand = "ATE", se_type = "CR2", label = "CR2") +
+      
+      declare_estimator(Y ~ Z, model = lm_robust, clusters = clusters, 
+                        estimand = "ATE", se_type = "stata", label = "stata") +
+      
+      declare_estimator(Y ~ Z, model = lm_robust, clusters = clusters, 
+                        estimand = "ATE", se_type = "CR0", label = "CR0")
+  }
+```
+
+We'll use the `expand_design` function to make a large number of designs based on the designer. We're especially interested in what happens at small numbers of clusters, since that's where the trouble lies.
+
+```{r, warning=FALSE}
+cluster_designs <- 
+  expand_design(
+    cluster_designer,
+    N_clusters = c(4, 5, 6, 7, 8, 9, 10, 20, 30), 
+    N_per_cluster = c(3, 30))
+```
+
+We diagnose all of these in one go and graph the output separately for the expected standard error, power, and coverage.
+
+```{r, eval = FALSE}
+diagnosis <- diagnose_design(cluster_designs, sims = sims, bootstrap_sims = FALSE)
+```
+
+```{r, eval = do_diagnosis, echo = FALSE, warning = FALSE}
+diagnosis <- diagnose_design(cluster_designs, sims = sims, bootstrap_sims = FALSE)
+write_rds(diagnosis, path = "rfiles/few_clusters.rds")
+```
+
+
+```{r, echo = FALSE, eval = TRUE}
+diagnosis <- read_rds("rfiles/few_clusters.rds") 
+```
+
+## Standard Errors
+
+Our first plot compares the true standard error (the standard deviation of the estimates themselves) to the expected standard error *estimate*. The blue points are the true standard errors at each sample size; they go down as the number of clusters increases. The red points are the average estimated standard errors. When the number of clusters is small, we see that the average estimate is **too small**: the standard error estimators are downwardly biased. This problem is worse for "CR0" (a commonly used variant of cluster-robust standard errors that appears in R code that circulates online) and Stata's default standard errors and not as bad for the CR2 standard errors (a variant that mirrors the standard HC2 robust standard errors formula). 
+
+```{r}
+get_diagnosands(diagnosis) %>%
+  gather(diagnosand, value, sd_estimate, mean_se) %>%
+  ggplot(aes(N_clusters, value, group = diagnosand, color = diagnosand)) +
+  geom_point() + geom_line() +
+  theme_bw() +
+  theme(legend.position = "bottom", strip.background = element_blank()) +
+  facet_grid(estimator_label ~ N_per_cluster, labeller = label_both)
+```
+
+## Power 
+
+In our data-generating process, the true ATE is exactly zero. Statistical power is the probability of getting a significant estimate. Since the true ATE is exactly zero, this probability should be exactly 0.05, as we're using the standard significance threshold. Just as the analysis of the standard errors showed, when the number of clusters is small, we're **anti**conservative. When the number of clusters is smaller than 10, the CR0 and Stata estimators are falsely rejecting at rates exceeding 10%.
+
+```{r}
+get_diagnosands(diagnosis) %>%
+ggplot(aes(N_clusters, power)) +
+  geom_point() + geom_line() +
+  geom_hline(yintercept = 0.05, linetype = "dashed") +
+  theme_bw() + theme(strip.background = element_blank()) +
+  facet_grid(estimator_label ~ N_per_cluster, labeller = label_both)
+```
+
+## Coverage
+
+Coverage is the rate at which the estimated confidence intervals include the true value of the parameter. We're estimating 95% confidence intervals, so if things are working as advertisted, coverage would be 95%. But since at small numbers of clusters, we're overconfident (the standard errors are too small), the coverage rates are well below the 95% target.
+
+```{r}
+get_diagnosands(diagnosis) %>%
+ggplot(aes(N_clusters, coverage)) +
+  geom_point() + geom_line() +
+  geom_hline(yintercept = 0.95, linetype = "dashed") +
+  theme_bw() + theme(strip.background = element_blank()) +
+  facet_grid(estimator_label ~ N_per_cluster, labeller = label_both)
+```
+
+# Summary
+
+There's no magic number of clusters above which you can definitely trust the clustered standard error estimator. The amount of difficulty depends on unknowable things about potential outcomes. However, simulating data that is similar to your empirical setting can provide some indication about whether it's a problem in your application. 
+
+We're also wondering if the great overall performance of `CR2` can be broken with a different data generating process, that is, different calls to `declare_population` and / or `declare_potential_outcomes`. We'd love to hear from readers about scenarios when CR2 doesn't do as well as CR0 or the Stata default.
+
+# References
+

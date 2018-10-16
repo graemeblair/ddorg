@@ -41,13 +41,13 @@ Let's look more systematically across a range of cluster randomized trials by wr
 
 ```{r}
 cluster_designer <- 
-  function(N_clusters, N_per_cluster){
+  function(N_clusters, cluster_size){
     declare_population(
       clusters = add_level(
         N = N_clusters,
         u_c = rnorm(N, sd = 0.5^0.5)),
       individuals = add_level(
-        N = N_per_cluster,
+        N = cluster_size,
         u_0 = rnorm(N, sd = 0.5^0.5),
         u_1 = rnorm(n = N, mean = u_0, sd = 0.5^0.5))) +
       
@@ -80,7 +80,7 @@ cluster_designs <-
   expand_design(
     cluster_designer,
     N_clusters = c(4, 5, 6, 7, 8, 9, 10, 20, 30), 
-    N_per_cluster = c(3, 30))
+    cluster_size = c(3, 30))
 ```
 
 We diagnose all of these in one go and graph the output separately for the expected standard error, power, and coverage.
@@ -110,7 +110,7 @@ get_diagnosands(diagnosis) %>%
   geom_point() + geom_line() +
   theme_bw() +
   theme(legend.position = "bottom", strip.background = element_blank()) +
-  facet_grid(estimator_label ~ N_per_cluster, labeller = label_both)
+  facet_grid(estimator_label ~ cluster_size, labeller = label_both)
 ```
 
 ## Power 
@@ -118,12 +118,12 @@ get_diagnosands(diagnosis) %>%
 In our data-generating process, the true ATE is exactly zero. Statistical power is the probability of getting a significant estimate. Since the true ATE is exactly zero, this probability should be exactly 0.05, as we're using the standard significance threshold. Just as the analysis of the standard errors showed, when the number of clusters is small, we're **anti**conservative. When the number of clusters is smaller than 10, the CR0 and Stata estimators are falsely rejecting at rates exceeding 10%.
 
 ```{r}
-get_diagnosands(diagnosis) %>%
-ggplot(aes(N_clusters, power)) +
+diagnosis$diagnosands_df %>%
+  ggplot(aes(N_clusters, power)) +
   geom_point() + geom_line() +
   geom_hline(yintercept = 0.05, linetype = "dashed") +
   theme_bw() + theme(strip.background = element_blank()) +
-  facet_grid(estimator_label ~ N_per_cluster, labeller = label_both)
+  facet_grid(estimator_label ~ cluster_size, labeller = label_both)
 ```
 
 ## Coverage
@@ -136,7 +136,7 @@ ggplot(aes(N_clusters, coverage)) +
   geom_point() + geom_line() +
   geom_hline(yintercept = 0.95, linetype = "dashed") +
   theme_bw() + theme(strip.background = element_blank()) +
-  facet_grid(estimator_label ~ N_per_cluster, labeller = label_both)
+  facet_grid(estimator_label ~ cluster_size, labeller = label_both)
 ```
 
 # Summary

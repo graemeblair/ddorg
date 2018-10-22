@@ -1,8 +1,7 @@
 ---
-title: With great power comes great responsibility 
-author: 'DeclareDesign Team'
+title: "With great power comes great responsibility"
 date: '2018-10-23'
-slug: bias-sample-size
+author: "Declare Design Team"
 output:
   html_document:
     highlight: tango

@@ -137,7 +137,7 @@ Our narrower sampling strategy reduces the `N` by two-thirds (from 240 to 80). B
 
 Here is a diagnosis of this sparser design:
 
-```{r}
+```{r, eval = FALSE}
 diagnosis <- diagnose_design(sparse_design, sims = sims)
 ```
 
@@ -190,9 +190,9 @@ diagnosis   <- diagnose_design(sparse_design, sims = sims)
 write_rds(diagnosis, path = "rfiles/2_spillover_3.rds")
 ```
 
-```{r, echo = FALSE, eval = TRUE}
+```{r blah, echo = FALSE, eval = TRUE}
 diagnosis <- read_rds("rfiles/2_spillover_3.rds")
-kable(reshape_diagnosis(diagnose_design(sparse_design, sims = sims))[,-c(1,3:5)], digits = 2)
+kable(reshape_diagnosis(diagnosis)[,-c(1,3:5)], digits = 2)
 ```
 
 

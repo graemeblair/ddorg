@@ -113,7 +113,7 @@ get_diagnosands(diagnosis) %>%
 
 In summary, more data is generally better, but ever bigger data won't necessarily solve the problem of unobserved confounding. A consequence of the [statistical significance filter](https://andrewgelman.com/2011/09/10/the-statistical-significance-filter/) is that we tend to hear only about findings that are "significant." Big data gets studies through this filter because, with so many observations, statistical significance is trivially easy to achieve.  To be clear, we are not saying that the study in the Lancet *is* biased (we can't know whether there are unobserved confounders). But if a design (observational or experimental!) is biased, increasing the sample size can make the wrong inference a whole lot more likely. 
 
-As Uncle Ben would probably have said if Peter Parker had gone into social science instead of superhero work, "With great (statistical) power comes great (inferential) responsiblity." 
+As Uncle Ben might have said to Peter Parker if he'd opted for social science instead of being a superhero: with great statistical power comes great inferential responsiblity. 
 
 
 # References

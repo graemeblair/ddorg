@@ -112,7 +112,7 @@ notifications:
     on_failure: change
 
 after_success:
-  - if [ "$TRAVIS_BUILD_STAGE_NAME" = Test ] && [ "$GITHUB_API_TOKEN" ]; then ./scripts/deploy.sh "$GITHUB_API_TOKEN" "$TRAVIS_PULL_REQUEST" "$PACKAGE"; fi
+  - if [ "$TRAVIS_BUILD_STAGE_NAME" = Test ] && [ "$GITHUB_API_TOKEN" ]; then ./scripts/deploy_previews.sh "$GITHUB_API_TOKEN" "$TRAVIS_PULL_REQUEST" "$PACKAGE"; fi
 
 deploy:
   provider: s3

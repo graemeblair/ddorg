@@ -2,7 +2,11 @@
 
 [![Build Status](https://travis-ci.org/DeclareDesign/declaredesign.org.svg?branch=master)](https://travis-ci.org/DeclareDesign/declaredesign.org)
 
-# How do I run the build script locally?
+## How do I run the build script locally?
+
+**Warning**: Running this script will erase blog posts in the content directory.
+Make sure that you have committed them before running this script.
+
 
 Steps for running locally on macOS:
 
@@ -27,12 +31,12 @@ python3 -m pip install pyyaml
 
 ```
 
-Next, add your GitHub API token to the top of the file `run_build.py` on the line `GITHUB_API_TOKEN = ""`.
+Next, add your GitHub API token to the top of the file `scripts/run_build_locally.py` on the line `GITHUB_API_TOKEN = ""`.
 
 Now, run that scrip with Python:
 
 ```sh
-python3 run_build.py
+python3 scripts/run_build_locally.py
 ```
 
 Don't forget that you will also have to install any R packages that are necessary to build the website.

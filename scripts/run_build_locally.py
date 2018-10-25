@@ -64,7 +64,7 @@ all_variables = {**parsed_global_variables, **parsed_package_variables}
 all_variables["GITHUB_API_TOKEN"] = GITHUB_API_TOKEN
 all_variables["PATH"] = user_environment_variables["PATH"]
 
-subprocess.run(["./download_packages.sh"], env=all_variables)
+subprocess.run(["./scripts/run_build_travis.sh"], env=all_variables)
 
 # Serve the site!
 os.chdir("public/")

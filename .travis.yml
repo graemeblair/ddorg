@@ -80,7 +80,7 @@ before_script:
   - Rscript -e 'blogdown::install_hugo()'
 
 script:
-  - ./download_packages.sh
+  - ./scripts/run_build_travis.sh
 
 jobs:
   include:

@@ -31,7 +31,8 @@ if [ -n "$PACKAGE" ]; then
   pushd "$temporary_directory"
   pwd
 
-  wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xvz
+  echo "Downloading and untarring package ${PACKAGE}"
+  wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xz
 
   # All GitHub tar files begin with the name of the GitHub owner of the repository (e.g., DeclareDesign or Nick-Rivera),
   # followed by a dash, followed by the name of the package, and then followed by some junk characters. This line finds

@@ -183,7 +183,7 @@ matched_cluster_sims %>%
   facet_wrap( ~ estimator_label) 
 ```
 
-## Extension: The problem is aggravated by sampling (but there is a solution in that case also!)
+# Extension: The problem is aggravated by sampling (but there is a solution in that case also!)
 
 This problem is amplified when clusters are sampled from a larger population of clusters with equal probability. In this case both the difference-in-means and the Horvitz Thompson estimators will be biased. The intuition is similar to the problem with random assignment: tiny clusters are equally likely to be sampled as very large clusters, and the inclusion of some tiny clusters biases down both estimators when outcomes are a function of cluster size. This bias will exist even when randomization is blocked on cluster size. One intuitive possibility to address this bias is to change the probability of sampling to oversample large clusters and undersample small clusters -- probability-proportional-to-size sampling. @higgins2014benefits proposes such a design. Intuitively, this helps because those tiny clusters that lead to bias are less likely to be selected. @higgins2014benefits demonstrates that the @hansen1943theory estimator is unbiased in this setting. 
 

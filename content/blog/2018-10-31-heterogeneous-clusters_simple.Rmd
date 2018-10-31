@@ -21,7 +21,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 theme_set(theme_bw() + theme(strip.background = element_blank()))
-do_diagnosis <- TRUE
+do_diagnosis <- FALSE
 sims <- 2000
 ```
 

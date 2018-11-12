@@ -6,6 +6,8 @@ cache:
   directories:
     - "$HOME/bin"
 
+bioc_packages: Biobase
+
 env:
   global:
     # CONTENT_FOLDERS are the folders that we want to be cleared out and recreated every time the build runs. Put a folder

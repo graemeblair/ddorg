@@ -21,7 +21,7 @@
       {{ with .Description }}
         {{ $.Scratch.Set "summary" (markdownify .) }}
       {{ else }}
-        {{ $.Scratch.Set "summary" ((index (findRE "(<p.*?>(.|\n)*?</p>)" .Content 1) 0) | replaceRE "&amp;" "&" | safeHTML) }}
+        {{ $.Scratch.Set "summary" ((index (findRE "(<p.*?>(.|\n)*?</p>)" .Content 1) 0) | safeHTML) }}
       {{ end }}
       <div class="blog_summary">{{ $.Scratch.Get "summary" }}</div>
       {{ if .Truncated }}

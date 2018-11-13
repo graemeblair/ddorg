@@ -1,6 +1,6 @@
 ---
-title: "What *does* a *p* value tell you about the probability a hypothesis is true?"
-date: ""
+title: "What does a p-value tell you about the probability a hypothesis is true?"
+date: "2013-11-13"
 slug: "2013-11-13-learning-from-p"
 output:
   html_document:

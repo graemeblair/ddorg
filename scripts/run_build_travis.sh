@@ -90,7 +90,7 @@ fi
 IFS=$'\n'; set -f
 for file in $(find $(pwd)/"${PUBLISH_FOLDER}" -type f -name '*.html'); do
   echo "Cleaning $file"
-  node js/clean_pages.js "$file"
+  node js/clean_pages.js "$file" "$BASE_URL"
 done
 unset IFS; set +f
 

@@ -3,10 +3,11 @@
 const fs      = require("fs");
 const cheerio = require("cheerio");
 
-const htmlFileName = process.argv[2];
-const webPage      = fs.readFileSync(htmlFileName, "utf8");
+const HTML_FILE_NAME = process.argv[2];
+const BASE_URL       = process.argv[3];
 
-const $ = cheerio.load(webPage);
+const WEB_PAGE = fs.readFileSync(HTML_FILE_NAME, "utf8");
+const $        = cheerio.load(WEB_PAGE);
 
 function clean_tables()
 {
@@ -74,8 +75,30 @@ function create_toc()
     $("#TOC > nav > ul ul > li").addClass("ml-3"); // Only add an indent to level 2 links.
 }
 
-clean_tables($);
-clean_code_blocks($);
-create_toc($);
+function add_twitter_cards()
+{
+    const page_title         = $("title").text();
+    const first_image        = $("img", ".article-content").eq(0);
+    const first_image_source = first_image.prop("src");
 
-fs.writeFileSync(htmlFileName, $.html());
+    const card_type  = `<meta name="twitter:card"  content="summary">`;
+    const card_title = `<meta name="twitter:title" content="${page_title}">`;
+    const card_image = `<meta name="twitter:image" content="${BASE_URL + first_image_source}">`;
+
+    const page_head = $("head");
+
+    page_head.append(card_type);
+    page_head.append(card_title);
+
+    if (first_image_source)
+    {
+        page_head.append(card_image);
+    }
+}
+
+clean_tables();
+clean_code_blocks();
+create_toc();
+add_twitter_cards();
+
+fs.writeFileSync(HTML_FILE_NAME, $.html());

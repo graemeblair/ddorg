@@ -79,7 +79,9 @@ function add_twitter_cards()
 {
     const page_title         = $("title").text();
     const first_image        = $("img", ".article-content").eq(0);
-    const first_image_source = first_image.prop("src");
+    const first_image_source = first_image.attr("src");
+
+    const link_starts_with_domain_name = /^https/.test(first_image_source);
 
     const card_type  = `<meta name="twitter:card"  content="summary">`;
     const card_title = `<meta name="twitter:title" content="${page_title}">`;
@@ -90,7 +92,9 @@ function add_twitter_cards()
     page_head.append(card_type);
     page_head.append(card_title);
 
-    if (first_image_source)
+    // If a link starts with the domain name, it indicates that the image is not part of our content but is
+    // instead an image from someone else (e.g. a Travis build pill badge).
+    if (first_image_source && !link_starts_with_domain_name)
     {
         page_head.append(card_image);
     }

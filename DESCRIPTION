@@ -48,7 +48,8 @@ Imports:
   systemfit,
   testthat,
   texreg,
-  tidyverse
+  tidyverse,
+  gridExtra
 Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,

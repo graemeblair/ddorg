@@ -48,7 +48,7 @@ We can learn about all of these using a simulation conducted in `DeclareDesign`.
 
 ```{r, message=FALSE}
 r <- 0 # correlation between Y0 and Y1
-b <- 0 # constant treatment effect
+b <- 0 # average treatment effect
 
 design <- 
   declare_population(N = 64,

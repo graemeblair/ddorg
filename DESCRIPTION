@@ -54,4 +54,5 @@ Remotes:
   rstudio/rmarkdown,
   rstudio/blogdown,
   Nick-Rivera/pkgdown,
-  gibbonscharlie/bfe
+  gibbonscharlie/bfe,
+  tidymodels/broom

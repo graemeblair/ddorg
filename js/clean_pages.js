@@ -47,7 +47,7 @@ function clean_code_blocks()
 
 function create_toc()
 {
-    // Count the number of items that would be in the TOC. If there’s one or fewer items,
+    // Count the number of items that would be in the TOC. If there's one or fewer items,
     // don't create a TOC. Just create one column of length 12 that will hold our article.
     if ($("li", "#TOC").length <= 1)
     {
@@ -75,27 +75,20 @@ function create_toc()
     $("#TOC > nav > ul ul > li").addClass("ml-3"); // Only add an indent to level 2 links.
 }
 
-function add_twitter_cards()
+function add_twitter_card_image()
 {
-    const page_title         = $("title").text();
-    const first_image        = $("img", ".article-content").eq(0);
-    const first_image_source = first_image.attr("src");
+    const first_image                = $("img", ".article-content").eq(0);
+    const first_image_source         = first_image.attr("src");
+    const does_link_have_domain_name = /^https/.test(first_image_source);
 
-    const link_starts_with_domain_name = /^https/.test(first_image_source);
-
-    const card_type  = `<meta name="twitter:card"  content="summary">`;
-    const card_title = `<meta name="twitter:title" content="${page_title}">`;
-    const card_image = `<meta name="twitter:image" content="${BASE_URL + first_image_source}">`;
-
-    const page_head = $("head");
-
-    page_head.append(card_type);
-    page_head.append(card_title);
-
-    // If a link starts with the domain name, it indicates that the image is not part of our content but is
+    // Don't include an image in the Twitter preview if the image's link has the domain name.
+    // The reason is that if the link has a domain name, it indicates that the image is not part of our content but is
     // instead an image from someone else (e.g. a Travis build pill badge).
-    if (first_image_source && !link_starts_with_domain_name)
+    if (first_image_source && !does_link_have_domain_name)
     {
+        const page_head  = $("head");
+        const card_image = `<meta name="twitter:image" content="${BASE_URL + first_image_source}">`;
+      
         page_head.append(card_image);
     }
 }
@@ -103,6 +96,6 @@ function add_twitter_cards()
 clean_tables();
 clean_code_blocks();
 create_toc();
-add_twitter_cards();
+add_twitter_card_image();
 
 fs.writeFileSync(HTML_FILE_NAME, $.html());

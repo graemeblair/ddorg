@@ -22,7 +22,7 @@
       <!-- The replaceRE statement removes backslashes that pop up when converting from Latex math code to plain text. -->
       <!-- We need to htmlUnescape at the end because some characters in the text are encoded even when they don't have to be.
            These extra entity codes confuse XML. Unencoding the text forces Hugo to re-encode it using only entity codes that are compatible with XML.  -->
-      <description>{{ ((index (findRE "(<p.*?>(.|\n)*?</p>)" .Content 1) 0) | plainify | replaceRE "\\\\" "" | htmlUnescape ) }}</description>
+      <description>{{- partial "first_paragraph_summary.html" . -}}</description>
     </item>
     {{ end }}
   </channel>

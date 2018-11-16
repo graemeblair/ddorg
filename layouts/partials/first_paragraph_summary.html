@@ -1,0 +1,3 @@
+{{ with .Content }}
+  {{- ((index (findRE "(<p.*?>(.|\n)*?</p>)" $.Content 1) 0) | plainify | replaceRE "\\\\" "" | htmlUnescape ) -}}
+{{end}}

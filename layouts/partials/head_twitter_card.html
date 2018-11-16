@@ -1,0 +1,10 @@
+{{/* The meta tag that lets you show images in Twitter posts (i.e. the tag
+     <meta name="twitter:image" content="my_image.png">)
+     is created in the clean_pages.js script because Hugo can't fetch a list of images on a page for us to use.
+     It's easier to create the first paragraph summary in Hugo, so that's done here.
+  */}}
+{{ with .Title }}
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="{{ . }}">
+  <meta name="twitter:description" content='{{- partial "first_paragraph_summary.html" $ -}}'>
+{{ end }}

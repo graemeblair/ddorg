@@ -1,5 +1,5 @@
 ---
-title: "Bad Blocking"
+title: "Sometimes blocking can reduce your precision"
 date: "2018-09-24"
 output:
   html_document:

@@ -98,7 +98,7 @@ draw_data(spillover_design) %>%
   dd_theme + theme(axis.text = element_blank(), axis.title = element_blank())
 ```
 
-There are two notable departures from the design we looked at before. First, we declare an estimand for indirect effects and not just for direct effects. For direct effects we focus on the effect of being treated given no neighbors are treated ($E[Y_{1,0} - Y_{0,0}]$). For indirect effects we focus on the effect for an individual of having everyone else treated given that they themselves are not treated ($E[Y_{0,2} - Y_{0,0}]$). Importantly, this **estimand** is defined in terms of potential outcomes rather than being dependent on a particular model. 
+There are two notable departures from the design we looked at before. First, we declare an estimand for indirect effects and not just for direct effects. For direct effects we focus on the effect of being treated given no neighbors are treated ($E[Y_{1,0} - Y_{0,0}]$). For indirect effects we focus on the effect for an individual of having everyone else treated given that they themselves are not treated ($E[Y_{0,2} - Y_{0,0}]$).^[In fact if you look a the design declaration we are a little more thorough and define the estimand in terms of the treatment status of *all individuals* and not just the in-group members.] Importantly, this **estimand** is defined in terms of potential outcomes rather than being dependent on a particular model. 
 
 Second, alongside the naive estimator, we use an estimator that seeks to model the direct and indirect effects directly. By modelling indirect effects in the estimation step, we can seek to estimate the average direct treatment effect without bias and conditional on the number of neighbors treated. 
 

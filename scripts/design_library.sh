@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # We've altered the reference page index template (content-reference-index.html) in DesignLibrary_pkgdown_templates.
 # We've removed the table that pkgdown normally creates, and we added our own instead. The text that comes before the
 # table also comes from that template. The script below creates the table.

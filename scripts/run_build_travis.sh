@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This line causes all errors in Bash to fail the build. If we didn't have this line then Travis will
 # keep running even if there were an error somewhere else in the rest of the script.

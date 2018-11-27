@@ -3,8 +3,15 @@
      is created in the clean_pages.js script because Hugo can't fetch a list of images on a page for us to use.
      It's easier to create the first paragraph summary in Hugo, so that's done here.
   */}}
-{{ with .Title }}
+
+{{/* The line
+     . | markdownify | plainify
+     turns the markdown formatting characters in a title into HTML tags, then strips those HTML tags.
+     We don't want the markdown formatting characters to show up in Twitter posts.
+     For example, Help *me*! → Help <strong>me</strong>! → Help me! */}}
+
+{{with .Title}}
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="{{ . }}">
+  <meta name="twitter:title" content="{{. | markdownify | plainify}}">
   <meta name="twitter:description" content='{{- partial "first_paragraph_summary.html" $ -}}'>
-{{ end }}
+{{end}}

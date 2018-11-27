@@ -1,11 +1,11 @@
-{{ if (not .Params.disable_highlight) }}
-{{ $highVer := .Site.Params.highlightjsVersion }}
-{{ if (not (eq $highVer "")) }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{ $highVer }}/highlight.min.js"></script>
-{{ $.Scratch.Set "highLangs" .Site.Params.highlightjsLang }}
-{{ range .Params.highlightjsLang }}{{ $.Scratch.Add "highLangs" . }}{{ end }}
-{{ range ($.Scratch.Get "highLangs") }}
-<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{ $highVer }}/languages/{{ . }}.min.js"></script>{{ end }}
+{{if (not .Params.disable_highlight)}}
+{{$highVer := .Site.Params.highlightjsVersion}}
+{{if (not (eq $highVer ""))}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{$highVer}}/highlight.min.js"></script>
+{{$.Scratch.Set "highLangs" .Site.Params.highlightjsLang}}
+{{range .Params.highlightjsLang}}{{$.Scratch.Add "highLangs" .}}{{end}}
+{{range ($.Scratch.Get "highLangs")}}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/{{$highVer}}/languages/{{.}}.min.js"></script>{{end}}
 <script>
 jQuery(function ()
 {
@@ -15,5 +15,5 @@ jQuery(function ()
   });
 });
 </script>
-{{ end }}
-{{ end }}
+{{end}}
+{{end}}

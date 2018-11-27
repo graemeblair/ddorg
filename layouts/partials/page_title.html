@@ -1,15 +1,15 @@
 {{if (hasPrefix .Dir "r/declaredesign")}}
-  <title>{{with .Title}}{{.}} - {{end}}DeclareDesign for R</title>
+  <title>{{with .Title}}{{. | markdownify | plainify}} - {{end}}DeclareDesign for R</title>
 {{else if (hasPrefix .Dir "r/randomizr")}}
-  <title>{{with .Title}}{{.}} - {{end}}randomizr for R</title>
+  <title>{{with .Title}}{{. | markdownify | plainify}} - {{end}}randomizr for R</title>
 {{else if (hasPrefix .Dir "r/fabricatr")}}
-  <title>{{with .Title}}{{.}} - {{end}}fabricatr for R</title>
+  <title>{{with .Title}}{{. | markdownify | plainify}} - {{end}}fabricatr for R</title>
 {{else if (hasPrefix .Dir "r/estimatr")}}
-  <title>{{with .Title}}{{.}} - {{end}}estimatr for R</title>
+  <title>{{with .Title}}{{. | markdownify | plainify}} - {{end}}estimatr for R</title>
 {{else if (hasPrefix .Dir "stata/randomizr")}}
-  <title>{{with .Title}}{{.}} - {{end}}randomizr for Stata</title>
+  <title>{{with .Title}}{{. | markdownify | plainify}} - {{end}}randomizr for Stata</title>
 {{else if eq .URL "/"}}
   <title>DeclareDesign</title>
 {{else}}
-  <title>{{with .Title}}{{.}} - {{end}}DeclareDesign</title>
+  <title>{{with .Title}}{{. | markdownify | plainify}} - {{end}}DeclareDesign</title>
 {{end}}

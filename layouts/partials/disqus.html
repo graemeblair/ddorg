@@ -4,22 +4,22 @@
   (3) disable_comments=true is not set in the YAML header.
   */}}
 
-{{ if and (not (eq .Site.DisqusShortname "")) (eq .Section "blog") (not .Params.disable_comments) }}
+{{if and (not (eq .Site.DisqusShortname "")) (eq .Section "blog") (not .Params.disable_comments)}}
 <section id="comments">
   <div id="disqus_thread"></div>
   <script>
   function disqus_config()
   {
-    {{ with .Site.Params.disqusURL }}
-      this.page.url = "{{ . }}" +{{ if eq $.Type "404" }} "/404.html" {{ else }} location.pathname{{ end }};
-    {{ end }}
+    {{with .Site.Params.disqusURL}}
+      this.page.url = "{{.}}" +{{if eq $.Type "404"}} "/404.html" {{else}} location.pathname{{end}};
+    {{end}}
   }
 
   function init_disqus()
   {
       const d = document;
       const s = d.createElement('script');
-      s.src   = '//{{ .Site.DisqusShortname }}.disqus.com/embed.js';
+      s.src   = '//{{.Site.DisqusShortname}}.disqus.com/embed.js';
       s.setAttribute('data-timestamp', +new Date());
       (d.head || d.body).appendChild(s);
   }
@@ -28,4 +28,4 @@
   </script>
   <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 </section>
-{{ end }}
+{{end}}

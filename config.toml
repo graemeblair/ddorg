@@ -6,6 +6,7 @@ googleAnalytics = "UA-126973870-1"
 disqusShortname = "declaredesign"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 uglyurls = true
+paginate = 5 # Default number of blog posts per page in pagination.
 
 [permalinks]
     post = "/blog/:year/:month/:day/:slug/"

@@ -9,6 +9,11 @@ cache:
 
 bioc_packages: Biobase
 
+addons:
+  apt:
+    packages:
+      - python3.5
+
 env:
   global:
     # CONTENT_FOLDERS are the folders that we want to be cleared out and recreated every time the build runs. Put a folder
@@ -79,6 +84,8 @@ before_install:
   - node --version
   - npm --version
   - npm install
+  - npm install Nick-Rivera/broken-link-checker -g
+  - npm install netlify-cli -g
 
 before_script:
   - Rscript -e 'blogdown::install_hugo()'
@@ -113,8 +120,6 @@ notifications:
     on_failure: change
 
 after_success:
-  - npm install Nick-Rivera/broken-link-checker -g
-  - npm install netlify-cli -g
   - if [ "$TRAVIS_BUILD_STAGE_NAME" = Test ] && [ "$GITHUB_API_TOKEN" ]; then ./scripts/deploy_previews.sh "$GITHUB_API_TOKEN" "$TRAVIS_PULL_REQUEST" "$PACKAGE"; fi
 
 deploy:
@@ -133,5 +138,5 @@ deploy:
 
 after_deploy:
   - ./ecr_credentials.sh
-  - pip install --user awscli
+  - pip3 install --user awscli
   - aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'

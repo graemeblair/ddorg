@@ -20,13 +20,18 @@ do_diagnosis = FALSE
 theme_set(theme_bw())
 ```
 
-@deaton2017understanding provide multiple arguments against claims that randomized trials should be thought of as a kind of gold standard of scientific evidence. One striking claim they make is that randomization does not justify the statistical tests that researchers typically use. They are **right**. In particular they show that "spurious significance [...] arises when the distribution of treatment	effects	contains outliers or,	more generally, is not symmetric." So even if researchers can claim that their estimates of standard errors are justified, their habitual use of those standard errors to conduct *t*-tests are not. We replicate the results in @deaton2017understanding and use a wider set of diagnosands to assess how great a concern this is and clarify what inferences are affected. We end up not too worried.
+@deaton2017understanding provide multiple arguments against claims that randomized trials should be thought of as a kind of gold standard of scientific evidence. One striking argument they make is that randomization does not justify the statistical tests that researchers typically use. They are right in that. Even if researchers can claim that their estimates of uncertainty are justified by randomization, their habitual use of those estimates to conduct *t*-tests are not. To get a handle on how severe the problem is we replicate the results in @deaton2017understanding and then use a wider set of diagnosands to probe more deeply. Our investigation suggests that what at first seems like a big problem might not in fact be so great if your hypotheses are what they often are for experimentalists---sharp and sample-focused.
+
+More specifically, @deaton2017understanding  argue that that "spurious significance [...] arises when the distribution of treatment	effects	contains outliers or,	more generally, is not symmetric." They back up the claim with simulation results from  a case with heterogeneous asymmetrically distributed treatment effects that center on 0.  In fact however, both the sharp null of no effect and the null of no average effect in a given sample are false in this example and so the worry about over-rejecting does not apply to these hypotheses. 
+
+A bit more generally, *under the sharp null of no effect* the distribution of treatment effects in simple trials (with 50% assignment probabilities) will be perfectly symmetrical even if the distribution of potential outcomes is arbitrarily skewed and so the concern @deaton2017understanding point to doesn't arise in the first place.  
+
+The most important take away though might be that it's hard to think through when the use of *t*-tests is or is not appropriate. But design diagnosis can tip you off to whether this likely a problem in your case.  
 
 # The Deaton and Cartwright Example
 
-@deaton2017understanding examine a case with heterogeneous asymmetrically distributed treatment effects that center on 0, in expectation. 
 
-The design described by Deaton and Cartwright can be declared as follows:
+The design described by Deaton and Cartwright can be declared quite compactly:
 
 ```{r}
 N = 50
@@ -42,7 +47,7 @@ dc_design <-
 
 The key thing in this design is that the treatment effects have a very skewed distribution (distribution log normal, though recentered on 0). 
 
-Let's look at the power of this design over a range of N's. Power is a key diagnosand here because Deaton and Cartwright's position is that, since the true average treatment effect is 0, the power should be 0.05---that is, you should only reject a true null 5% of the time if you are using a 5% significance cutoff.  Asymmetries can mess things up however, especially when N is small. 
+Let's look at the power of this design over a range of N's. Power is a key diagnosand here because Deaton and Cartwright's position is that, since the true average treatment effect is 0, the power should be 0.05---that is, you should only reject a true null only 5% of the time if you are using a 5% significance cutoff.  
 
 Here we run a diagnosis over a range of designs:
 
@@ -73,11 +78,11 @@ get_diagnosands(diagnosis) %>%
 <!--             p.wilcox = wilcox.test(Y~Z, data = data)$p.value) -->
 <!-- my_estimator_custom <- declare_estimator(handler = tidy_estimator(wilcox_test)) -->
 
-As advertised, power appears too high with the small $N$ cases and declines towards 0.05 as $N$ increases, though it is still somewhat greater than 0.05 even for reasonably sized studies. The same pattern holds whether we are targeting the superpopulation average treatment effect (SPATE) or the sample average treatment effect (SATE), because the estimator is identical in each case.
+As advertised, power appears too high with the small $N$ cases. It declines towards 0.05 as $N$ increases, though it is still somewhat greater than 0.05 even for reasonably sized studies. The same pattern holds whether we are targeting the superpopulation average treatment effect (SPATE) or the sample average treatment effect (SATE), because the estimator is identical in both cases.
 
-# A deeper look
+# A closer look
 
-What is going on here? In the Deaton and Cartwright case, although the true SPATE is always zero, the SATE for any particular finite sample is *not* zero. Here are scatterplots of the joint distribution of estimates and estimates at each sample size. The true value of the SPATE is always zero, but the true value of the SATE is never *exactly* zero. You can see that the distribution of estimates is highly skewed (most easily seen in the SPATE facets for N = 50).
+If you plot the estimates and the estimands from the simulations you will notice an interesting feature of the Deaton and Cartwright case. Although the true SPATE is always zero, the SATE for any particular finite sample is *not* zero. Here are scatterplots of the joint distribution of estimands and estimates for two sample sizes. The true value of the SPATE is always zero, but the true value of the SATE is never *exactly* zero. You can see that the distribution of estimates is highly skewed (most easily seen for the SPATE facet when N = 50).
 
 
 ```{r, eval= FALSE}
@@ -128,17 +133,19 @@ A few things are worth noting here.
 
 * Second, the standard error estimates -- the square root of the variance estimates -- are too low. This is because the square root function is a nonlinear transformation. Unbiasedness of the variance does not imply unbiasedness of the standard deviation. 
 
-* Third, coverage is off. Confidence intervals depend on standard errors, which are off; but also on critical values that depend on the appropriateness of the $t$-distribution, which is in question here. Note though that the problem is particularly acute for SPATE; coverage for the SATE seems very good.
+* Third, coverage is off. Confidence intervals depend on the use of the $t$-distribution, which is in question here. Note though that the problem is particularly acute for SPATE; coverage for the SATE seems very good.
 
-* Fourth, the *type S* error rate is really worth looking at. The type S rate reports the probability that a significant result is of the wrong sign. For the superpopulation estimand---the SPATE---which we assume to be 0, the sign is *always* wrong. But for the SATE---the sample average treatment effect---the sign is rarely wrong. In fact the probability of getting a wrongly signed significant estimate is around *power x type_s_rate = very very small*. In other words, from the SATE perspectives, most of these wrong results that worry Deaton and Cartwright are really correct results.
+* Fourth, the *type S* error rate is really worth looking at. The type S rate reports the probability that a significant result is of the wrong sign. For the superpopulation estimand---the SPATE---which we assume to be 0, the sign is *always* wrong. But for the SATE---the sample average treatment effect---the sign is rarely wrong. In fact the probability of getting a wrongly signed significant estimate is *power x type_s_rate = very very small*. 
 
-This forces a rethinking of the results. From this perspective, perhaps, the real worry is that we *fail* to reject the null so often, given that is, in practice, never true. 
+This forces a rethinking of the results. Looking at this evidence it seems like the  real worry, perhaps, is that we *fail* to reject the null so often, given that is, in practice, never true. Conversely, from the SATE perspectives, most of these seemingly wrong results that worry Deaton and Cartwright are really correct results.
 
-Should a researcher coming at this from a design-based perspective worry? Interestingly, researchers using design-based inference might not approach the hypothesis test using a *t*-test but might instead use randomization inference. Unlike the *t*-test, the [randomization inference](https://egap.org/methods-guides/10-things-randomization-inference) approach *is* justified by the randomization. In doing so though, they would likely test what's called the *sharp null*---the hypothesis that the effect is zero not just on average *but for all units*.  Interestingly in this example, the sharp null is false not just for all finite samples, but also for the superpopulation. Looking at all this from the randomization inference perspective, one might again worry not that there is too much rejection of the null but that there is insufficient rejection of the null. Take a look at the `ri2` package for more on [conducting randomization inference in R](http://alexandercoppock.com/ri2/index.html). 
+Should a researcher coming at this from a design-based perspective worry? Researchers using design-based inference might not approach the hypothesis test using a *t*-test but might instead use randomization inference. Unlike the *t*-test, the [randomization inference](https://egap.org/methods-guides/10-things-randomization-inference) approach *is* justified by the randomization. In doing so though, they would likely test what's called the *sharp null*---the hypothesis that the effect is zero not just on average *but for all units*.  Interestingly in this example, the sharp null is false not just for all finite samples, but also for the superpopulation. Looking at all this from the randomization inference perspective, one might again worry not that there is too much rejection of the null but that there is insufficient rejection of the null.^[Take a look at the `ri2` package for more on [conducting randomization inference in R](http://alexandercoppock.com/ri2/index.html).] 
 
-Thus, a fuller diagnosis suggests that while power may be too high for a weak null in the superpopulation it is regrettably *low* for the kind of sample-based hypotheses or sharp nulls that experimentalists often focus on. 
+Thus, a fuller diagnosis suggests that while power may be too high for a weak null in the superpopulation, it is regrettably *low* for the kind of sample-based hypotheses or sharp nulls that experimentalists often focus on. 
 
 # Codas 
+
+We get a little further into the weeds here.
 
 ## There is no skew when *sharp* nulls are true
 
@@ -163,7 +170,7 @@ diagnosis3 <- read_rds(path = "rfiles/12_dc_3.rds")
 kable(reshape_diagnosis(diagnosis3)[, -c(1,3:5)])
 ```
 
-So we do not see the same issue arise when in fact the sharp null is true (in the superpopulation, and thus in every sample). With a true sharp null (and .5 assignment probabilities), even if the potential outcomes are very skewed, the distribution of estimated effects will be symmetrical for the simple reason that, for any estimated treatment effect $\hat{\tau}$ arising from assignment $Z$, assignment  $(1-Z)$ yields $(-\hat{\tau})$. This clarifies that the skew-based concern about over-rejecting a null that Deaton and Cartwright raise actually depends on the sharp null being false in the first place. 
+We find that we do not see the same issue arise when in fact the sharp null is true (in the superpopulation, and thus in every sample). With a true sharp null (and .5 assignment probabilities), even if the potential outcomes are very skewed, the distribution of estimated effects will be symmetrical for the simple reason that, for any estimated treatment effect $\hat{\tau}$ arising from assignment $Z$, assignment  $(1-Z)$ yields $(-\hat{\tau})$. This clarifies that the skew-based concern about over-rejecting a null that Deaton and Cartwright raise actually depends on the sharp null being false in the first place. (Though, to be clear, the assumption of 50% assignment matters here --- skew in estimated effects is certainly possible under the  sharp null with other assignment probabilities.)
 
 ## But there can still be dragons, so then what to do?
 
@@ -171,7 +178,7 @@ Although we might not have to worry about skew when sharp nulls are true, $t$-st
 
 As a simple example, imagine a world in which $Y = 0$ for 50 units and $Y = 1$ for 50 units, independent of $Z$. Say $Z$ is randomly assigned to just four units. Whenever $Z$ is assigned to four units with the same value on $Y$, a *t*-test will suggest a significant difference ($p = 0.04$). You can interpret that as a claim that such a data pattern should only be observed 4% of the time if the null is true. But you can figure out pretty quickly that you will see data patterns like this about one eighth of the time.^[There is a roughly 50% chance the second unit will have the same $Y$ value as the first unit, roughly 50% chance that the third will be the same as the second, and roughly 50% chance the fourth the same as the third. More exactly: (49/99)x(48/98)x(47/97) = 0.117.] So the probability of observing such data under the null is actually much higher than the 4% you might infer from the $t$-test.  
 
-So there is danger. A solution in this instance, if we are interested in a sharp null of no effect, is to do randomization inference, which would produce exactly the right *p*-value. But that will help only if  you are alerted to the problem. To alert yourself to the problem, you could routinely diagnose a design with zero effects (a "null design") and get a tip off when your power is too high. 
+So in general there can be dangers using t-tests even with experimental data. A solution in this instance, if we are interested in a sharp null of no effect, is to do randomization inference. This would produce exactly the right *p*-value. But that will help only if  you are alerted to the problem. To alert yourself to the problem, you could routinely diagnose a design with zero effects (a "null design") and so *set yourself up to get a tip off when your power is too high*. 
 
 
 

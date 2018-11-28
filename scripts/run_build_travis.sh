@@ -62,11 +62,12 @@ find "./${PUBLISH_FOLDER}" -type f -name 'readme.html' -execdir mv '{}' 'index.h
 
 # If we are building the blog and not a package, move the blog's index page into place.
 if [ -z "$PACKAGE" ]; then
-  # Hugo puts its generated index.html page for the blog in a strange place. We're moving it here
+  # Hugo puts its generated index.html page for the blog in a strange place. We're copying it here
   # so that users land on the blog page when they go to https://declaredesign.org/blog/.
   # If we didn't make this move, then users would have to go to https://declaredesign.org/blog.html instead.
+  # Leave the original blog.html file intact because the built-in pagination expects that file to exist.
   echo "Moving blog index page..."
-  mv "./${PUBLISH_FOLDER}/${BLOG_FOLDER}.html" "./${PUBLISH_FOLDER}/${BLOG_FOLDER}/index.html"
+  cp "./${PUBLISH_FOLDER}/${BLOG_FOLDER}.html" "./${PUBLISH_FOLDER}/${BLOG_FOLDER}/index.html"
 fi
 
 for toplevel_folder in $TOPLEVEL_FOLDERS; do

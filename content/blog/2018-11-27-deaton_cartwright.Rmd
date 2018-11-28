@@ -47,7 +47,7 @@ dc_design <-
 
 The key thing in this design is that the treatment effects have a very skewed distribution (distribution log normal, though recentered on 0). 
 
-Let's look at the power of this design over a range of N's. Power is a key diagnosand here because Deaton and Cartwright's position is that, since the true average treatment effect is 0, the power should be 0.05---that is, you should only reject a true null only 5% of the time if you are using a 5% significance cutoff.  
+Let's look at the power of this design over a range of N's. Power is a key diagnosand here because Deaton and Cartwright's position is that, since the true average treatment effect is 0, the power should be 0.05---that is, you should only reject a true null 5% of the time if you are using a 5% significance cutoff.  
 
 Here we run a diagnosis over a range of designs:
 

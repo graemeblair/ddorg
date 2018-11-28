@@ -136,6 +136,7 @@ deploy:
     branch: master
     condition: $TRAVIS_BUILD_STAGE_NAME = Test
 
+# Invalidate CloudFront so that we see the latest version of the files.
 after_deploy:
   - ./ecr_credentials.sh
   - pip3 install --user awscli

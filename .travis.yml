@@ -8,6 +8,12 @@ cache:
 
 bioc_packages: Biobase
 
+addons:
+  apt:
+    packages:
+      - python3.5
+      - python3-pip
+
 env:
   global:
     # CONTENT_FOLDERS are the folders that we want to be cleared out and recreated every time the build runs. Put a folder
@@ -22,6 +28,9 @@ env:
     - CONTENT_FOLDER='content'
     - PUBLISH_FOLDER='public'
     - BLOG_FOLDER='blog'
+    - AWS_ACCESS_KEY_ID='AKIAID5245DAZ3JQXVZQ'
+    - secure: KOnPCpOOcZVRog3i2oiEYX/MDEgO+kuvfowaqdkAEfj4nkngPMdlLQqG5A/LDANaYPWILmg/MMxcrA7fWQqKmWV3jRBY0UKkOIuEqEGKjjLAfUHUkl8ugk5GEu1QpnuTpgj2Ful6WbDVReUKxa8BXEsdVlImKMv2Gdhy8rEmpMToAmbrY2IFwUVodCJ8J+YroTh5u/xh7epENcyXnBjVLcHPP5xp94jaJXDyTKofinSRA6AiE2HLYaOZpwKnzTqq9nxWoJlb2m2gtZKIaeDBauop0zTXFVLxIVuYH2S+umEJIG0MtPp4euHgDiduuA+NnF3LKbpLGWU1NxH1GmmPbwqGk/brdL0F2rNmB7r8Vjytsv72f4IFmGQm8uBxXVQMD81YWm2IQWd47vRK0cQgx+QN0J0E+hSE3dzDCax1wxUMUXearjdZI1DBNLEgPf9zjlFz871ljRvTk7+LZotet+7eU3EvEFC8CuG2dnM9Q/cey1HfusDJQ+sbT9796hhloCYJLXtMPL9ibTjz3y3Li1YXRd9b4q1AlNFh68hxXPdSUAFVUePYB8+gANGezTabQBNK7+Oj0zx0s1ydjiiyFHYjdVi96zK17V0fvYYQmXVN+/Ccw4MT6x+q/Lqw7WzRt7bgc37pQT+Gpg/wpguVawrY/AmroKiIstUHCxid8KM=
+    - secure: ztLAZpVtU6u+0DgkYlc9Fihe3IAVan+BAgoN57P8QdQszqCRUu406V5/tPBlRxVfS4oPljgLJgWAiZYySnRWSIcuuYEmEKWKgT13DlMgHw9UfJd1oh6/J4lERH4BqmpJcAJNpyH31chbvLzI2dydbl4QTH2BbqubuQEpebbvjJPztJss05dOinOVNiQFXV6RFM60DlVnIsvigfWn9AwNN7eoLWinSWGFBPDZBw6ZGxnYdn/lIgWMtLIbeZ1ks0vdRXAowwmGu2y9XaUycrVTqlr0vb9uf9GOMN0M2Clfs3UMx0aaWXgiqKM/mQ8AVQt6b07jtCNoFUPVq2zOsx1gj2/9+NMa5/rzr7YnrbkTU6SkYyPXWz6Q/gtVdDnb+aIWG7qRTw9ozDS7AKqPKBJsWbIsNxQkjZl0MC3hxWW+gNxHCCCAUGZec8QpiCXRnElEWwkoILqwLsWydp8XiZYkiRJ4xoNRaqPpRsh8HwCamg5l2qEfCAdsr/qwMRFoJB26ADIf/q+/vdcKdqakPXv2yx7z24zK/cn3MnKp//g9SjqjBO+XEpOW2LVqbD4oiA11qUB1bMy58NMetcciq7CbS5jL0SyjfC3jpYPUqb3tJ4KrhIPT0Rmg0lOnEraSzj42xQVKJh5DvTuOl9Si9CFK4EVyVYTrHPJUIIQDypfk7RM=
   matrix:
     - PACKAGE='DesignLibrary'
       GITHUB_OWNER='DeclareDesign'
@@ -115,9 +124,9 @@ after_success:
 
 deploy:
   provider: s3
-  access_key_id: AKIAIS3NHLFYKA2D3D3Q
+  access_key_id: AKIAID5245DAZ3JQXVZQ
   secret_access_key:
-    secure: yvyF2UvYhPDBgpkIP2Ipp6xElr8ETfAd2wx417CHbiAs7jR2kNmlk/0JjpPTnzEfvwiJbuvA6KNXuYLHYwNMRlUZMcjmp3F/IJTiKdO5q4NoQArWmK4yv6qeudrd4ZAaE8DyLeJW5tldRQN/w3efbz+94y6urr+2qzpicLJ1c3fV8UxtIgxS7iX4ynQbL6BsNUF1y8vzSh3eLem3c1kh1wRG3SZ6mCLQXH4P8FFPX6fYRahm1njE3mK7JqhXAXvOF42xPInaCR+Oql9rIbrArkBsREYd+bT//BIWnOolN3RUscZobW0MozUZAwUs93LfXWxBhaeymbf191+fpZK227E+kX/Li7ENBG/6+VL4sexfbKnu8mQ69hPWRQPNVgfOlwW6cVYASufup5JV6iXR4RmiB64OJreGolXs5TRpdbMRuSxErB6mhAnzTtR+2SOQt13luiFrjwvdcamyIjlGKPBFMOFIxJYQvteCgDtf2J1AVBiVsuGYF6fSg+TmhRy1BSuo28hIOKjikER0p3BUARy6IH8MiV8wfgI6gGIeul904e60U7t93NaTlLy9fhODX6b28bpLzORKpxLXUhht57jsQlQkQhl5trH49nASxr89dumJ0d/1+9Ww6TE5JllLKYzACEe4VZfu2NqBEaJGVMwtkIfSzsd8cptOEPcsA/s=
+    secure: c81kea5I/WTM5NWlpEKkqZp3DMND+GYgwiWZL/VbZu3SJq/bxnU2xoZo9o85h3UY1ZYfuYVT+j1bKq/FBzy+hLmlKwGn1jlBfPdzQKCJPUcwdHndCcCli1Qsi1rxOEzZgvD5ATLP8raywGLdcy/RE2TIVDMAGgRaTN1i7CME4TSzfZtrCMUx1kJ+UKgp9OVa+q6Vc9PqzMdpOzjEVx/zUxd4n9oD1lsRf78Iy5sNrOK+2K7xBbUuGM9xPMJQc93iv0MuQUSEblndSqfwW/nZDUnq3ERWQtmH43h0rtOarnAR1QKWqbLKIY2HNgRQGHs1sjX4qWm1N+GZ05XAS6a59Gmn1FQ+4W3Lq8Sg8izOzBKvBFuIm9ZMJFR33bQ5DHjPGPu6+HOh5rKz9K7zo7UMUktHCjwKHXZxIxx3jtG8VF15o8xfv+HcYo6+WfNwPfZkdTmElC8+aIR6EYXf/bXxJmBT+TQ2Jkf0OduCryGiQ+L/0FdKsczMdKhiLKk/N5/F4gWTgHXyGyG/przyPJX9Ul+Vrhp66i4Yrunmom/8v8azAATgXIhVqHQYzWd7slxdaxXcT8lBGmJpclMg2niEwXtPf6Nx75JR8373sxmy95hFD2W0kq0BuI/AV1e2RStHO8PiJklB9J8V+ScFwD1LxiMbA32r9RWCtdvy28J6RNQ=
   bucket: declaredesign.org
   local-dir: public
   region: us-west-1
@@ -126,3 +135,8 @@ deploy:
     repo: DeclareDesign/declaredesign.org
     branch: master
     condition: $TRAVIS_BUILD_STAGE_NAME = Test
+
+after_deploy:
+  - ./ecr_credentials.sh
+  - pip3 install --user awscli
+  - aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'

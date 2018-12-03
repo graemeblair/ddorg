@@ -16,7 +16,7 @@ library(knitr)
 library(kableExtra)
 library(blockTools)
 library(tidyverse)
-library(writexl)
+# library(writexl)
 theme_set(theme_bw())
 ```
 
@@ -46,6 +46,8 @@ here_you_go %>%
   kable_styling(bootstrap_options = c("striped", "hover")) %>%
   scroll_box(width = "75%", height = "200px")
 ```
+
+<br>
 
 It has 20 schools with 4 classes in each and in each school exactly 2 classes are randomly assigned to treatment. The class variable provides a unique identifier for the experimental units.
 
@@ -102,48 +104,14 @@ our_assignment %>%
   scroll_box(width = "75%", height = "200px")
 ```
 
+<br>
 
 A nice feature of the last approach is that not only can you conduct an actual random assignment from the design but you *also* obtain the probability that each unit is in the condition that it is in. This probability happens to be constant in this example, but it doesn't need to be. If probabilities vary by unit, a standard approach is to weight each unit by the inverse of the probability of being in the condition that it is in. 
 
 We will use this last approach going forward as we look at more bells and whistles.
 
 
-# Bells and whistles
-
-## Replicate yourself
-
-Set up like this it is also easy to implement the assignment multiple times:
-
-```{r}
-many_assignments <- replicate(5, draw_data(design))
-```
-
-Some tools in the `randomizr` package give some extra bonuses. If you "declare" the randomization you can use the declaration to get a nice summary of the procedure and also obtain a matrix of all of the possible random assignments (or a random subset, since the full set is usually very large!).
-
-```{r, comment = ""}
-classes_data <- make_data()
-ra_declaration <- with(classes_data, declare_ra(blocks = class))
-
-# learn about the procedure
-summary(ra_declaration)
-
-# generate permutations matrix
-perm_mat <- obtain_permutation_matrix(ra_declaration, maximum_permutations = 200)
-```
-
-```{r, echo=FALSE}
-perm_mat %>% 
-  head() %>%
-  kable() %>%
-  kable_styling(bootstrap_options = c("striped", "hover")) %>%
-  scroll_box(width = "75%", height = "200px")
-```
-
-One advantage of a matrix like this is that it lets you see directly what the assignment probabilities are! This is useful in complex randomizations where different units might get assigned to treatment with quite different probabilities depending on their characteristics. 
-
-```{r, comment = ""}
- summary(apply(perm_mat, 1, mean))
-```
+# Four bells and whistles
 
 ## Incorporate known data into a dataframe before randomization
 
@@ -161,7 +129,7 @@ make_data <- declare_population(school = add_level(N = 10),
 
 This new function would generate a data set that reflects the number of classes in each school.
 
-# Create better blocks from richer data 
+## Make better blocks from richer data 
 
 Say that you had even richer data about the sampling frame. Then you could use this to do even better assignments. Say this is what you get from your partner:
 
@@ -221,6 +189,8 @@ our_df %>%
   scroll_box(width = "75%", height = "200px")
 ```
 
+<br>
+
 The graph below shows that indeed, the blocking formed pairs of classrooms within each school that are similar to one another and correctly left some classrooms in a block by themselves when there was an odd number of classrooms in a school.
 
 ```{r}
@@ -230,7 +200,17 @@ our_df %>%
   facet_wrap(~school, scales = "free_y", ncol = 5)
 ```
 
-# Saving the output to an excel spreadsheet
+## Replicate yourself
+
+If you set up your assignments as functions like this then it is easy to implement the assignment multiple times:
+
+```{r, eval = FALSE}
+many_assignments <- replicate(1000, draw_data(design))
+```
+
+It's useful to preserve a collection of assignments like this. One advantage is that it lets you see directly what the *real* assignment probabilities are---not just the intended assignment probabilities. This is especially useful in complex randomizations where different units might get assigned to treatment with quite different probabilities depending on their characteristics (for instance a procedure that rejects assignment profiles because of concerns with imbalance). Calculating the actual probabilities lets you figure out if you have set things up correctly and in some cases can even be useful for correcting things at the analysis stage if you have not!^[Some tools in the `randomizr` package make it even easier to obtain matrices of permutations and to learn about properties of your assignments. Using the `randomizr` package you can declare a randomization like this  `ra_declaration <- declare_ra(blocks = class)` and then get a print out of features of the assignments using `summary(ra_declaration)` and a whole matrix of assignments like this `perm_mat <- obtain_permutation_matrix(ra_declaration)`] In addition the `many_assignment` matrix gives exactly the assignments you should use for some randomization inference tests.  
+
+## Save the output to an excel spreadsheet
 
 Your partners mightn't love csv spreadsheets. But you can easily save to other formats.
 

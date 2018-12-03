@@ -129,6 +129,7 @@ hr {
 .ref-index .alias_column code {
     display: block;
     margin-bottom: 0.3rem;
+    word-break: normal;
 }
 
 /* MISCELLANEOUS */

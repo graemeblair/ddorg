@@ -44,6 +44,9 @@ if [ -n "$PACKAGE" ]; then
   popd
   pwd
 
+  echo 'Installing package dependencies...'
+  Rscript 'R/install_dependencies.R' "$temporary_directory"
+
   # Runs the R script that builds the reference pages using pkgdown.
   Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"
 
@@ -52,6 +55,9 @@ if [ -n "$PACKAGE" ]; then
   # index.html files have a special meaning to Hugo. Leaving reference index pages
   # as index.html will mess up Hugo's build process.
   find "./${CONTENT_FOLDER}/" -type 'f' -name 'index.html' -execdir mv '{}' 'readme.html' ';'
+else
+  echo 'Installing package dependencies for the blog...'
+  Rscript 'R/install_dependencies.R' ''
 fi
 
 Rscript -e 'blogdown::build_site()'

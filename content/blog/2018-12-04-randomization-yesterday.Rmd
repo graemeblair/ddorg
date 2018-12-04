@@ -31,11 +31,8 @@ library(DeclareDesign)
 
 set.seed(20181204)
 
-here_you_go <- fabricate(
-  school = add_level(N = 20),
-  class  = add_level(
-    N = 4, 
-    treatment = block_ra(blocks = school)))
+here_you_go <- fabricate(school = add_level(N = 20),
+                         class  = add_level(N = 4, treatment = block_ra(blocks = school)))
 ```
 
 The spreadsheet looks like this:

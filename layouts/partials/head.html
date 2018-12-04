@@ -5,15 +5,15 @@
 {{partial "page_title.html" .}}
 
 {{if eq .URL "/"}}
-<meta property="description" content="{{.Site.Params.description}}">
+<meta name="description" content="{{.Site.Params.description}}">
 {{else}}
   {{if .Description}}
-  <meta property="description" content="{{.Description}}">
+  <meta name="description" content="{{.Description}}">
   {{end}}
 {{end}}
 
 {{if .Keywords}}
-<meta property="keywords" content ="{{delimit .Keywords ", "}}">
+<meta name="keywords" content ="{{delimit .Keywords ", "}}">
 {{end}}
 
 {{if .RSSLink}}

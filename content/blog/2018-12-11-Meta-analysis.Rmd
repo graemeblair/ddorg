@@ -192,7 +192,7 @@ get_diagnosands(diagnosis_3) %>%
 
 We see that all approaches estimate the population average effect quite well. No bias and a RMSE that starts to vanish as `J` grows. They differ though in their estimates of variability and, because of this, in their predictions about the probability that the effect in a *next* study will be positive (`prob_pos`). They also differ in their final inferences about effects in the already completed studies (`study_effect`). In particular:
 
-* The Bayesian model is biased here for $\tau$---it ends up with too high an estimate of heterogeneity in expectation, since it starts with a very diffuse prior that it doesn't let go of fast enough.^[You might find it discomforting to be applying such a frequentist ideas as bias to a Bayesian model; Bayesian models that get the prior right shouldn't have any bias. The idea here though is that we assess ex ante what is the expected inference that will be made from a Bayesian approach given some data generating process that is not available to a researcher.] In turn this means that the Bayesian model holds open the possibility of more negative effects arising from the population than we in fact would see given the model assumptions. The naive frequentist approach is even worse for $\tau$ and it doesn't get better with more studies.
+* The Bayesian model is biased here for $\tau$---it ends up with too high an estimate of heterogeneity in expectation, since it starts with a very diffuse prior that it doesn't let go of fast enough.^[You might find it discomforting to be applying such a frequentist ideas as bias to a Bayesian model; Bayesian models that get the prior right shouldn't have any bias. The idea here though is that we assess ex ante what is the expected inference that will be made from a Bayesian approach given some data generating process that is not available to a researcher.] In turn this means that the Bayesian model holds open the possibility of more negative effects arising from the population than we in fact would see given the model assumptions. The naive frequentist approach is also worse for $\tau$ and it doesn't get much better with more studies.
 
 
 * The Bayesian model does *better* for $\theta$ than the other approaches. The reason is that the Bayesian model adjusts the individual study estimates based on inferences about the data generation. 
@@ -237,7 +237,7 @@ We see the Bayesian approach continues to estimate study level effects better th
 
 So models can help, even when wrong. But they can also lead you astray if too wrong.^[See @kontopantelis2012performance for explorations.] Hm. If this all makes you nervous one option is to keep the focus on $\mu$ for which which is unbiased (though perhaps not very useful for out-of-sample predictions).
 
-# If we don't know how a study got selected into a sample we don't have strong grounds to use it to make inferences out of a sample
+# If we don't know how a study got selected into a sample we don't have strong grounds to use it to make inferences out of sample
 
 In practice in many (maybe all?) meta-analyses there is not a very good understanding of how individuals studies were selected from the population of studies of interest. This can make it hard to justify any kind of meta-analytic approach like these that strive to do more than estimate sample average effects. On the brighter side, if you have some information on how studies are selected then you can build that into the estimation *and* the design declaration and assess how sampling matters for inference.
 

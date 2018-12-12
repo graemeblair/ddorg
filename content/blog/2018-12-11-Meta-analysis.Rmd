@@ -90,7 +90,7 @@ f_bayesian = function(data) {
 ```
 
  
-Here's the full `stan` model that the handler calls on (based on [stan team](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started), with an additional "generated quantities" block making predictions). The model details the type of data to be expected, the parameters,^[The parameters are (i) a real number, $\mu$, (ii)  a nonnegative real number $\tau$ and (iii) a set of $J$ unit level effects $\theta_i$ (to simplify computation  the model defines deviations from the average effect as $\eta_i$ and then defines $\theta_i$ as $\theta_i = \mu + \eta_i\tau$). ] and the assumed data generation (`model` block). Priors are not specified here so they are taken to be flat over their ranges. `stan` then seeks to calculate a posterior distribution on the priors given the data.
+Here's the full `stan` model that the handler calls on (based on [stan team's code](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started), with an additional "generated quantities" block making predictions). The model details the type of data to be expected, the parameters,^[The parameters are (i) a real number, $\mu$, (ii)  a nonnegative real number $\tau$ and (iii) a set of $J$ unit level effects $\theta_i$ (to simplify computation  the model defines deviations from the average effect as $\eta_i$ and then defines $\theta_i$ as $\theta_i = \mu + \eta_i\tau$). ] and the assumed data generation process (`model` block). Priors are not specified here so they are taken to be flat over their ranges. `stan` then seeks to calculate a posterior distribution on the priors given the data.
 
 
 ```{r}

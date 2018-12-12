@@ -13,9 +13,9 @@ bibliography: bib/blog.bib
 library(DeclareDesign)
 library(knitr)
 library(tidyverse)
-library(rstan)
-options(mc.cores = parallel::detectCores())
-library(metaplus)
+# library(rstan)
+# options(mc.cores = parallel::detectCores())
+# library(metaplus)
 sims = 250
 do_diagnosis = FALSE
 theme_set(theme_bw())
@@ -32,7 +32,7 @@ In practice we  assume that $f$ is Normal but we will be able to see what happen
 
 Actual estimates are given by:
 $$\hat{\theta}_i \sim N(\theta_i, \sigma_i) \text{ for } i \in \{1,2,\dots, J\}$$
-The idea here is that estimates are a draw from a Normal distribution centered on the truth, but with some sampling error. Thus we are assuming that whatever estimation strategy is used is unbiased. The size of the error will depend on things like the sample size and estimation strategy. We wil lassume it is the same for all studies. 
+The idea here is that estimates are a draw from a Normal distribution centered on the truth, but with some sampling error. Thus we are assuming that whatever estimation strategy is used is unbiased. The size of the error will depend on things like the sample size and estimation strategy. We will assume it is the same for all studies. 
 
 *In summary, we are assuming a world where knowing the estimates from a case tell us something about the actual effects in that case and knowing something about the actual effects in a case tells us something about effects in a population of cases.*  
 
@@ -54,7 +54,7 @@ We imagine a design in which we generate a set of $J$ studies, each producing un
 
 We consider three approaches to estimating quantities of interest:
  
-1. An agnostic frequentist approach that takes the study level effects at face value and calculates the average effect and variation in effects using the mean and standard deviation of study effects. 
+1. An agnostic frequentist approach that takes the study level effects at face value. We will also include a fairly naive approach to quantifying effect heterogeneity using the standard deviation of study effects (spoiler: this won't do very well but we are including it in case you'd be tempted to reach for this).  
 
 ```{r}
 f_agnostic = function(data) with(data,  {
@@ -75,7 +75,7 @@ f_metaplus = function(data) with(data,  {
                 })
 ```
 
-3. For a Bayesian approach we will use the "8 schools model" [@gelman2013bayesian] which is nicely described [here](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started).  We use a handler that lets us feed the stan model into `declaredesign`. The  handler generates data in the form `stan` wants it in, runs the model, and extracts the  quantities we care about. 
+3. For a Bayesian approach we will use the "8 schools model" [@gelman2013bayesian] implemented via [stan](http://mc-stan.org/). See  [here](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started) for more on stan and this model in particular.  To feed the `stan` model into `declaredesign` we use a handler to generate an analysis step that uses stan. The  handler generates data in the form `stan` wants it in, runs the model, and extracts the quantities we care about. 
 
 
 
@@ -90,7 +90,7 @@ f_bayesian = function(data) {
 ```
 
  
-Here's the stan model that the handler calls on (based on [stan team](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started), with an addtional "generated quantities" block making predictions). The `stan` model details the type of data to be expected, the parameters,^[The parameters are (i) a real number, $\mu$, (ii)  a nonnegative real number $\tau$ and (iii) a set of $J$ unit level effects $\theta_i$ (to simplify computation  the model defines deviations from the average effect as $\eta_i$ and then defines $\theta_i$ as $\theta_i = \mu + \eta_i\tau$). ] and the assumed data generation (`model` block). Priors are not specified here so they are taken to be flat over their ranges. `stan` then seeks to calculate a posterior distribution on the priors given the data.
+Here's the full `stan` model that the handler calls on (based on [stan team](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started), with an additional "generated quantities" block making predictions). The model details the type of data to be expected, the parameters,^[The parameters are (i) a real number, $\mu$, (ii)  a nonnegative real number $\tau$ and (iii) a set of $J$ unit level effects $\theta_i$ (to simplify computation  the model defines deviations from the average effect as $\eta_i$ and then defines $\theta_i$ as $\theta_i = \mu + \eta_i\tau$). ] and the assumed data generation (`model` block). Priors are not specified here so they are taken to be flat over their ranges. `stan` then seeks to calculate a posterior distribution on the priors given the data.
 
 
 ```{r}
@@ -156,6 +156,7 @@ metadesigns <- redesign(metadesign, J = c(4, 8, 16, 32))
 diagnosis   <- diagnose_design(metadesigns)
 ```
 
+Bias looks like this:
 
 ```{r, warning = FALSE, message = FALSE, include = TRUE, echo = FALSE}
 metadesigns <- redesign(metadesign, J = c(4, 8, 16, 32))
@@ -178,7 +179,7 @@ get_diagnosands(diagnosis_3) %>%
 
 ```
 
-The RMSE looks like this:
+And the RMSE (expected error) looks like this:
 
 ```{r, echo = FALSE}
 get_diagnosands(diagnosis_3) %>%
@@ -191,9 +192,10 @@ get_diagnosands(diagnosis_3) %>%
 
 We see that all approaches estimate the population average effect quite well. No bias and a RMSE that starts to vanish as `J` grows. They differ though in their estimates of variability and, because of this, in their predictions about the probability that the effect in a *next* study will be positive (`prob_pos`). They also differ in their final inferences about effects in the already completed studies (`study_effect`). In particular:
 
-* The Bayesian model is biased here for $\tau$---it ends up with too high an estimate of heterogeneity in expectation, since it starts with a very diffuse prior that it doesn't let go of fast enough.^[You might find it discomforting to be applying such a frequentist ideas as bias to a Bayesian model; Bayesian models that get the prior right shouldn't have any bias. The idea here though is that we assess ex ante what is the expected inference that will be made from a Bayesian approach given some data generating process that is not available to a researcher.] In turn this means that the Bayesian model holds open the possibility of more negative effects arising from the population than we in fact would see given the model assumptions. 
+* The Bayesian model is biased here for $\tau$---it ends up with too high an estimate of heterogeneity in expectation, since it starts with a very diffuse prior that it doesn't let go of fast enough.^[You might find it discomforting to be applying such a frequentist ideas as bias to a Bayesian model; Bayesian models that get the prior right shouldn't have any bias. The idea here though is that we assess ex ante what is the expected inference that will be made from a Bayesian approach given some data generating process that is not available to a researcher.] In turn this means that the Bayesian model holds open the possibility of more negative effects arising from the population than we in fact would see given the model assumptions. The naive frequentist approach is even worse for $\tau$ and it doesn't get better with more studies.
 
-* But the Bayesian model does *better* for $\theta$. The Bayesian model adjusts the individual study estimates based on inferences about the data generation; the frequentist model does not. 
+
+* The Bayesian model does *better* for $\theta$ than the other approaches. The reason is that the Bayesian model adjusts the individual study estimates based on inferences about the data generation. 
 
 Having more studies wipes out the effects of priors, resulting in the Bayes model accurately estimating heterogeneity but still doing (even) better on $\theta$. 
 

@@ -1,0 +1,243 @@
+---
+title: "Meta-analysis can be used not just to guess about effects out-of-sample but also to re-evaluate effects in sample"
+date: "2018-12-11"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib  
+---
+
+```{r setup, include=FALSE}
+library(DeclareDesign)
+library(knitr)
+library(tidyverse)
+library(rstan)
+options(mc.cores = parallel::detectCores())
+library(metaplus)
+sims = 250
+do_diagnosis = FALSE
+theme_set(theme_bw())
+```
+
+Imagine you are in the fortunate position of planning a collection of studies which you will later get to analyze together (looking at you [metaketas](https://egap.org/metaketa)). Each study estimates a site specific effect. You want to learn something about general effects. We work through design issues using a multi-study design with `J` studies that employs both frequentist and Bayesian approaches to meta-analysis. In the designs that we diagnose these perform very similarly in terms of estimating sample and population average effects. But there are tradeoffs. The Bayesian model does better at estimating individual effects by separating out true heterogeneity from sampling error might can sometimes fare poorly at estimating prediction intervals. 
+
+
+## What questions might a meta-analysis try to answer?
+
+We are interested in effects within individual studies, in some "general" effect, and in effect variability. We imagine a setting in which effects from $J$ studies  are drawn from a population of possible effects:
+$$\theta_i \sim f(\mu, \tau) \text{ for } i \in \{1,2,\dots, J\}$$
+In practice we  assume that $f$ is Normal but we will be able to see what happens if we are wrong about that. *The most important assumption we  make here is that the studies are random draws from a population.* In practice that is almost never the case.
+
+Actual estimates are given by:
+$$\hat{\theta}_i \sim N(\theta_i, \sigma_i) \text{ for } i \in \{1,2,\dots, J\}$$
+The idea here is that estimates are a draw from a Normal distribution centered on the truth, but with some sampling error. Thus we are assuming that whatever estimation strategy is used is unbiased. The size of the error will depend on things like the sample size and estimation strategy. We wil lassume it is the same for all studies. 
+
+*In summary, we are assuming a world where knowing the estimates from a case tell us something about the actual effects in that case and knowing something about the actual effects in a case tells us something about effects in a population of cases.*  
+
+Our challenge is: given a set of estimates, $\hat{\theta}$, and a set of estimates of sampling error, $\hat{\sigma}$, can we figure out:
+
+* $\mu$ the population average effect
+* $\tau$ the fundamental heterogeneity of effects
+* $\theta$ the country level effects and $\overline{\theta}$ the average effect in our sample
+
+In addition, partially heeding @inthout2016plea's plea for presenting "prediction intervals," we will add an *estimate* for the probability that a new study will have a positive effect:
+
+* $\int_{0}^{\infty}f(x|\mu, \sigma)dx$
+
+Though not worked in here, you might be interested in still deeper questions such as trying to *explain* variation in effects across studies and using this variation to make predictions to new cases given information about those cases (this is the stuff of "meta-regression") and could be done with a relatively modest modification of the design we declare below.  
+
+# A meta-design
+
+We imagine a design in which we generate a set of $J$ studies, each producing unbiased estimates of a study specific treatment effect as well as estimates of uncertainty. 
+
+We consider three approaches to estimating quantities of interest:
+ 
+1. An agnostic frequentist approach that takes the study level effects at face value and calculates the average effect and variation in effects using the mean and standard deviation of study effects. 
+
+```{r}
+f_agnostic = function(data) with(data,  {
+  data.frame(estimate = c(muhat    = mean(est_effects),
+                         tauhat    = sd(est_effects),
+                         study_est = est_effects[1]))})
+```
+
+2. A model-based frequentist approach in which the estimates for $\mu$ and $\tau$ are generated using a random effects model via maximum likelihood procedures using the `metaplus` package [@beath2015metaplus]. 
+
+```{r}
+f_metaplus = function(data) with(data,  {
+  metaplus_result <- metaplus(yi = est_effects, sei = est_sds)
+  metaplus_ests   <- summary(metaplus_result)[[1]][1:2,1]
+  data.frame(estimate = c(muhat    = metaplus_ests[1],
+                          tauhat   = metaplus_ests[2]^.5,
+                          prob_pos = 1-pnorm(0, metaplus_ests[1], metaplus_ests[2])))
+                })
+```
+
+3. For a Bayesian approach we will use the "8 schools model" [@gelman2013bayesian] which is nicely described [here](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started).  We use a handler that lets us feed the stan model into `declaredesign`. The  handler generates data in the form `stan` wants it in, runs the model, and extracts the  quantities we care about. 
+
+
+
+
+```{r, eval = TRUE, echo = TRUE}
+f_bayesian = function(data) {
+  J      <- nrow(data)
+  df     <- list(J = J, y = data$est_effects, sigma = data$est_sds)
+  fit    <- stan(model_code = stan_model, data = df)
+  fit_sm <- summary(fit)$summary
+  data.frame(estimate = fit_sm[,1][c("mu", "tau", "theta[1]", "prob_pos")])}
+```
+
+ 
+Here's the stan model that the handler calls on (based on [stan team](https://github.com/stan-dev/rstan/wiki/RStan-Getting-Started), with an addtional "generated quantities" block making predictions). The `stan` model details the type of data to be expected, the parameters,^[The parameters are (i) a real number, $\mu$, (ii)  a nonnegative real number $\tau$ and (iii) a set of $J$ unit level effects $\theta_i$ (to simplify computation  the model defines deviations from the average effect as $\eta_i$ and then defines $\theta_i$ as $\theta_i = \mu + \eta_i\tau$). ] and the assumed data generation (`model` block). Priors are not specified here so they are taken to be flat over their ranges. `stan` then seeks to calculate a posterior distribution on the priors given the data.
+
+
+```{r}
+stan_model <- " 
+  data {
+    int<lower=0> J;         // number of schools 
+    real y[J];              // estimated treatment effects
+    real<lower=0> sigma[J]; // standard error of effect estimates 
+  }
+  parameters {
+    real mu;                // population treatment effect
+    real<lower=0> tau;      // standard deviation in treatment effects
+    vector[J] eta;          // unscaled deviation from mu by school
+  }
+  transformed parameters {
+    vector[J] theta = mu + tau * eta;        // school treatment effects
+  }
+  model {
+    target += normal_lpdf(eta | 0, 1);       // prior log-density
+    target += normal_lpdf(y | theta, sigma); // log-likelihood
+  }
+ generated quantities {
+    real<lower=0> prob_pos;                  // Probability an effect is >0
+    prob_pos =   1 - 1/(1+exp(-(0.07056 * (-mu/tau)^3 + 1.5976 * (-mu/tau))));   
+  }
+  "
+```
+
+With these estimators in hand, the design declaration is quite straightforward. 
+
+```{r}
+# Parameters
+J     = 8   # Number of studies 
+mu    = 1   # Assumed average effect
+tau   = .5  # Heterogeneity of effects
+sigma = .5  # Error in studies (assumed the same across studies)
+
+# Design
+metadesign <- 
+  declare_population(N = J, 
+                     true_effects = rnorm(N, mu, tau),
+                     est_effects = rnorm(N, true_effects, sigma),
+                     est_sds = sigma) +
+
+  declare_estimand(mu = mu, tau = tau, study_effect = true_effects[1], 
+                   prob_pos  = 1 - pnorm(0, mu, tau))  +
+  
+  declare_estimator(handler = tidy_estimator(f_agnostic), label = "Agnostic",
+                   estimand = c("mu", "tau", "study_effect")) + 
+    
+  declare_estimator(handler = tidy_estimator(f_metaplus), label = "Metaplus", 
+                   estimand = c("mu", "tau", "prob_pos")) +
+  
+  declare_estimator(handler = tidy_estimator(f_bayesian), label = "Bayesian",
+                   estimand = c("mu", "tau", "study_effect", "prob_pos"))
+```
+
+
+Let's diagnose a set of designs of different sizes and plot some results.
+
+```{r, eval = FALSE}
+metadesigns <- redesign(metadesign, J = c(4, 8, 16, 32))
+diagnosis   <- diagnose_design(metadesigns)
+```
+
+
+```{r, warning = FALSE, message = FALSE, include = TRUE, echo = FALSE}
+metadesigns <- redesign(metadesign, J = c(4, 8, 16, 32))
+
+if(do_diagnosis){
+diagnosis_3 <- 
+diagnose_design(metadesigns, 
+                diagnosands = declare_diagnosands(select = c(bias, rmse)),
+                sims = sims, bootstrap_sims = 0)
+write_rds(diagnosis_3, "rfiles/13_bayes_3b.rds")}
+diagnosis_3 <- read_rds("rfiles/13_bayes_3b.rds")
+
+get_diagnosands(diagnosis_3) %>%
+  mutate(bias = bias + rnorm(nrow(get_diagnosands(diagnosis_3)), 0, .003)) %>%
+  ggplot(aes(J, bias, group = estimator_label, color = estimator_label)) +
+  geom_hline(yintercept = 0, size = .5, linetype = "dashed") +
+  geom_point() + geom_line() +
+  theme(legend.position = "bottom", strip.background = element_blank()) +
+  facet_grid(~ estimand_label)
+
+```
+
+The RMSE looks like this:
+
+```{r, echo = FALSE}
+get_diagnosands(diagnosis_3) %>%
+  mutate(rmse = rmse + rnorm(nrow(get_diagnosands(diagnosis_3)), 0, .003)) %>%
+  ggplot(aes(J, rmse, group = estimator_label, color = estimator_label)) +
+  geom_point() + geom_line() +
+  theme(legend.position = "bottom", strip.background = element_blank()) +
+  facet_grid(~ estimand_label)
+```
+
+We see that all approaches estimate the population average effect quite well. No bias and a RMSE that starts to vanish as `J` grows. They differ though in their estimates of variability and, because of this, in their predictions about the probability that the effect in a *next* study will be positive (`prob_pos`). They also differ in their final inferences about effects in the already completed studies (`study_effect`). In particular:
+
+* The Bayesian model is biased here for $\tau$---it ends up with too high an estimate of heterogeneity in expectation, since it starts with a very diffuse prior that it doesn't let go of fast enough.^[You might find it discomforting to be applying such a frequentist ideas as bias to a Bayesian model; Bayesian models that get the prior right shouldn't have any bias. The idea here though is that we assess ex ante what is the expected inference that will be made from a Bayesian approach given some data generating process that is not available to a researcher.] In turn this means that the Bayesian model holds open the possibility of more negative effects arising from the population than we in fact would see given the model assumptions. 
+
+* But the Bayesian model does *better* for $\theta$. The Bayesian model adjusts the individual study estimates based on inferences about the data generation; the frequentist model does not. 
+
+Having more studies wipes out the effects of priors, resulting in the Bayes model accurately estimating heterogeneity but still doing (even) better on $\theta$. 
+
+# A model can be useful even when it's wrong
+
+Both the Bayesian and metaplus approaches examined here to estimate $\mu$ and $\tau$ make use of an assumption about the distribution of effects in a population. How robust are results to having the wrong model? 
+
+We explore a little by declaring a design in which effects are in fact distributed uniform over [0,2], rather than normally (so the mean is 1 and sd is (1/3)^.5) but the estimation erroneously supposes that effects are distributed normal. One big difference here is that although the variance in effects is a little larger there is now zero probability of a non positive effect. This new design requires changing both of the first two steps, though we will recycle steps 3 - 5:
+
+
+```{r}
+metadesign_2    <- 
+  
+  declare_population(N = J, true_effects = runif(N, 0, 2),
+                     est_effects = rnorm(N, true_effects, sigma), est_sds = sigma) +
+
+  declare_estimand(mu = mu, tau = .577, study_effect = true_effects[1], prob_pos  = 0)  +
+
+  metadesign[[3]] + metadesign[[4]] + metadesign[[5]] 
+```
+
+
+```{r, warning = FALSE, message = FALSE, include = FALSE}
+if(do_diagnosis){
+diagnosis <- 
+diagnose_design(metadesign_2, 
+                diagnosands = declare_diagnosands(select = c(bias, rmse, mean_estimand, mean_estimate)),
+                sims = sims, bootstrap_sims = 0)
+write_rds(diagnosis, "rfiles/13_bayes_2b.rds")}
+diagnosis_2 <- read_rds("rfiles/13_bayes_2b.rds")
+```
+
+
+```{r, echo = FALSE}
+kable(reshape_diagnosis(diagnosis_2)[c(1:2, 4, 6:7), -c(1, 8)], row.names = FALSE)
+```
+
+We see the Bayesian approach continues to estimate study level effects better than the agnostic approach, despite having the wrong model. Though it does quite poorly on the out of sample predictions since the estimate for variance in effects is off. The performance of the model can to some extent be assessed *within* the sample, e.g. by assessing how well a model developed on a subset of studies fares in predicting outcomes in another set of studies. Or more flexible approaches for modelling the underlying distribution of effects can be used (see e.g. @beath2014finite). 
+
+So models can help, even when wrong. But they can also lead you astray if too wrong.^[See @kontopantelis2012performance for explorations.] Hm. If this all makes you nervous one option is to keep the focus on $\mu$ for which which is unbiased (though perhaps not very useful for out-of-sample predictions).
+
+# If we don't know how a study got selected into a sample we don't have strong grounds to use it to make inferences out of a sample
+
+In practice in many (maybe all?) meta-analyses there is not a very good understanding of how individuals studies were selected from the population of studies of interest. This can make it hard to justify any kind of meta-analytic approach like these that strive to do more than estimate sample average effects. On the brighter side, if you have some information on how studies are selected then you can build that into the estimation *and* the design declaration and assess how sampling matters for inference.
+
+
+# References.

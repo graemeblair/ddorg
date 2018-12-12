@@ -126,7 +126,8 @@ With these estimators in hand, the design declaration is quite straightforward.
 J     = 8   # Number of studies 
 mu    = 1   # Assumed average effect
 tau   = .5  # Heterogeneity of effects
-sigma = .5  # Error in studies (assumed the same across studies)
+sigma = .5  # Error in studies (assumed the same across studies), 
+            # but could be a vector to reflect variation in precision across studies
 
 # Design
 metadesign <- 

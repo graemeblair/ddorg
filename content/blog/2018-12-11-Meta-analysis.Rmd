@@ -28,7 +28,7 @@ Imagine you are in the fortunate position of planning a collection of studies wh
 
 We are interested in effects within individual studies, in some "general" effect, and in effect variability. We imagine a setting in which effects from $J$ studies are drawn from a population of possible cases with effects:
 $$\theta_i \sim f(\mu, \tau) \text{ for } i \in \{1,2,\dots, J\}$$
-We will assume that $f$ is Normal but we will be able to see what happens if we are wrong about that. *The most important assumption we  make here is that the studies are random draws from a population.* In practice that is almost never the case.
+We will assume that $f$ is Normal but we will be able to see what happens if we are wrong about that. *The most important assumption we  make here is that the studies are random draws from a population.* In practice that is almost never the case, though that may change as researchers coordinate more on multi-site projects.
 
 Actual estimates are given by:
 $$\hat{\theta}_i \sim N(\theta_i, \sigma_i) \text{ for } i \in \{1,2,\dots, J\}$$

@@ -32,7 +32,7 @@ We will assume that $f$ is Normal but we will be able to see what happens if we 
 
 Actual estimates are given by:
 $$\hat{\theta}_i \sim N(\theta_i, \sigma_i) \text{ for } i \in \{1,2,\dots, J\}$$
-The idea here is that estimates are a draw from a Normal distribution centered on the truth, but with some sampling error. Thus we are assuming that whatever estimation strategy is used is unbiased. The size of the error will depend on things like the sample size and estimation strategy. We will assume it is the same for all studies. 
+The idea here is that estimates are a draw from a Normal distribution centered on the truth, but with some sampling error. Thus we are assuming that whatever estimation strategy is used is unbiased. The size of the error will depend on things like the sample size and estimation strategy. We will assume it is the same for all studies (though that's largely a design issue that you could experiment with as part of the declaration). 
 
 *In summary, we are assuming a world where knowing the estimates from a case tell us something about the actual effects in that case and knowing something about the actual effects in a case tells us something about effects in a population of cases.*  
 

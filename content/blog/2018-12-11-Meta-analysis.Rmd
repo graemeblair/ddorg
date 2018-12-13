@@ -234,9 +234,11 @@ diagnosis_2 <- read_rds("rfiles/13_bayes_2b.rds")
 kable(reshape_diagnosis(diagnosis_2)[c(1:2, 4, 6:7), -c(1, 8)], row.names = FALSE)
 ```
 
-We see the Bayesian approach continues to estimate study level effects better than the agnostic approach, despite having the wrong model. Though it does quite poorly on the out of sample predictions since the estimate for variance in effects is off. The performance of the model can to some extent be assessed *within* the sample, e.g. by assessing how well a model developed on a subset of studies fares in predicting outcomes in another set of studies. Or more flexible approaches for modelling the underlying distribution of effects can be used (see e.g. @beath2014finite). 
+We see the Bayesian approach continues to estimate study level effects better than the agnostic approach, despite having the wrong model. Though it does quite poorly on the out of sample predictions since it is working wiht the wrong distribution (and in particular one for which negative effects are always possible). 
 
-So models can help, even when wrong. But they can also lead you astray if too wrong.^[See @kontopantelis2012performance for explorations.] Hm. If this all makes you nervous one option is to keep the focus on $\mu$ for which which is unbiased (though perhaps not very useful for out-of-sample predictions).
+There are a few ways to improve upon this. Performance of the model can to some extent be assessed *within* the sample, e.g. by assessing how well a model developed on a subset of studies fares in predicting outcomes in another set of studies. Or more flexible approaches for modelling the underlying distribution of effects could be used (see e.g. @beath2014finite). 
+
+So models can help, even when wrong. But they can also lead you astray if too wrong.^[See @kontopantelis2012performance for explorations.] Hmm. If this all makes you nervous one option is to keep the focus on $\mu$ for which which is unbiased (though perhaps not very useful for out-of-sample predictions).
 
 # If we don't know how a study got selected into a sample we don't have strong grounds to use it to make inferences out of sample
 

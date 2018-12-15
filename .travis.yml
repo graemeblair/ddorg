@@ -5,6 +5,7 @@ cache:
   packages: true
   directories:
     - "$HOME/bin"
+    - "$HOME/cache"
 
 bioc_packages: Biobase
 

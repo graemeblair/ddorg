@@ -4,6 +4,9 @@
 # keep running even if there were an error somewhere else in the rest of the script.
 set -e
 
+# Create the home for the cache, just in case it does not exist.
+mkdir --verbose --parents ~/cache/
+
 # Cleanup This is important because if a file is removed from the real package,
 # it will not automatically be removed from our content folder unless we clean
 # it out ourselves. Also, adding the folder back is important because other parts
@@ -18,46 +21,52 @@ for content_folder in $CONTENT_FOLDERS; do
   mkdir -p "$content_folder"
 done
 
-if [ -n "$PACKAGE" ]; then
-  # When building a package, remove the blog posts and other folders in the content
-  # folder (e.g., the about page, the code of conduct, etc.) so that they are not built.
-  # This prevents a bad blog post from causing the build of a package to fail.
-  echo "Removing content folders"
-  rm -rf "${CONTENT_FOLDER}"/*/
-
-  # Downloads and untars one package into a temporary directory.
-  temporary_directory=$(mktemp --directory)
-
-  pushd "$temporary_directory"
-  pwd
-
-  echo "Downloading and untarring package ${PACKAGE}"
-  wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xz
-
-  # All GitHub tar files begin with the name of the GitHub owner of the repository (e.g., DeclareDesign or Nick-Rivera),
-  # followed by a dash, followed by the name of the package, and then followed by some junk characters. This line finds
-  # the right tar file, then untars it to a folder that starts with the name of the page and ends with the suffix _github.
-  # This suffix helps us to find the untarred folder in the R script. The suffix used to be important because we used to downloaded one package
-  # from multiple sources. I'm leaving it in just in case we need to download the packages from multiple sources again.
-  mv "${GITHUB_OWNER}-${PACKAGE}"* "${PACKAGE}_github"
-
-  popd
-  pwd
-
-  echo 'Installing package dependencies...'
-  Rscript 'R/install_dependencies.R' "$temporary_directory"
-
-  # Runs the R script that builds the reference pages using pkgdown.
-  Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"
-
-
-  # Rename the reference index pages because right now they are named index.html.
-  # index.html files have a special meaning to Hugo. Leaving reference index pages
-  # as index.html will mess up Hugo's build process.
-  find "./${CONTENT_FOLDER}/" -type 'f' -name 'index.html' -execdir mv '{}' 'readme.html' ';'
-else
+if [ -z "$PACKAGE" ]; then
   echo 'Installing package dependencies for the blog...'
   Rscript 'R/install_dependencies.R' ''
+
+  echo "Moving the cache into the package's folder..."
+  mv --verbose ~/cache/ "${CONTENT_FOLDER}/"
+else
+
+    # When building a package, remove the blog posts and other folders in the content
+    # folder (e.g., the about page, the code of conduct, etc.) so that they are not built.
+    # This prevents a bad blog post from causing the build of a package to fail.
+    echo "Removing content folders"
+    rm -rf "${CONTENT_FOLDER}"/*/
+
+    # Downloads and untars one package into a temporary directory.
+    temporary_directory=$(mktemp --directory)
+
+    pushd "$temporary_directory"
+    pwd
+
+    echo "Downloading and untarring package ${PACKAGE}"
+    wget --header="Authorization: token ${GITHUB_API_TOKEN}" -qO- "https://api.github.com/repos/${GITHUB_OWNER}/${PACKAGE}/tarball/${BRANCH}" | tar xz
+
+    # All GitHub tar files begin with the name of the GitHub owner of the repository (e.g., DeclareDesign or Nick-Rivera),
+    # followed by a dash, followed by the name of the package, and then followed by some junk characters. This line finds
+    # the right tar file, then untars it to a folder that starts with the name of the page and ends with the suffix _github.
+    # This suffix helps us to find the untarred folder in the R script. The suffix used to be important because we used to downloaded one package
+    # from multiple sources. I'm leaving it in just in case we need to download the packages from multiple sources again.
+    mv "${GITHUB_OWNER}-${PACKAGE}"* "${PACKAGE}_github"
+
+    popd
+    pwd
+
+    echo 'Installing package dependencies...'
+    Rscript 'R/install_dependencies.R' "$temporary_directory"
+
+    # Runs the R script that builds the reference pages using pkgdown.
+    Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"
+
+    # Rename the reference index pages because right now they are named index.html.
+    # index.html files have a special meaning to Hugo. Leaving reference index pages
+    # as index.html will mess up Hugo's build process.
+    find "./${CONTENT_FOLDER}/" -type 'f' -name 'index.html' -execdir mv '{}' 'readme.html' ';'
+
+    echo "Moving the cache into the content folder..."
+    mv --verbose ~/cache "${CONTENT_FOLDER}/${HOME_FOLDER}/"
 fi
 
 Rscript -e 'blogdown::build_site()'
@@ -115,3 +124,12 @@ node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html" "${P
 # Move pill badges to a sidebar on the package homepages.
 echo "Running js/move_pill_badges.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
 node js/move_pill_badges.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
+
+# After the cache has been updated, move it back so that Travis can upload it for next time.
+if [ -z "$PACKAGE" ]; then
+  echo 'The blog posts have been built. Moving the cache back so that Travis can upload it...'
+  mv --verbose "${CONTENT_FOLDER}/cache/" ~/
+else
+  echo "A package's files have been built. Moving the cache back so that Travis can upload it..."
+  mv --verbose "${CONTENT_FOLDER}/${HOME_FOLDER}/cache/" ~/
+fi

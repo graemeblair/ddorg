@@ -23,17 +23,17 @@ do_diagnosis <- FALSE
 
 In designs in which  a treatment is assigned in clusters (e.g. classrooms), it's usual practice to account for cluster-level correlations when you generate estimates of uncertainty about estimated effects. But units often share commonalities at higher levels, such as at a block level (e.g. schools). Sometimes you need to take account of this and sometimes you don't. We show an instance of the usual procedure of clustering by assignment cluster (classrooms) working well and show how badly you can do with a  more conservative approach (clustering by schools). We then show an example of a design in which clustering at the level of treatment assignment (classroom) is not good enough; in the troublesome example, schools are thought of as being sampled from a larger population of schools and treatment effects are different in different schools. In this case, if you want estimates of uncertainty for population level effects you have to cluster at the school level *even though* treatment is assigned *within* schools.
 
-David McKenzie discussed this issue a while ago [here]( https://blogs.worldbank.org/impactevaluations/when-should-you-cluster-standard-errors-new-wisdom-econometrics-oracle) following discussions by Chris Blattman [here](https://chrisblattman.com/2015/12/11/clusterjerk-the-much-anticipated-sequel/). While broadly in line with these discussions, our take-away leans a bit more in the direction that yes you really might want to cluster at higher levels than treatment assignment in an experiment, at least if you are targeting non-sample based estimands. 
+David McKenzie discussed this issue a while ago [here]( https://blogs.worldbank.org/impactevaluations/when-should-you-cluster-standard-errors-new-wisdom-econometrics-oracle) following discussions by Chris Blattman [here](https://chrisblattman.com/2015/12/11/clusterjerk-the-much-anticipated-sequel/). While broadly in line with these discussions, our take-away leans a bit more in the direction that yes you really might want to cluster at higher levels than treatment assignment in an experiment in some cases, but only when you are targeting non-sample-based estimands such as population average effects. 
 
-More generally, the post shows how to check for these kinds of issues when you declare a design, exploiting the fact that with a design declared you can compare the distribution of estimates of standard errors with the standard deviation of the estimates you get across many runs. So you can see *not just whether estimates of uncertainty are unbiased but also whether they are precise*. 
+More generally, the post shows how to check for these kinds of issues when you declare a design, exploiting the fact that with a design declared you can compare the distribution of estimates of standard errors with the standard deviation of the estimates you get across many runs. So you can see *not just whether estimates of uncertainty are unbiased, but also whether they are precise*. 
 
 
 # A design in which clustering standard errors at the level of assignment works well
 
-Consider first a simple design in which there are block-level and cluster-level shocks and treatment is assigned at the cluster-level. The design has three strategies for estimating the standard error (the standard deviation of the estimator's sampling distribution): 
+Consider first a simple design in which there are block-level and cluster-level shocks, but treatment is assigned at the cluster level. The design has three strategies for estimating the standard error (the standard deviation of the estimator's sampling distribution): 
 
-a. ignore clustering 
-b. allow for error correlation at the cluster-level, and 
+a. ignore clustering;
+b. allow for error correlation at the cluster level; and 
 c. allow for error correlation at the block level.  
 
 Here is a full declaration of the design.^[This kind of design can also be made in a single line with the `DesignLibrary` package using  the `block_cluster_two_arm_designer()`.]
@@ -108,7 +108,7 @@ The hummable tune version: If you cluster too high your estimates of variance ma
 
 # A design in which it makes sense to cluster errors *above* the level of treatment assignment
 
-So does this mean you should only ever account for error correlation at the same level the treatment is assigned? Not always. Consider the following fairly similar design, in which units, indexed $i$, are assigned to treatment and control at the cluster level (we omit blocking this time). The key thing in this design is that the treatment effect is common within blocks but different across blocks. 
+So does this mean you should only ever account for error correlation at the same level the treatment is assigned? Not always. Consider the following similar design, in which there are heterogenous treatment effects that depend on higher-level shocks (in this case at the school level), whereas treatment is still assigned at the lower level of classrooms. 
 
 ```{r}
 new_potential_outcomes <- declare_potential_outcomes(Y ~ u_i + u_b*Z)
@@ -153,15 +153,13 @@ ggplot() +
 
 We see that allowing for group-level correlation in errors among treated units provides estimates of uncertainty that, on average, track the variance of the sampling distribution quite well. Ignoring this correlation produces standard errors that are too small, leading to over-confidence. 
 
-The design here is not particularly unusual. Heterogeneous effects across groups could be a feature of many studies. This suggests that the  issue here could be fairly general. 
+The design here is not particularly unusual. Heterogeneous effects across groups could be a feature of many studies. This suggests that the issue here could be fairly general. 
 
-# Not such a concern if your focus is on Sample Average Treatment Effects
+# Not such a concern if your focus is on sample average treatment effects
 
 A key feature of the last design is that the group-level treatment effects are stochastic, and so each simulation takes a draw of blocks from a large population of blocks. Thus, even though the *assignment* is not clustered by block, the units in each blocks are themselves clusters from a *sampling* process. 
 
-That's what justifies the use of group-clustered standard errors. See discussions in Abadie, Athey, Imbens, and Wooldridge https://economics.mit.edu/files/13927
-who argue that "[t]he researcher should assess whether the sampling process is clustered or not, and whether the assignment
-mechanism is clustered. If the answer to both is no, one should *not* adjust the standard errors for clustering, irrespective of whether such an adjustment would change the standard errors."
+That's what justifies the use of group-clustered standard errors. See discussions in Abadie, Athey, Imbens, and Wooldridge https://economics.mit.edu/files/13927 who argue that "[t]he researcher should assess whether the sampling process is clustered or not, and whether the assignment mechanism is clustered. If the answer to both is no, one should *not* adjust the standard errors for clustering, irrespective of whether such an adjustment would change the standard errors."
 
 To illustrate this last point we make a small change to the design to remove this cluster-sampling feature. We draw a single dataset, and suppose that we are dealing with a finite population.
 

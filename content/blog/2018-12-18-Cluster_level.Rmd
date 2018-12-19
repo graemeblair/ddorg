@@ -1,0 +1,225 @@
+---
+title: "Sometimes you need to cluster standard errors above the level of treatment"
+author: "Declare Design Team"
+date: '2018-12-18'
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    toc: true
+    toc_depth: 1
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(DeclareDesign)
+library(knitr)
+library(DesignLibrary)
+library(tidyverse)
+set.seed(3)
+sims <- 10000
+do_diagnosis <- FALSE
+```
+
+In designs in which  a treatment is assigned in clusters (e.g. classrooms), it's usual practice to account for cluster-level correlations when you generate estimates of uncertainty about estimated effects. But units often share commonalities at higher levels, such as at a block level (e.g. schools). Sometimes you need to take account of this and sometimes you don't. We show an instance of the usual procedure of clustering by assignment cluster (classrooms) working well and show how badly you can do with a  more conservative approach (clustering by schools). We then show an example of a design in which clustering at the level of treatment assignment (classroom) is not good enough; in the troublesome example, schools are thought of as being sampled from a larger population of schools and treatment effects are different in different schools. In this case, if you want estimates of uncertainty for population level effects you have to cluster at the school level *even though* treatment is assigned *within* schools.
+
+David McKenzie discussed this issue a while ago [here]( https://blogs.worldbank.org/impactevaluations/when-should-you-cluster-standard-errors-new-wisdom-econometrics-oracle) following discussions by Chris Blattman [here](https://chrisblattman.com/2015/12/11/clusterjerk-the-much-anticipated-sequel/). While broadly in line with these discussions, our take-away leans a bit more in the direction that yes you really might want to cluster at higher levels than treatment assignment in an experiment, at least if you are targeting non-sample based estimands. 
+
+More generally, the post shows how to check for these kinds of issues when you declare a design, exploiting the fact that with a design declared you can compare the distribution of estimates of standard errors with the standard deviation of the estimates you get across many runs. So you can see *not just whether estimates of uncertainty are unbiased but also whether they are precise*. 
+
+
+# A design in which clustering standard errors at the level of assignment works well
+
+Consider first a simple design in which there are block-level and cluster-level shocks and treatment is assigned at the cluster-level. The design has three strategies for estimating the standard error (the standard deviation of the estimator's sampling distribution): 
+
+a. ignore clustering 
+b. allow for error correlation at the cluster-level, and 
+c. allow for error correlation at the block level.  
+
+Here is a full declaration of the design.^[This kind of design can also be made in a single line with the `DesignLibrary` package using  the `block_cluster_two_arm_designer()`.]
+
+
+```{r}
+design_1 <- 
+  
+  declare_population(
+    schools    = add_level(N = 20, u_b = rnorm(N)), 
+    classrooms = add_level(N =  5, u_c = rnorm(N)), 
+    students   = add_level(N =  5, u_i = rnorm(N))) + 
+  
+  declare_potential_outcomes(Y ~  Z + (u_i + u_b + u_c)) +
+  
+  declare_estimand(ATE = mean(Y_Z_1 - Y_Z_0)) +
+  
+  declare_assignment(clusters = classrooms) +
+  
+  declare_reveal(Y, Z) + 
+  
+  declare_estimator(Y ~ Z, estimand = "ATE", model = lm_robust, 
+                    label = "No clustering") +
+
+  declare_estimator(Y ~ Z, estimand = "ATE", model = lm_robust, 
+                    clusters = classrooms,
+                    label = "Assignment-level clustering") + 
+  
+  declare_estimator(Y ~ Z, estimand = "ATE", model = lm_robust, 
+                    clusters = schools, 
+                    label = "Higher-level clustering")
+```
+
+This design has twenty blocks, each with five clusters made up of five individuals. There are individual, cluster and block shocks, all with unit standard deviation. This means that the ICC is 2/3. Conditioning on block however, the ICC is just 1/2 (since the cluster level and individual level shocks have the same variance).
+
+We simulate the design many times (using `simulate_design(design_1)`). This generates a dataset with the point estimate from each run (which is common across approaches), as well as the estimate of the variance of the point estimates (the standard error squared). This provides enough information to see how well the estimates of uncertainty are doing. 
+
+Below we plot the distribution of estimates of standard errors (squared) from each of the three strategies alongside the actual variance of estimates across runs (vertical line).
+
+```{r, echo = FALSE, warning = FALSE}
+
+if(do_diagnosis){
+  diagnosis <- diagnose_design(design_1, sims = sims)
+  write_rds(diagnosis, path = "rfiles/16_cluster_level_1.rds")}
+
+diagnosis <- read_rds("rfiles/16_cluster_level_1.rds") 
+```
+
+```{r std.error_plot1, echo = FALSE}
+
+ests <- get_simulations(diagnosis)
+diagnosands <- get_diagnosands(diagnosis)
+
+diagnosands %>% 
+ggplot() +
+  geom_vline(aes(xintercept=sd(ests$estimate)^2), linetype="dashed") +
+  stat_density(aes(x=std.error^2, colour=estimator_label), geom="line", position="identity",
+                  data = ests, size = 0.75) +
+  theme_bw() + theme(legend.position = "bottom") +
+  guides(colour = guide_legend(nrow = 2,byrow = TRUE), 
+         linetype = guide_legend(nrow = 2,byrow = TRUE)) +
+  xlim(0, .2)+
+  ggtitle("Clustering at the level of assignment works best here") +
+  annotate(geom = "text", x = sd(ests$estimate)^2 - .005, y = 75, label = "Actual s.d. of estimates", angle = 90)
+```
+
+The first thing that jumps out is the bias in the approach that assumes no error correlation: the average standard error (squared) is `r round(diagnosands$mean_se[diagnosands$estimator_label == "No clustering"]^2,2)`, which is well below the variance of the estimates across our repeated samples. That's the anti-conservative bias that worries people when you fail to cluster standard errors for clustered treatments. It can be quite extreme, as here.
+
+By contrast, the approaches that allow for cluster- and block-level correlation in errors approximate the variance in the sampling distribution of the estimates nicely, and on average are about equal to the true variance of the estimates. You will notice though that the distribution of estimates of uncertainty exhibit a lot more variance when you cluster at the block level. What this means is that in this design clustering at too high a level makes it more likely that you will get the estimates of uncertainty wrong (even if you will be right on average).
+
+The hummable tune version: If you cluster too high your estimates of variance may have too much variance. 
+
+# A design in which it makes sense to cluster errors *above* the level of treatment assignment
+
+So does this mean you should only ever account for error correlation at the same level the treatment is assigned? Not always. Consider the following fairly similar design, in which units, indexed $i$, are assigned to treatment and control at the cluster level (we omit blocking this time). The key thing in this design is that the treatment effect is common within blocks but different across blocks. 
+
+```{r}
+new_potential_outcomes <- declare_potential_outcomes(Y ~ u_i + u_b*Z)
+
+design_2 <- replace_step(design_1, step = 2, new_potential_outcomes)
+```
+
+This kind of design might describe a situation in which individuals in different areas are selected at random to participate in area-level workshops; or one in which clusters of voters are assigned to get information about the political representative in their area before an election, and so on. 
+
+The diagnosis looks like this:
+
+```{r, echo = FALSE, warning = FALSE}
+if(do_diagnosis){
+  diagnosis <- diagnose_design(design_2, sims = sims)
+  write_rds(diagnosis, path = "rfiles/16_cluster_level_2.rds")}
+
+diagnosis <- read_rds("rfiles/16_cluster_level_2.rds") 
+
+ests <- get_simulations(diagnosis)
+diagnosands <- get_diagnosands(diagnosis) 
+```
+
+
+```{r std.error_plot2, echo = FALSE}
+
+ggplot() +
+  geom_vline(aes(xintercept=sd(ests$estimate)^2), linetype="dashed") +
+  stat_density(aes(x=std.error^2, colour=estimator_label),
+                  geom="line",
+                  position="identity",
+                  data = ests, 
+                  size = 0.75) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(colour = guide_legend(nrow = 2,byrow = TRUE),linetype = guide_legend(nrow = 2,byrow = TRUE))+
+  xlim(0, 0.12) +
+  ggtitle("Clustering at the level of assignment can be anti-conservative") +
+  annotate(geom = "text", x = sd(ests$estimate)^2 - .002, y = 150, label = "Actual s.d. of estimates", angle = 90)
+  
+
+```
+
+We see that allowing for group-level correlation in errors among treated units provides estimates of uncertainty that, on average, track the variance of the sampling distribution quite well. Ignoring this correlation produces standard errors that are too small, leading to over-confidence. 
+
+The design here is not particularly unusual. Heterogeneous effects across groups could be a feature of many studies. This suggests that the  issue here could be fairly general. 
+
+# Not such a concern if your focus is on Sample Average Treatment Effects
+
+A key feature of the last design is that the group-level treatment effects are stochastic, and so each simulation takes a draw of blocks from a large population of blocks. Thus, even though the *assignment* is not clustered by block, the units in each blocks are themselves clusters from a *sampling* process. 
+
+That's what justifies the use of group-clustered standard errors. See discussions in Abadie, Athey, Imbens, and Wooldridge https://economics.mit.edu/files/13927
+who argue that "[t]he researcher should assess whether the sampling process is clustered or not, and whether the assignment
+mechanism is clustered. If the answer to both is no, one should *not* adjust the standard errors for clustering, irrespective of whether such an adjustment would change the standard errors."
+
+To illustrate this last point we make a small change to the design to remove this cluster-sampling feature. We draw a single dataset, and suppose that we are dealing with a finite population.
+
+```{r}
+fixed_data <- draw_data(design_2)
+```
+
+We then splice this new fixed data into the previous design to make a new design.  
+
+```{r}
+design_3 <- replace_step(design_2, 1, declare_population(data = fixed_data))
+```
+
+New because we are holding the population data fixed, we are no longer sampling 20 clusters from the set of possible clusters. This restricts the variance of the sampling distribution to that generated by the assignment.
+
+Now our estimated sampling distributions look like this:
+
+```{r, echo = FALSE, warning = FALSE}
+
+if(do_diagnosis){
+  diagnosis <- diagnose_design(design_3, sims = sims)
+  write_rds(diagnosis, path = "rfiles/16_cluster_level_3.rds")}
+diagnosis <- read_rds("rfiles/16_cluster_level_3.rds") 
+
+ests         <- get_simulations(diagnosis)
+diagnosands  <- get_diagnosands(diagnosis) 
+```
+
+```{r std.error_plot3, echo = FALSE}
+ggplot() +
+  geom_vline(aes(xintercept=var(ests$estimate)),
+             linetype="dashed") +
+  stat_density(aes(x=std.error^2, colour=estimator_label),
+                  geom="line",
+                  position="identity",
+                  data = ests, 
+                  size = 0.75) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  guides(colour = guide_legend(nrow = 2,byrow = TRUE),linetype = guide_legend(nrow = 2,byrow = TRUE)) +
+  xlim(0, 0.08) +
+  ggtitle("Behavior as expected for clustering on clusters for Sample Average effects")+
+  annotate(geom = "text", x = sd(ests$estimate)^2 - .0015, y = 500, label = "Actual s.d. of estimates", angle = 90)
+  
+```
+
+
+The implications are that when we focus on the sample estimand the version that clusters standard errors at the level of assignment works fairly well (they are slightly conservative reflecting the fact that the Neyman standard errors are conservative). The standard errors that account for group-level error correlation are wildly conservative, since they are positing possible treatment effects that could never come into existence under this model. It's the wrong sampling distribution.
+
+
+# Takeaways
+
+The key takeaways:
+
+- [Senn](https://www.ncbi.nlm.nih.gov/pubmed/15580598)'s "as ye randomize so shall ye analyze" principle works fine in standard set ups when you are interested in sample average estimands: it makes sense to cluster your standard errors at the level of treatment assignment. 
+
+- **You can still go too low**: if your units of assignment (be they clusters or individuals) are themselves members of higher-level clusters that are sampled from a larger population **and you are interested in population average estimands**, then you may need to allow for correlation in errors at that level to account for clustering of effects generated by sampling
+
+- **You can definitely go too high**: but this doesn't mean you should default to a "conservative" rule of thumb. If you assume a sampling process where one doesn't exist, you can end up being wildly over-conservative in your estimates of the sampling distribution or having an estimate of uncertainty that is right in expectation but far off in realization.
+
+- **If in doubt, diagnose**.

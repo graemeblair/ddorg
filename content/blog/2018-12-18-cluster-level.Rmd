@@ -220,3 +220,5 @@ The key takeaways:
 - **You can definitely go too high**: but this doesn't mean you should default to a "conservative" rule of thumb. If you assume a sampling process where one doesn't exist, you can end up being wildly over-conservative in your estimates of the sampling distribution or having an estimate of uncertainty that is right in expectation but far off in realization.
 
 - **If in doubt, diagnose**.
+
+# References

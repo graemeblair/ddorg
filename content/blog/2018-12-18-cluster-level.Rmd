@@ -8,6 +8,7 @@ output:
     theme: cerulean
     toc: true
     toc_depth: 1
+bibliography: bib/blog.bib  
 ---
 
 ```{r setup, include=FALSE}
@@ -28,7 +29,7 @@ David McKenzie discussed this issue a while ago [here]( https://blogs.worldbank.
 More generally, the post shows how to check for these kinds of issues when you declare a design, exploiting the fact that with a design declared you can compare the distribution of estimates of standard errors with the standard deviation of the estimates you get across many runs. So you can see *not just whether estimates of uncertainty are unbiased, but also whether they are precise*. 
 
 
-# A design in which clustering standard errors at the level of assignment works well
+# A case in which clustering standard errors at the level of assignment works well
 
 Consider first a simple design in which there are block-level and cluster-level shocks, but treatment is assigned at the cluster level. The design has three strategies for estimating the standard error (the standard deviation of the estimator's sampling distribution): 
 
@@ -97,7 +98,7 @@ ggplot() +
          linetype = guide_legend(nrow = 2,byrow = TRUE)) +
   xlim(0, .2)+
   ggtitle("Clustering at the level of assignment works best here") +
-  annotate(geom = "text", x = sd(ests$estimate)^2 - .005, y = 75, label = "Actual s.d. of estimates", angle = 90)
+  annotate(geom = "text", x = sd(ests$estimate)^2 - .005, y = 75, label = "Actual Var(estimates)", angle = 90)
 ```
 
 The first thing that jumps out is the bias in the approach that assumes no error correlation: the average standard error (squared) is `r round(diagnosands$mean_se[diagnosands$estimator_label == "No clustering"]^2,2)`, which is well below the variance of the estimates across our repeated samples. That's the anti-conservative bias that worries people when you fail to cluster standard errors for clustered treatments. It can be quite extreme, as here.
@@ -106,7 +107,7 @@ By contrast, the approaches that allow for cluster- and block-level correlation 
 
 The hummable tune version: If you cluster too high your estimates of variance may have too much variance. 
 
-# A design in which it makes sense to cluster errors *above* the level of treatment assignment
+# A case in which it makes sense to cluster errors *above* the level of treatment assignment
 
 So does this mean you should only ever account for error correlation at the same level the treatment is assigned? Not always. Consider the following similar design, in which there are heterogenous treatment effects that depend on higher-level shocks (in this case at the school level), whereas treatment is still assigned at the lower level of classrooms. 
 
@@ -118,7 +119,7 @@ design_2 <- replace_step(design_1, step = 2, new_potential_outcomes)
 
 This kind of design might describe a situation in which individuals in different areas are selected at random to participate in area-level workshops; or one in which clusters of voters are assigned to get information about the political representative in their area before an election, and so on. 
 
-The diagnosis looks like this:
+The distribution of estimates of uncertainty now looks like this:
 
 ```{r, echo = FALSE, warning = FALSE}
 if(do_diagnosis){
@@ -146,7 +147,7 @@ ggplot() +
   guides(colour = guide_legend(nrow = 2,byrow = TRUE),linetype = guide_legend(nrow = 2,byrow = TRUE))+
   xlim(0, 0.12) +
   ggtitle("Clustering at the level of assignment can be anti-conservative") +
-  annotate(geom = "text", x = sd(ests$estimate)^2 - .002, y = 150, label = "Actual s.d. of estimates", angle = 90)
+  annotate(geom = "text", x = sd(ests$estimate)^2 - .0024, y = 150, label = "Actual Var(estimates)", angle = 90)
   
 
 ```
@@ -159,9 +160,7 @@ The design here is not particularly unusual. Heterogeneous effects across groups
 
 A key feature of the last design is that the group-level treatment effects are stochastic, and so each simulation takes a draw of blocks from a large population of blocks. Thus, even though the *assignment* is not clustered by block, the units in each blocks are themselves clusters from a *sampling* process. 
 
-That's what justifies the use of group-clustered standard errors. See discussions in Abadie, Athey, Imbens, and Wooldridge https://economics.mit.edu/files/13927 who argue that "[t]he researcher should assess whether the sampling process is clustered or not, and whether the assignment mechanism is clustered. If the answer to both is no, one should *not* adjust the standard errors for clustering, irrespective of whether such an adjustment would change the standard errors."
-
-To illustrate this last point we make a small change to the design to remove this cluster-sampling feature. We draw a single dataset, and suppose that we are dealing with a finite population.
+This resonates with results in @abadie2017should ([here](https://economics.mit.edu/files/13927)) which highlights the distinct sampling and assignment rationales for clustering. Here clustering at the assignment level does not account for the clustered sampling into the study. To illustrate this last point we make a small change to the design to remove this cluster-sampling feature. We draw a single dataset, and suppose that we are dealing with a finite population.
 
 ```{r}
 fixed_data <- draw_data(design_2)
@@ -173,9 +172,9 @@ We then splice this new fixed data into the previous design to make a new design
 design_3 <- replace_step(design_2, 1, declare_population(data = fixed_data))
 ```
 
-New because we are holding the population data fixed, we are no longer sampling 20 clusters from the set of possible clusters. This restricts the variance of the sampling distribution to that generated by the assignment.
+Because we are holding the population data fixed, we are no longer sampling 20 clusters from the set of possible clusters. This restricts the variance of the sampling distribution to that generated by the assignment.
 
-Now our estimated sampling distributions look like this:
+Now the distribution of estimates of uncertainty look like this:
 
 ```{r, echo = FALSE, warning = FALSE}
 
@@ -202,7 +201,7 @@ ggplot() +
   guides(colour = guide_legend(nrow = 2,byrow = TRUE),linetype = guide_legend(nrow = 2,byrow = TRUE)) +
   xlim(0, 0.08) +
   ggtitle("Behavior as expected for clustering on clusters for Sample Average effects")+
-  annotate(geom = "text", x = sd(ests$estimate)^2 - .0015, y = 500, label = "Actual s.d. of estimates", angle = 90)
+  annotate(geom = "text", x = sd(ests$estimate)^2 - .00155, y = 500, label = "Actual Var(estimates)", angle = 90)
   
 ```
 

@@ -1,4 +1,4 @@
 ---
-title: "The Blog"
+title: "Blog"
 disable_comments: true
 ---

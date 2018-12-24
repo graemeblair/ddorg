@@ -1,0 +1,33 @@
+---
+title: "DeclareDesign Holiday Hiatus"
+date: "2018-12-20"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib  
+---
+
+We'll be back on January 7 -- Happy New Year!
+
+```{r, message=FALSE, warning=FALSE}
+library(DeclareDesign)
+library(ggplot2)
+
+pop <-
+  declare_population(
+    N = 14,
+    X = c("H", "A", "P", "P", "Y", " ", 
+          "H", "O", "L", "I", "D", "A", "Y", "S"),
+    position = N:1,
+    index = match(X, LETTERS)
+  )
+
+ggplot(data = pop(), aes(index, position, color = X)) +
+  geom_text(aes(label = X)) +
+  theme_bw() +
+  theme(legend.position = "none", axis.title = element_blank())
+```
+
+

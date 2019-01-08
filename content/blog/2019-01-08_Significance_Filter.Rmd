@@ -70,15 +70,15 @@ summary_df <- gg_df %>%
   summarise(mean_estimand = mean(estimand),
             mean_estimate = mean(estimate))
 
-ggplot(gg_df, aes(x = estimand, y = estimate)) +
-  geom_point(alpha = 0.1, color = "grey") +
+ggplot(gg_df, aes(x = estimand, y = estimate, color = filter)) +
+  geom_point(alpha = 0.1) +
   geom_vline(data = summary_df, aes(xintercept = mean_estimand), size = 1.2, alpha = 1, color = "darkgrey") +
   geom_hline(data = summary_df, aes(yintercept = mean_estimate), size = 1.2, alpha = 1, color = "darkgrey") +
   scale_colour_brewer(type = "qual") +
+  geom_abline() +
+  geom_vline(xintercept = 0.5) +
   facet_grid(N ~ filter) +
   coord_cartesian(xlim = c(-0.5, 1.5), ylim = c(-0.5, 1.5)) +
-  geom_vline(xintercept = 0.5) +
-  geom_abline() +
   theme_bw() +
   theme(legend.position = "none",
         strip.background = element_blank()) +
@@ -123,16 +123,17 @@ summary_df <- gg_df %>%
   summarise(mean_estimand = mean(estimand),
             mean_estimate = mean(estimate))
 
-ggplot(gg_df, aes(x = estimand, y = estimate)) +
-  geom_point(alpha = 0.1, color = "grey") +
+ggplot(gg_df, aes(x = estimand, y = estimate, color = filter)) +
+  geom_point(alpha = 0.1) +
   geom_vline(data = summary_df, aes(xintercept = mean_estimand), size = 1.2, alpha = 1, color = "darkgrey") +
   geom_hline(data = summary_df, aes(yintercept = mean_estimate), size = 1.2, alpha = 1, color = "darkgrey") +
   scale_colour_brewer(type = "qual") +
+  geom_abline() +
+  geom_vline(xintercept = 0.5) +
   facet_grid(N ~ filter) +
   coord_cartesian(xlim = c(-0.5, 1.5), ylim = c(-0.5, 1.5)) +
-  geom_vline(xintercept = 0.5) +
-  geom_abline() +
   theme_bw() +
-  theme(legend.position = "none", strip.background = element_blank()) +
+  theme(legend.position = "none",
+        strip.background = element_blank()) +
   theme(panel.grid.minor = element_blank(), panel.grid.major = element_blank(), panel.background = element_blank())
 ```

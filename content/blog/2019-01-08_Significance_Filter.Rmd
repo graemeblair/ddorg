@@ -37,7 +37,7 @@ The `two_arm_designer` function in the `DesignLibrary` package generates designs
 library(DesignLibrary)
 designs     <- expand_design(two_arm_designer, 
                              ate = seq(0, 1, 0.1), N = c(20, 200))
-simulations <- simulate_design(designs, sims = sims)
+simulations <- simulate_design(designs)
 ```
 
 ```{r, echo = FALSE, warning = FALSE}
@@ -107,6 +107,8 @@ Can you show this?
 For those who are interested, here is the code to produce the above figure.
 
 ```{r, eval = FALSE}
+library(tidyverse)
+
 levels <- c("Estimate is significant \n (Journal of Significant Results)", 
             "Estimate is not significant \n (Journal of Null Results)", 
             "No significance filter \n (Journal of Interesting Designs)")

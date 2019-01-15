@@ -1,5 +1,5 @@
 ---
-title: "The choice of how to adjust for pre-treatment data depends on the true data generating process"
+title: "Use change scores or control for pre-treatment outcomes? Depends on the true data generating process"
 author: "Declare Design Team"
 date: "2019-01-15"
 output:

@@ -1,0 +1,245 @@
+---
+title: "Should a pilot study change your study design decisions?"
+author: "Declare Design Team"
+date: "2019-01-23"
+slug: "2019-01-23-pilot-studies"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib
+---
+
+```{r setup, include = FALSE, purl = FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+do_diagnosis <- FALSE
+save_diagnosis <- TRUE
+```
+
+```{r, echo = FALSE}
+library(DeclareDesign)
+library(knitr)
+library(tidyverse)
+library(kableExtra)
+
+set.seed(90405)
+sims <- 1000
+
+library(future)
+plan(multiprocess)
+
+dd_theme <-
+  function() {
+    theme_bw() +
+      theme(
+        axis.ticks = element_blank(),
+        axis.line = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_line(color = '#eeeeee'),
+        strip.background = element_blank(),
+        legend.position = "bottom",
+        text = element_text(family = "Palatino"))
+  }
+
+theme_set(dd_theme())
+
+library(ggrepel)
+library(ggridges)
+```
+
+Data collection is expensive, and we often only get one bite at the apple. In response, we often conduct an inexpensive (and small) pilot test to help better design the study. Pilot studies have many virtues, including practicing the logistics of data collection and improving measurement tools. But using pilots to get noisy estimates in order to determine sample sizes for scale up comes with risks.
+
+Pilot studies are often used to get a guess of the average effect size, which is then plugged into power calculators when designing the full study.
+
+The procedure is:
+
+1. Conduct a small pilot study (say, N = 50)
+2. Obtain an estimate of the effect size (this is noisy, but better than nothing!)
+3. Conduct a power analysis for a larger study (say, N = 500) on the basis of the estimated effect size in the pilot
+
+We show in this post that this procedure turns out to be dangerous: at common true effect sizes found in the social sciences, you are at risk of selecting an underpowered design based on the noisy effect estimate in your pilot study.
+
+A different procedure has better properties:
+
+1. Conduct a small pilot study (say, N = 50)
+2. Obtain an estimate of the **standard deviation of the outcome variable** (again, this is a noisy estimate but better than nothing!)
+3. Estimate the minimum detectable effect (MDE) for a larger study (say, N = 500), using the estimated standard deviation
+
+We show what happens in each procedure, using DeclareDesign. In each case, we'll think about a decision the researcher wants to make based on the pilot: should I move forward with my planned study, or should I go back to the drawing board? We'll rely on power to make that decision in the first procedure and the MDE in the second procedure.
+
+To get started, we set up a designer^[A designer is a function that writes designs.] for a standard two-arm trial where half of units are assigned to treatment and we use a difference-in-means estimator. We will use the same designer to simulate the pilot (N = 50) and the main study (N = 500). The designer lets us change the sample size, the true effect size, as well as the true standard deviation of the outcome (`sd_y`). 
+
+We will make use of a function that records estimates of the standard deviation of outcomes in each condition.
+
+```{r, echo = TRUE}
+sd_estimator <- function(data){
+  data.frame(sd_y_0_hat = sd(data$Y[data$Z == 0]), sd_y_1_hat = sd(data$Y[data$Z == 1]))
+}
+```
+
+
+```{r, echo = TRUE}
+designer <- 
+  function(sample_size = 50, true_effect_size = 0, sd_y = 1) {
+  design <- 
+    declare_population(N = sample_size, u = rnorm(N, sd = sd_y)) +
+    declare_potential_outcomes(Y ~ true_effect_size * Z + u) +
+    declare_assignment(m = sample_size / 2) +
+    declare_reveal(Y, Z) +
+    declare_estimator(Y ~ Z, model = difference_in_means, label = "dim") +
+    declare_estimator(handler = tidy_estimator(sd_estimator), label = "sd_estimator")
+}
+```
+
+# Should you use your pilot to estimate the effect size for your power analysis?
+
+We first simulate the effect size estimates we would get from our small pilot study (N = 50). We look at how our piloting design works at true effect sizes from 0 to 0.5.
+
+```{r, eval = do_diagnosis, echo = TRUE}
+# simulate estimated effect sizes from the pilot study
+pilot_designs <- 
+  expand_design(designer, true_effect_size = seq(from = 0, to = 0.5, by = 0.1))
+
+simulations_pilot <- simulate_design(pilot_designs, sims = sims)
+```
+
+For each true effect size, the simulations will give us a distribution of estimated effects that a researcher might use as a basis for power analysis. For example, for a true effect size of 0 the researcher might still estimate an effect of 0.10, and so conduct their power analysis assuming that the true effect is 0.10. For each true effect, we can thus construct a distribution of *power estimates* a researcher might obtain from *estimated* effects. Since we know the true power for the true underlying effect, we can compare the distribution of post-hoc power estimates to the true power one would estimate if one knew the true effect size.
+
+```{r, eval = do_diagnosis, echo = TRUE}
+# estimate power for the full study for possible estimated effect sizes from the pilot study
+# (exploit fact that power is symmetric so we don't need to calculate power for negative effect sizes)
+
+max_pilot_estimate <- max(simulations_pilot$estimate, na.rm = TRUE)
+
+study_designs <- 
+  expand_design(designer, 
+                sample_size = 500, 
+                true_effect_size = seq(0, max_pilot_estimate, 0.01))
+
+diagnosis_study <- diagnose_design(study_designs, sims = sims)
+```
+
+```{r, eval = do_diagnosis, echo = FALSE, purl = FALSE}
+if(save_diagnosis){
+  write_rds(simulations_pilot, path = "rfiles/21_when_to_diagnose_effect_size_sims.rds")
+  write_rds(diagnosis_study, path = "rfiles/21_when_to_diagnose_effect_size_diag.rds")
+}
+```
+  
+```{r, echo = FALSE, purl = FALSE}
+if(save_diagnosis){
+  simulations_pilot <- read_rds("rfiles/21_when_to_diagnose_effect_size_sims.rds") 
+  diagnosis_study   <- read_rds("rfiles/21_when_to_diagnose_effect_size_diag.rds") 
+}
+```
+
+What did we find? In the plot, we show our guesses for the power of the main study based on our pilot effect size estimates. 
+
+At high true effect sizes (top row), we do pretty well. Most of our guesses are above 80\% power, leading us to the correct decision that the study is powered. Indeed we often *underestimate* our power in these cases meaning that we run larger studies than we need to.
+
+However, at low true effect sizes (bottom row) we show we are equally likely to find that the design is in fact powered as underpowered. We are equally likely to guess the power of the design is 90% as 10%. There is a good chance that we will falsely infer that our design is well powered just because we happened to get a high estimate from a noisy pilot.
+
+```{r, echo = FALSE}
+library(ggridges)
+library(ggrepel)
+
+power_df <- get_diagnosands(diagnosis_study) %>% 
+  transmute(true_effect_size = round(as.numeric(as.character(true_effect_size)), 2), power)
+
+gg_df <- simulations_pilot %>%
+  select(true_effect_size, estimate) %>%
+  mutate(estimate = abs(round(estimate, 2))) %>%
+  left_join(power_df, by = c(estimate = "true_effect_size"))
+
+line_df <- get_diagnosands(diagnosis_study) %>% filter(true_effect_size %in% seq(from = 0, to = 0.5, by = 0.1)) 
+
+label_df <- line_df %>% filter(true_effect_size == 0.2) %>% mutate(label = paste0("True power when true effect size is 0.2: ", power))
+
+gg_df %>%
+  ggplot(aes(x = power, y = as.factor(true_effect_size))) +
+  geom_vline(xintercept = 0.8, color = "red", linetype = "dashed", alpha = 0.8) +
+  geom_density_ridges(
+    scale = 0.8,
+    panel_scaling = FALSE,
+    from = 0,
+    to = 1, 
+    rel_min_height = 0.005) +
+  geom_point(
+    data = line_df,
+    aes(x = power, y = as.factor(true_effect_size)),
+    size = 3,
+    color = "red"
+  ) +
+  geom_text_repel(
+    data = label_df,
+    aes(label = label),
+    nudge_x = 0.4,
+    nudge_y = -0.3
+  ) +
+  # coord_cartesian(xlim = c(0, 1)) +
+  ggtitle("Distribution of post-hoc power estimates for full study (N = 500)") +
+  xlab("Statistical Power Estimates Based on Estimated Effect Size from Pilot Study (N = 50)") + 
+  ylab("True Effect Size")
+```
+
+# How about estimating the standard deviation of the outcome?
+
+Now, let's look at the second approach. Here, instead of using our pilot study to estimate the effect size for a power calculation, we estimate the **standard deviation of the outcome** and use this to calculate the main study's minimum detectable effect. The decision we want to make is: is this MDE small enough to be able to rule out substantively important effects?
+
+We calculate the minimum detectable effect size using the approximation from [@gelman2006data, pg. 441], 2.8 times the estimated standard error. We estimate the standard error using Equation 3.6 from @gerber2012field. 
+
+```{r, echo = TRUE}
+simulations_pilot <-
+  simulations_pilot %>%
+  mutate(se_hat_full_study = sqrt( sd_y_0_hat^2 / 250  + sd_y_1_hat^2 / 250),
+         mde_hat_full_study = 2.8 * se_hat_full_study)
+```
+
+We plot the distribution of MDE guesses. At each true effect size, our MDE estimates based on the estimated SD of the outcome variable in the treatment and control groups are unbiased for the true MDE (red dots). In other words, our piloting design will give us a good guess for the MDE of our full study.
+
+```{r, echo = FALSE}
+point_df <-
+  tibble(
+    sd_y = c(1),
+    se_full_study = sqrt(sd_y ^ 2 / 250  + sd_y ^ 2 / 250),
+    mde_full_study = 2.8 * se_full_study,
+    true_effect_size  = seq(0, 0.5, 0.1)
+  )
+
+label_df <- 
+  point_df %>% 
+  filter(true_effect_size == 0.2) %>%
+  mutate(label = paste0("True MDE when \n true SD of outcome variable is 1: ", round(mde_full_study, 2)))
+
+simulations_pilot %>%
+  ggplot(aes(x = mde_hat_full_study, y = as.factor(true_effect_size))) +
+  geom_density_ridges(scale = 0.8,
+                      panel_scaling = FALSE,
+                      rel_min_height = 0.005) +
+  geom_point(
+    data = point_df,
+    aes(x = mde_full_study, y = as.factor(true_effect_size)),
+    size = 3,
+    color = "red"
+  ) +
+  geom_text_repel(
+    data = label_df,
+    aes(label = label, x = mde_full_study),
+    nudge_x = 0.4,
+   nudge_y = -0.3
+  ) +
+  coord_cartesian(xlim = c(0, 0.5)) +
+  ggtitle("Distributions of post-hoc MDE estimates for full study (N = 500)") +
+    xlab("Estimated MDE Based on Estimated Outcome Standard Deviation from Pilot Study (N = 50)") + 
+  ylab("True Effect Size")
+```
+
+In summary, pilot studies can be valuable in planning research for many reasons, but power calculations based on noisy effect size estimates can be misleading. A better approach is to use the pilot to learn about the distribution of outcome variables. The variability of the outcome variable can then be plugged into MDE formulas or even power calculations with, say, the smallest effect size of political, economic, or social importance.
+
+In the same spirit, pilot studies could also be used to learn the strength of the correlation between pre-treatment covariates and the outcome variable. With this knowledge in hand, researchers can develop their expectations about how much precision there is to be gained from covariate control or blocking.
+
+# References
+
+
+

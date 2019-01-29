@@ -58,7 +58,7 @@ The procedure is:
 2. Obtain an estimate of the effect size (this is noisy, but better than nothing!)
 3. Conduct a power analysis for a larger study (say, N = 500) on the basis of the estimated effect size in the pilot
 
-We show in this post that this procedure turns out to be dangerous: at common true effect sizes found in the social sciences, you are at risk of selecting an underpowered design based on the noisy effect estimate in your pilot study.
+We show in this post that this procedure turns out to be dangerous: at common true effect sizes found in the social sciences, you are at risk of selecting an underpowered design based on the noisy effect estimate in your pilot study. For a related argument about the dangers of *post-hoc* power analysis, which inspired this post, see [https://statmodeling.stat.columbia.edu/2019/01/13/post-hoc-power-calculation-like-shit-sandwich/](Andy Gelman's blog).
 
 A different procedure has better properties:
 

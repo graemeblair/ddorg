@@ -29,7 +29,7 @@ Say we want to evaluate a case-specific hypothesis, $H$, regarding whether $Y$  
 
 Formally declaring and diagnosing such a procedure yields two nonobvious insights:
 
-  1. **Straws in the wind ≥ Smoking guns**: strong but rare clues do not always give you better answers *on average* than weak but common clues.
+  1. **Straws in the Wind can be stronger than Smoking Guns**: strong but rare clues do not always give you better answers *on average* than weak but common clues.
   
   2. **The joint distribution of clues can be really important**: Many applications of Bayesian process-tracing implicitly assume that clues are generated independently. Yet, when clues are negatively correlated (i.e., they arise through *alternative* causal pathways), they are jointly much more informative than when they are positively correlated. 
 
@@ -57,7 +57,7 @@ In addition we imagine that there is further "process" data that is informative 
 
 * **A straw-in-the-wind clue.** A straw--in-the-wind clue is an outcome that is somewhat more likely to be present if the hypothesized causal process is in operation and somewhat less likely if it is not. Let's say, for example, that $E_1$ is the national army taking control over natural resources during a civil war. We imagine that that's likely to happen if the natural resources caused the war: $Pr(E_1 \mid H) = .75$. But even if the natural resources didn't cause the war, the national army might still take over natural resources for other reasons, say $Pr(E_1 \mid \neg H) = .25$. 
 
-* **A smoking gun clue**. A smoking gun clue is an outcome that is somewhat likely to be present if the stipulated hypothesis is true, but very unlikely if it is false. Say one of the antagonists was an armed group  whose main name, aims, and ideology were centered around the capture and control natural resources. Such a clue might be really unlikely in general, even if $H$ is true. But it's very informative if it is observed, since it's so unlikely to happen if $H$ is not true: it's a "smoking gun" (SMG). Let's say $Pr(E_2 \mid H) = .3, Pr(E_2 \mid \neg H) = 0.05$. 
+* **A smoking gun clue**. A smoking gun clue is an outcome that is somewhat likely to be present if the stipulated hypothesis is true, but very unlikely if it is false. Say one of the antagonists was an armed group  whose main name, aims, and ideology were centered around the capture and control of natural resources. This information provides a clue which might be really unlikely to arise in general, even if $H$ is true. But it's very informative if it is observed, since it's so unlikely to arise if $H$ is not true: it's a "smoking gun" (SMG). Let's say $Pr(E_2 \mid H) = .3, Pr(E_2 \mid \neg H) = 0.05$. 
 
 These clues might themselves be mediators, or moderators, or even arise post treatment, though we do not specify the full causal model that gives rise to them here. Rather we simply define a step that generates these clue observations independently, conditional on the causal process. This is a strong assumption: the fact that an armed group formed in order to take resources ($E_2$) might convince the government to take over the natural resource ($E_1$), or dissuade them! We therefore relax this "Independent Clues" assumption below.
 
@@ -109,7 +109,7 @@ calculate_posterior <- function(data, p_H, p_E_H, p_E_not_H, label, result) {
              estimator_label = label, estimand_label = "did_X_cause_Y", result = result)}
 ```
 
-Bayes' rule makes use of the probability of observing $E$ if $H$ is true and the probability of  observing $E$ if $H$ is not true. The more different these probability are the more you learn from new data. 
+Bayes' rule makes use of the probability of observing $E$ if $H$ is true and the probability of  observing $E$ if $H$ is not true. The more different these probabilities are the more you learn from new data. 
 
 We also need to specify the imaginary researcher's prior belief that $H$ is true. The imaginary researcher knows that only two processes, 1 and 3, could have generated the data $X = Y = 1$. Thus, they might specify a "flat" prior: $Pr(H) = .5$ (though they might have more informed beliefs from background knowledge).
 
@@ -191,7 +191,7 @@ As expected, the smoking gun can be highly probative: the bottom right panel sho
 
 By contrast, the left column shows that the straw-in-the-wind strategy gets pretty close pretty often. Whenever it is observed, the researcher guesses  $Pr(H\mid E_1) =$ `r round(custom_diags$mean_post_H_E[1],2)`, and when it is not they guess $Pr(H\mid E_1) =$ `r round(custom_diags$mean_post_H_no_E[1],2)`. This means they sometimes make mistakes -- they observe $E_1$ even when $H$ is false, and vice versa. But it happens rarely enough that they tend to move in the right direction most of the time. 
 
-The net result is that in this case the straw in the wind test has lower root mean squared error (RMSE): `r round(custom_diags$rmse[1],2)` vs. the smoking gun's `r round(custom_diags$rmse[2],2)`. It's less wrong more often. In general, however, which performs better depends on the particular probabilities assumed.
+The net result is that in this case the straw-in-the-wind test has lower root mean squared error (RMSE): `r round(custom_diags$rmse[1],2)` vs. the smoking gun's `r round(custom_diags$rmse[2],2)`. It's less wrong more often. In general, however, which performs better depends on the particular probabilities assumed.
 
 # Using more than one clue
 
@@ -261,7 +261,7 @@ As expected, using more information (both of the clues) gets you much better ans
 This feature arises because the pieces of evidence carry less independent information when they are positively correlated. To see this, suppose they were perfectly correlated, so that observing one clue guarantees that you would observe the other. In this case, there is no additional information gleaned from the observation of one clue once the other has been observed: they are effectively equivalent tests. 
 So, one implication is that process-tracers may do better by looking for clues that are negatively correlated. What might this look like in practice? 
 
-Negatively correlated clues might arise if they result from substitute processes. For example, if the national army is less likely to take control of the natural resources precisely when an armed group has declared that it will fight for them. Positively correlated clues might arise if they result from common processes. For example, if the national army takes control over natural resources precisely because this counters the stated strategic objectives of the armed group. 
+Negatively correlated clues might arise if they result from processes that substitute for each other. For example, if the national army is less likely to take control of the natural resources precisely when an armed group has declared that it will fight for them. Positively correlated clues might arise if they result from common processes. For example, if the national army takes control over natural resources precisely because this counters the stated strategic objectives of the armed group. 
 
 # Takeaways 
 

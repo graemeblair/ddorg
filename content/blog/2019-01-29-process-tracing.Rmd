@@ -23,19 +23,19 @@ do_diagnosis <- FALSE
 ```
 
 
-Qualitative process-tracing sometimes seek to answer "cause of effects" claims using within-case data: how probable is the hypothesis that $X$ *did in fact* cause $Y$? @fairfield2017explicit, for example, ask whether the right-wing changed position on tax reform during the 2005 Chilean presidential election ($Y$) *because* of anti-inequality campaigns ($X$) by examining whether the case study narrative bears evidence that you would only expect to see if this were true.^[For example: "the former President [said] that the tax subsidy 'never would have been eliminated if I had not taken [the opposition candidate] at his word' when the latter publicly professed concern over inequality."]  We declare a Bayesian process-tracing design and use it to think through choices about what kinds of within-case information have the greatest probative value.
+Qualitative process tracing sometimes seeks to answer "cause of effects" claims using within-case data: how probable is the hypothesis that $X$ *did in fact* cause $Y$? @fairfield2017explicit, for example, ask whether the right changed position on tax reform during the 2005 Chilean presidential election ($Y$) *because* of anti-inequality campaigns ($X$) by examining whether the case study narrative bears evidence that you would only expect to see if this were true.^[For example: "the former President [said] that the tax subsidy 'never would have been eliminated if I had not taken [the opposition candidate] at his word' when the latter publicly professed concern over inequality."]  When inferential logics are so clearly articulated, it becomes possible to do design declaration and diagnosis. Here we declare a Bayesian process tracing design and use it to think through choices about what kinds of within-case information have the greatest probative value.
 
-Say we want to evaluate a case-specific hypothesis, $H$, regarding whether $Y$  happened *because* $X$ happened. The hypothesis is not that $X$ is the only cause of $Y$, but more simply whether $Y$ would have been different had $X$ been different. A researcher looks for "clues" or evidence, $E$, in a case narrative or other qualitative data, which would be more or less surprising to see depending on whether $H$ is true. @collier2011understanding lays out the basic strategy. In a beautiful recent paper, @murtas2017new show how to justify updating case-level inferences from experimental data on moderators and mediators.
+Say we want to evaluate a case-specific hypothesis, $H$, regarding whether $Y$  happened *because* $X$ happened. The hypothesis is not that $X$ is the only cause of $Y$, but more simply whether $Y$ would have been different had $X$ been different. A researcher looks for "clues" or evidence, $E$, in a case narrative or other qualitative data, which would be more or less surprising to see depending on whether $H$ is true. @collier2011understanding lays out the basic strategy. In a lovely recent paper @murtas2017new show how to justify updating case level inferences from experimental data on moderators and mediators.
 
 Formally declaring and diagnosing such a procedure yields two nonobvious insights:
 
   1. **Straws in the wind ≥ Smoking guns**: strong but rare clues do not always give you better answers *on average* than weak but common clues.
   
-  2. **The joint distribution of clues is really important**: Many applications of Bayesian process-tracing implicitly assume that clues are generated independently. Yet, when clues are negatively correlated (i.e., they arise through *alternative* causal pathways), they are jointly much more informative than when they are positively correlated. 
+  2. **The joint distribution of clues can be really important**: Many applications of Bayesian process-tracing implicitly assume that clues are generated independently. Yet, when clues are negatively correlated (i.e., they arise through *alternative* causal pathways), they are jointly much more informative than when they are positively correlated. 
 
 # Declaring a process-tracing design
 
-There are different approaches to process-tracing. We focus here on "theory testing" rather than exploratory process-tracing and use an approach that draws on the potential outcomes framework (see, for example, @humphreys2015mixing). 
+There are different approaches to process tracing. We focus here on "theory testing" rather than exploratory process tracing and use an approach that draws on the potential outcomes framework (see for example @humphreys2015mixing). 
 
 We consider a simple example: you choose one country in which there was a civil war ($Y$) and natural resources ($X$), and look for evidence ($E$) that helps you update beliefs about $Pr(H)$---the probability that the civil war happened *because* natural resources were present (H/T @ross2004natural). 
 
@@ -51,7 +51,15 @@ If we think of causal relations in counterfactual terms there are just four poss
   
   4. Civil war might not happen irrespective of whether natural resources are present ($\neg Y$ irrespective of $X$). 
 
-For the simulations, we will imagine we are in a world with 195 countries of which roughly 30% have natural resources ($X$) (that's easy, and observable to our imagined researcher). We will also specify a model in which civil war is governed by causal pathway 1 ($X$ causes $Y$) in roughly 20% of countries, by pathway 2 ($\neg X$ causes $Y$) in only 10% of countries, by pathway 3 ($Y$ irrespective of $X$) in 20% of countries, and by pathway 4 ($\neg Y$ irrespective of $X$) in half of all countries (that's not so easy for our imaginary researcher to know).
+For the simulations, we will imagine we are in a world with 195 countries of which roughly 30% have natural resources ($X$) (that's easy to specify). We will also specify a model in which civil war is governed by causal pathway 1 ($X$ causes $Y$) in roughly 20% of countries, by pathway 2 ($\neg X$ causes $Y$) in only 10% of countries, by pathway 3 ($Y$ irrespective of $X$) in 20% of countries, and by pathway 4 ($\neg Y$ irrespective of $X$) in half of all countries (that's not so easy to specify and of course is information that is not available at the answer stage).
+
+In addition we imagine that there is further "process" data that is informative about causal relations. We imagine two types  (see @collier2011understanding for a discussion of clues of this type):
+
+* **A straw-in-the-wind clue.** A straw--in-the-wind clue is an outcome that is somewhat more likely to be present if the hypothesized causal process is in operation and somewhat less likely if it is not. Let's say, for example, that $E_1$ is the national army taking control over natural resources during a civil war. We imagine that that's likely to happen if the natural resources caused the war: $Pr(E_1 \mid H) = .75$. But even if the natural resources didn't cause the war, the national army might still take over natural resources for other reasons, say $Pr(E_1 \mid \neg H) = .25$. 
+
+* **A smoking gun clue**. A smoking gun clue is an outcome that is somewhat likely to be present if the stipulated hypothesis is true, but very unlikely if it is false. Say one of the antagonists was an armed group  whose main name, aims, and ideology were centered around the capture and control natural resources. Such a clue might be really unlikely in general, even if $H$ is true. But it's very informative if it is observed, since it's so unlikely to happen if $H$ is not true: it's a "smoking gun" (SMG). Let's say $Pr(E_2 \mid H) = .3, Pr(E_2 \mid \neg H) = 0.05$. 
+
+These clues might themselves be mediators, or moderators, or even arise post treatment, though we do not specify the full causal model that gives rise to them here. Rather we simply define a step that generates these clue observations independently, conditional on the causal process. This is a strong assumption: the fact that an armed group formed in order to take resources ($E_2$) might convince the government to take over the natural resource ($E_1$), or dissuade them! We therefore relax this "Independent Clues" assumption below.
 
 This gives us enough to put down the stub of a design in which a model generates data with these features, an imaginary researcher samples one case from the $X=Y=1$ group, and defines the question the researcher wants to ask about this case (notice here the inquiry is defined after the sampling). 
 
@@ -67,10 +75,19 @@ design_stub <-
       Y = (X & causal_process == "X_causes_Y") |     
           (!X & causal_process == "X_causes_not_Y") |
           (causal_process == "Y_regardless"))  +
-    
+  
+  declare_step(
+    SIW_observed = rbinom(n = N, size = 1, 
+                          prob = ifelse(test = causal_process == 'X_causes_Y', .75, .25)),
+    SMG_observed = rbinom(n = N,size = 1, 
+                          prob = ifelse(test = causal_process == 'X_causes_Y', .3,  .05)),
+    handler = fabricate, label = "Independent Clues") +
+  
   declare_sampling(strata = (X == 1 & Y == 1), strata_n = c("FALSE" = 0, "TRUE" = 1)) +
     
-  declare_estimand(did_X_cause_Y = causal_process == 'X_causes_Y')
+  declare_estimand(did_X_cause_Y = causal_process == 'X_causes_Y') 
+
+
 ```
 
 So far, a dataset from this design stub might look like this:
@@ -82,7 +99,7 @@ draw_data(design_stub) %>% kable(digits = 2, align = "c")
 
 ## Answer strategy 
 
-We now turn to the answer strategy. For this, we'll use Bayes' rule to figure out $Pr(H \mid E)$: the posterior probability that $X$ caused $Y$ in the case we chose, given the evidence we found. We make a function that calculates the posterior using Bayes'rule:
+We now turn to the answer strategy. For this, we'll assume that at the analysis stage, researchers use Bayes' rule to figure out $Pr(H \mid E)$: the posterior probability that $X$ caused $Y$ in the case we chose, given the clue evidence we found. We make a function that calculates the posterior using Bayes' rule:
 
 $$Pr(H \mid E) = \frac{Pr(H) Pr(E|H)}{Pr(H)Pr(E\mid(H)) + Pr(\neg H)Pr(E\mid\neg H)}$$ 
 
@@ -92,27 +109,9 @@ calculate_posterior <- function(data, p_H, p_E_H, p_E_not_H, label, result) {
              estimator_label = label, estimand_label = "did_X_cause_Y", result = result)}
 ```
 
-Bayes' rule makes use of the probability of observing $E$ if $H$ is true and the probability of  observing $E$ if $H$ is not true. The more different these probabilities are the more you learn from new data. Qualitative texts sometimes describe different tests based on the differences between these probabilities [@collier2011understanding]. Consider two:
+Bayes' rule makes use of the probability of observing $E$ if $H$ is true and the probability of  observing $E$ if $H$ is not true. The more different these probability are the more you learn from new data. 
 
-* **A straw-in-the-wind test.** Let's say, for example, that $E_1$ is the national army taking control over natural resources during a civil war. Say we think that that's likely to happen if the natural resources caused the war: $Pr(E_1 \mid H) = .75$. But even if the natural resources didn't cause the war, the national army might still take over natural resources for other reasons, say $Pr(E_1 \mid \neg H) = .25$. This type of clue is often called a "straw-in-the-wind" (SIW): you expect to see it if $H$ is true, but it's not completely surprising to see it if $H$ is false.
-
-* **A smoking gun test**. Say you were to look to see whether one of the antagonists was an armed group whose main name, aims, and ideology were centered around the capture and control natural resources. You might believe that observing such a clue is really unlikely overall, even if $H$ is true. But it's very informative if it is observed, since it's so unlikely to happen if $H$ is not true: it's a "smoking gun" (SMG). Let's say $Pr(E_2 \mid H) = .3, Pr(E_2 \mid \neg H) = 0.05$. 
-
-We can define a step that generates clue observations given these probabilities. 
-
-```{r}  
-observe_clue <- 
-  declare_step(
-    SIW_observed = rbinom(n = N, size = 1, 
-                          prob = ifelse(test = causal_process == 'X_causes_Y', .75, .25)),
-    SMG_observed = rbinom(n = N,size = 1, 
-                          prob = ifelse(test = causal_process == 'X_causes_Y', .3,  .05)),
-    handler = fabricate, label = "Independent Clues")
-```
-
-We assume here that these clues are independent conditional on the causal process. This is a strong assumption: the fact that an armed group formed in order to take resources ($E_2$) might convince the government to take over the natural resource ($E_1$), or dissuade them! We therefore relax this "Independent Clues" assumption below.
-
-We also need to specify the imaginary researcher's prior belief that $H$ is true. The imaginary researcher knows that only two processes, 1 and 3, could have generated the data $X = Y = 1$. Thus, they specify a "flat" prior: $Pr(H) = .5$.
+We also need to specify the imaginary researcher's prior belief that $H$ is true. The imaginary researcher knows that only two processes, 1 and 3, could have generated the data $X = Y = 1$. Thus, they might specify a "flat" prior: $Pr(H) = .5$ (though they might have more informed beliefs from background knowledge).
 
 We use the `calculate_posterior()` function we made above to declare two different answer strategies: one predicated on the straw-in-the-wind, and the other on the smoking gun.
 
@@ -120,9 +119,7 @@ We use the `calculate_posterior()` function we made above to declare two differe
 design <-
     
   design_stub + 
-    
-  observe_clue  + 
-    
+  
   declare_estimator(
     result    = data$SIW_observed, 
     p_H       = .5, 
@@ -144,7 +141,7 @@ design <-
 
 With this declaration, we can use `simulate_design(design)` to simulate the design many times, and then see how the strategies perform on average. 
 
-Below we plot the distribution of inferences, $Pr(H|E)$, given strategies and true causal processes. The dotted lines show the true values of $Pr(H)$. The left column represents guesses when conditioning on the straw-in-the-wind, whereas the right column represents guesses when conditioning on the smoking gun. In both cases the results are "unbiased" (yes, we can assess bias from diagnosis even for a Bayesian design)---because we assumed the parameters specified for the background model matched the priors used in the researcher's answer strategy.
+Below we plot the distribution of inferences, $Pr(H|E)$, given strategies and true causal processes. The dotted lines show the true values of $Pr(H)$. The left column represents guesses when conditioning on the straw-in-the-wind, whereas the right column represents guesses when conditioning on the smoking gun. In both cases the results are "unbiased" (yes we can assess bias from diagnosis even for a Bayesian design)---because it so happened here that the priors specified for the background model matched the priors used in the researcher's answer strategy.
 
 ```{r, eval=FALSE, echo = FALSE}
 simulate_design(design) %>% 
@@ -190,11 +187,11 @@ get_simulations(diagnosis) %>%
   theme(strip.background = element_blank())
 ```
 
-As expected, the smoking gun can be highly probative: the bottom right panel shows that we sometimes get the answer almost exactly right (i.e., in those cases when $H$ is true and we observe a smoking gun). Note, however, that this is pretty rare: most of the time we guess $Pr(H\mid E_2) =$ `r round(custom_diags$mean_post_H_no_E[2],2)`, which is pretty far from the true values of 0 and 1. We sometimes, but very rarely,  get a false smoking gun. The smoking gun distribution is one that is centered close to the prior but sometimes makes big, and usually correct, inferential leaps.
+As expected, the smoking gun can be highly probative: the bottom right panel shows that we sometimes get the answer exactly right (i.e., in those cases when $H$ is true and we observe a smoking gun). Note, however, that this is pretty rare: most of the time we guess $Pr(H\mid E_2) =$ `r round(custom_diags$mean_post_H_no_E[2],2)`, which is quite far from the true values of 0 and 1. We sometimes, but very rarely,  get a false smoking gun. The smoking gun distribution is one that is centered close to the prior but sometimes makes big, and usually correct, inferential leaps.
 
 By contrast, the left column shows that the straw-in-the-wind strategy gets pretty close pretty often. Whenever it is observed, the researcher guesses  $Pr(H\mid E_1) =$ `r round(custom_diags$mean_post_H_E[1],2)`, and when it is not they guess $Pr(H\mid E_1) =$ `r round(custom_diags$mean_post_H_no_E[1],2)`. This means they sometimes make mistakes -- they observe $E_1$ even when $H$ is false, and vice versa. But it happens rarely enough that they tend to move in the right direction most of the time. 
 
-The net result is that in this case the straw-in-the-wind test has lower root mean squared error (RMSE): `r round(custom_diags$rmse[1],2)` vs. the smoking gun's `r round(custom_diags$rmse[2],2)`. It's less wrong more often. In general, however, which performs better depends on the particular probabilities assumed.
+The net result is that in this case the straw in the wind test has lower root mean squared error (RMSE): `r round(custom_diags$rmse[1],2)` vs. the smoking gun's `r round(custom_diags$rmse[2],2)`. It's less wrong more often. In general, however, which performs better depends on the particular probabilities assumed.
 
 # Using more than one clue
 
@@ -276,7 +273,7 @@ We see four main takeaways here:
 
   3. Declaring and diagnosing designs forces you to think them through in a way that can make non-obvious features and assumptions obvious. At a minimum, formalizing your design in this manner can highlight what kinds of beliefs are necessary to justify inferences.
   
-  4. With that said, we also see here a lesson on the limits of declaration. Even with just two clues, declaring a process-tracing inferential strategy makes serious demands on researcher knowledge. In particular the ability to make claims about the *joint* distribution of clues under alternative hypotheses. In principle, it is possible to base such beliefs on external data (see  @murtas2017new) but doing so is hard and the challenges rise expontially as more and more complex clues are considered. The declaration strategy works best, perhaps, for major claims resulting from key evidence and is unlikely to be able to capture inferences made from all the  complex evidence used by process tracers.      
+  4. With that said, we also see here a lesson on the limits of declaration. Even with just two clues, declaring a process tracing inferential strategy makes serious demands on researcher knowledge. In particular the ability to make claims about the *joint* distribution of clues under alternative causal hypotheses. In principle, it is possible to base such beliefs on external data (see  @murtas2017new) but doing so is hard and the challenges rise exponentially as more and more complex clues are considered. The declaration strategy works best, perhaps, for major claims resulting from key evidence and is unlikely to be able to capture inferences made from all the  complex evidence used by process tracers.      
 
 # Code appendix
 

@@ -1,8 +1,8 @@
 ---
 title: "What can you learn from simulating qualitative inference strategies?"
 author: "Declare Design Team"
-date: "2019-01-30"
-slug: "2019-01-30-process-tracing"
+date: "2019-01-29"
+slug: "2019-01-29-process-tracing"
 output:
   html_document:
     highlight: tango

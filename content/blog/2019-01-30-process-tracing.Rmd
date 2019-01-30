@@ -141,7 +141,7 @@ design <-
 
 With this declaration, we can use `simulate_design(design)` to simulate the design many times, and then see how the strategies perform on average. 
 
-Below we plot the distribution of inferences, $Pr(H|E)$, given strategies and true causal processes. The dotted lines show the true values of $Pr(H)$. The left column represents guesses when conditioning on the straw-in-the-wind, whereas the right column represents guesses when conditioning on the smoking gun. In both cases, the results are "unbiased" (yes we can assess bias from diagnosis even for a Bayesian design)---because it so happened here that the distribution of causal pathways specified for the background model matched the priors used in the researcher's answer strategy.
+Below we plot the distribution of inferences, $Pr(H|E)$, given strategies and true causal processes. The dotted lines show the true values of $Pr(H)$. The left column represents guesses when conditioning on the straw-in-the-wind, whereas the right column represents guesses when conditioning on the smoking gun. In both cases, the results are "unbiased" (yes we can assess bias from diagnosis even for a Bayesian design)---because it so happened here that the distribution of causal pathways specified for the background model *and* the true probabilities of the clues matched the priors used in the researcher's answer strategy.
 
 ```{r, eval=FALSE, echo = FALSE}
 simulate_design(design) %>% 

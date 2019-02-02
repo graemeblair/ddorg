@@ -19,7 +19,7 @@ library(tidyverse)
 #library(kableExtra)
 set.seed(3)
 sims <- 6000
-do_diagnosis <- FALSE
+do_diagnosis <- TRUE
 ```
 
 
@@ -76,6 +76,8 @@ design_stub <-
           (!X & causal_process == "X_causes_not_Y") |
           (causal_process == "Y_regardless"))  +
   
+  declare_sampling(strata = (X == 1 & Y == 1), strata_n = c("FALSE" = 0, "TRUE" = 1)) +
+  
   declare_step(
     SIW_observed = rbinom(n = N, size = 1, 
                           prob = ifelse(test = causal_process == 'X_causes_Y', .75, .25)),
@@ -83,7 +85,6 @@ design_stub <-
                           prob = ifelse(test = causal_process == 'X_causes_Y', .3,  .05)),
     handler = fabricate, label = "Independent Clues") +
   
-  declare_sampling(strata = (X == 1 & Y == 1), strata_n = c("FALSE" = 0, "TRUE" = 1)) +
     
   declare_estimand(did_X_cause_Y = causal_process == 'X_causes_Y') 
 
@@ -210,7 +211,9 @@ joint_prob <- function(p1, p2, rho) {
     `10` = p1 * (1 - p2) - r,
     `11` = p1 * p2 + r)}
 
-rho <- 0
+rho_H <- 0
+rho_not_H <- 0
+
 corr_design <- replace_step(
   design = design, 
   step = "Independent Clues",
@@ -218,9 +221,9 @@ corr_design <- replace_step(
     SIW_SMG = sample(c("00", "01", "10", "11"),1, 
                      prob = {
                        if(causal_process == "X_causes_Y") 
-                         joint_prob(.8, .3, rho) 
+                         joint_prob(.75, .30, rho_H) 
                        else 
-                         joint_prob(.2,  .0, rho)
+                         joint_prob(.25,  .05, rho_not_H)
                      }),
   SIW_observed = SIW_SMG == "10" | SIW_SMG == "11",
   SMG_observed = SIW_SMG == "01" | SIW_SMG == "11",
@@ -231,14 +234,14 @@ corr_design <- corr_design +
   declare_estimator(
     result = data$SIW_SMG,
     p_H = .5, 
-    p_E_H = joint_prob(.8, .3, rho)[[data$SIW_SMG]],
-    p_E_not_H = joint_prob(.2, 0, rho)[[data$SIW_SMG]],
+    p_E_H = joint_prob(.75, .30, rho_H)[[data$SIW_SMG]],
+    p_E_not_H = joint_prob(.25, .05, rho_not_H)[[data$SIW_SMG]],
     label = "Update from both clues",
     handler = calculate_posterior)
 ```
 
 ```{r,echo=FALSE}
-designs <- redesign(corr_design,rho = seq(-.3,.3,.1))
+designs <- redesign(corr_design,rho_H = seq(-.3,.3,.1))
 if(do_diagnosis){
   simulations <- simulate_designs(designs,sims = sims)
   write_rds(simulations, path = "rfiles/20_pt_2.rds")
@@ -246,13 +249,13 @@ if(do_diagnosis){
 simulations <- read_rds("rfiles/20_pt_2.rds") 
 
 simulations %>% 
-  group_by(rho, estimator_label) %>% 
+  group_by(rho_H, estimator_label) %>% 
   summarize(rmse = sqrt(mean((posterior_H - estimand)^2))) %>% 
   ungroup() %>% 
-  mutate(rho = as.numeric(rho)) %>% 
+  mutate(rho = as.numeric(rho_H)) %>% 
   ggplot(aes(rho, rmse, color = estimator_label, group = estimator_label)) +
   geom_point() + geom_line() + theme_bw() +
-  scale_y_continuous(limits = c(.3,.5))
+  scale_y_continuous(limits = c(.35,.5))
 
 ```
 
@@ -286,7 +289,8 @@ joint_prob <- function(p1, p2, rho) {
     `10` = p1 * (1 - p2) - r,
     `11` = p1 * p2 + r)}
 
-rho <- 0
+rho_H <- 0
+rho_not_H <- 0
 
 corr_design <- replace_step(
   design = design, 
@@ -295,23 +299,23 @@ corr_design <- replace_step(
     SIW_SMG = sample(c("00", "01", "10", "11"),1, 
                      prob = {
                        if(causal_process == "X_causes_Y") 
-                         joint_prob(.8, .3, rho) 
+                         joint_prob(.75, .30, rho_H) 
                        else 
-                         joint_prob(.2,  .0, rho)
+                         joint_prob(.25,  .05, rho_not_H)
                      }),
   SIW_observed = SIW_SMG == "10" | SIW_SMG == "11",
   SMG_observed = SIW_SMG == "01" | SIW_SMG == "11",
   handler = fabricate,
-  label = "Correlated Clues")) +
+  label = "Correlated Clues"))
 
+corr_design <- corr_design + 
   declare_estimator(
     result = data$SIW_SMG,
     p_H = .5, 
-    p_E_H = joint_prob(.8, .3, rho)[[data$SIW_SMG]],
-    p_E_not_H = joint_prob(.2, 0, rho)[[data$SIW_SMG]],
-    label = "Joint Test",
+    p_E_H = joint_prob(.75, .30, rho_H)[[data$SIW_SMG]],
+    p_E_not_H = joint_prob(.25, .05, rho_not_H)[[data$SIW_SMG]],
+    label = "Update from both clues",
     handler = calculate_posterior)
-
 ```
 
 

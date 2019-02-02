@@ -191,19 +191,14 @@ function add_design_to_table(row)
     // Add the DESIGN column.
     console.log("Adding the DESIGN column.");
 
-    if (row.vignette)
-    {
-        console.log("A vignette was specified. Using the title of the vignette for this column...");
-        table_row.append(`<td>${vignettes.get(row.vignette).title}</td>`);
-    }
-    else if (row.design)
+    if (row.design)
     {
         console.log("A design was specified. Using the name of the design for this column...");
         table_row.append(`<td>${title_caps(row.design)}</td>`);
     }
     else
     {
-        console.log("No vignette or design was specified. This column will be empty.");
+        console.log("No design was specified. This column will be empty.");
         table_row.append(`<td></td>`);
     }
 

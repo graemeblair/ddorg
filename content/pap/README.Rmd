@@ -6,13 +6,13 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
-| Language  | Declaration in code                                                         | Figure based on mock data                                       | Diagnosis                                                                 |
-| --------  | -------------------                                                         | ------------------------------------------------------------    | ---------                                                                 |
-| R         | <img width="100%" src="pap/figures/two_arm_design_r_declaration.png"/>       | <img width="100%" src="pap/figures/two_arm_design_r.png"/>       | <img width="100%" src="pap/figures/two_arm_design_r_diagnosis.png"/>       |
-| Stata     | <img width="100%" src="pap/figures/two_arm_design_stata_declaration.png"/>   | <img width="100%" src="pap/figures/two_arm_design_stata.png"/>   | <img width="100%" src="pap/figures/two_arm_design_stata_diagnosis.png"/>   |
-| Python    | <img width="100%" src="pap/figures/two_arm_design_python_declaration.png"/>  | <img width="100%" src="pap/figures/two_arm_design_python.png"/>  | <img width="100%" src="pap/figures/two_arm_design_python_diagnosis.png"/>  |
-| Excel     | <img width="100%" src="pap/figures/two_arm_design_excel_declaration.png"/>   | <img width="100%" src="pap/figures/two_arm_design_excel.png"/>   | <img width="100%" src="pap/figures/two_arm_design_excel_diagnosis.png"/>   |
+  
+| Language  | Declaration in code                                                           | Figure based on mock data                                         | Diagnosis                                                                   |
+| --------- | ----------------------------------------------------------------------------- | ----------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| R         | <img width="100%" src="/pap/figures/two_arm_design_r_declaration.png"/>       | <img width="100%" src="/pap/figures/two_arm_design_r.png"/>       | <img width="100%" src="/pap/figures/two_arm_design_r_diagnosis.png"/>       |
+| Stata     | <img width="100%" src="/pap/figures/two_arm_design_stata_declaration.png"/>   | <img width="100%" src="/pap/figures/two_arm_design_stata.png"/>   | <img width="100%" src="/pap/figures/two_arm_design_stata_diagnosis.png"/>   |
+| Python    | <img width="100%" src="/pap/figures/two_arm_design_python_declaration.png"/>  | <img width="100%" src="/pap/figures/two_arm_design_python.png"/>  | <img width="100%" src="/pap/figures/two_arm_design_python_diagnosis.png"/>  |
+| Excel     | <img width="100%" src="/pap/figures/two_arm_design_excel_declaration.png"/>   | <img width="100%" src="/pap/figures/two_arm_design_excel.png"/>   | <img width="100%" src="/pap/figures/two_arm_design_excel_diagnosis.png"/>   |
 Table: Design declaration in four languages
 
 

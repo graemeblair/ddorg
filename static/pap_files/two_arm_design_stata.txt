@@ -1,0 +1,110 @@
+This document shows some things researchers may wish to add to their preanalysis plans using design declaration and diagnosis.  
+
+# Setup
+
+~~~~
+<<dd_do: quietly>>
+drop _all
+capture program drop two_arm_design
+set linesize 200
+<</dd_do>>
+~~~~
+
+
+# Declare the Design
+
+~~~~
+
+<<dd_include: two_arm_design_stata_code.txt>>
+
+<<dd_do:nooutput quietly>>
+program two_arm_design, rclass
+  
+  syntax [, sample_size(integer 100) effect_size(real .5) number_treated(integer 50)]
+    
+  drop _all
+  
+  * // Model
+  
+  * Population
+  
+  set obs `sample_size'
+  
+  gen noise = rnormal(0, 1)
+  
+  * Potential outcomes
+  
+  gen Y_Z_0 = noise
+  gen Y_Z_1 = noise + `effect_size'
+  
+  * // Inquiry 
+
+  return scalar estimand = `effect_size'
+  
+  * // Data strategy
+  
+  * Assignment strategy
+  
+  complete_ra Z, m(`number_treated')
+  
+  * Reveal outcomes
+  
+  gen     Y = Y_Z_0 
+  replace Y = Y_Z_1 if Z == 1
+  
+  * // Answer strategy
+  
+  reg Y Z, vce(hc2)
+  
+  matrix b = e(b)
+    
+  return scalar estimate = b[1, 1]
+  
+  return scalar p_value = 2 * ttail(e(df_r), abs(_b[Z]/_se[Z]))
+
+end
+<</dd_do>>
+~~~~
+
+# Mock Figure
+
+~~~~
+<<dd_do: nooutput>>
+two_arm_design
+<</dd_do>>
+~~~~
+
+~~~~
+<<dd_do>>
+twoway (scatter Y Z)
+<</dd_do>>
+~~~~
+
+<<dd_graph: saving(figures/two_arm_design_stata.png) width(500) replace>>
+
+
+# Mock Regression Table
+
+~~~~
+<<dd_do>>
+reg Y Z, vce(hc2)
+<</dd_do>>
+~~~~
+
+# Diagnosis
+
+
+~~~~
+<<dd_do>>
+simulate p_value = r(p_value), reps(500): two_arm_design
+
+gen p_below_05 = p_value < .05
+
+summarize p_below_05, meanonly
+
+local power = round(r(mean), .001)
+
+di "Power = `power'"
+<</dd_do>>
+~~~~
+

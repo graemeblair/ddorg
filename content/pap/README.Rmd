@@ -1,0 +1,11 @@
+---
+title: "Pre-analysis plans with DeclareDesign"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{PAP}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+See blog post at BITSS
+

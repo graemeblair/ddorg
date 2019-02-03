@@ -19,7 +19,7 @@ library(tidyverse)
 #library(kableExtra)
 set.seed(3)
 sims <- 6000
-do_diagnosis <- TRUE
+do_diagnosis <- FALSE
 ```
 
 

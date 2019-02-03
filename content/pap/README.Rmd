@@ -7,5 +7,24 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-See blog post at BITSS
+| Language  | Declaration in code                                                         | Figure based on mock data                                       | Diagnosis                                                                 |
+| --------  | -------------------                                                         | ------------------------------------------------------------    | ---------                                                                 |
+| R         | <img width="100%" src="pap/figures/two_arm_design_r_declaration.png"/>       | <img width="100%" src="pap/figures/two_arm_design_r.png"/>       | <img width="100%" src="pap/figures/two_arm_design_r_diagnosis.png"/>       |
+| Stata     | <img width="100%" src="pap/figures/two_arm_design_stata_declaration.png"/>   | <img width="100%" src="pap/figures/two_arm_design_stata.png"/>   | <img width="100%" src="pap/figures/two_arm_design_stata_diagnosis.png"/>   |
+| Python    | <img width="100%" src="pap/figures/two_arm_design_python_declaration.png"/>  | <img width="100%" src="pap/figures/two_arm_design_python.png"/>  | <img width="100%" src="pap/figures/two_arm_design_python_diagnosis.png"/>  |
+| Excel     | <img width="100%" src="pap/figures/two_arm_design_excel_declaration.png"/>   | <img width="100%" src="pap/figures/two_arm_design_excel.png"/>   | <img width="100%" src="pap/figures/two_arm_design_excel_diagnosis.png"/>   |
+Table: Design declaration in four languages
+
+
+# How to compile the reproducible documents
+
+R: the .Rmd is knit in Rstudio
+
+Python: compiled through pandoc using the following command:
+
+`stitch two_arm_design_python.md -o two_arm_design_python.html`
+
+Stata: compiled from within Stata via the command:
+
+`dyndoc two_arm_design_stata.txt, replace`
 

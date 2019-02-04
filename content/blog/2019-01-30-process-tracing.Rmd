@@ -79,10 +79,10 @@ design_stub <-
   declare_sampling(strata = (X == 1 & Y == 1), strata_n = c("FALSE" = 0, "TRUE" = 1)) +
   
   declare_step(
-    SIW_observed = rbinom(n = N, size = 1, 
-                          prob = ifelse(test = causal_process == 'X_causes_Y', .75, .25)),
-    SMG_observed = rbinom(n = N,size = 1, 
-                          prob = ifelse(test = causal_process == 'X_causes_Y', .3,  .05)),
+    SIW_observed = rbinom(
+      n = N, size = 1, prob = ifelse(test = causal_process == 'X_causes_Y', .75, .25)),
+    SMG_observed = rbinom(
+      n = N, size = 1, prob = ifelse(test = causal_process == 'X_causes_Y', .3,  .05)),
     handler = fabricate, label = "Independent Clues") +
   
     
@@ -106,8 +106,10 @@ $$Pr(H \mid E) = \frac{Pr(H) Pr(E|H)}{Pr(H)Pr(E\mid(H)) + Pr(\neg H)Pr(E\mid\neg
 
 ```{r}
 calculate_posterior <- function(data, p_H, p_E_H, p_E_not_H, label, result) {
-  data.frame(posterior_H = p_E_H * p_H / (p_E_H * p_H + p_E_not_H * (1 - p_H)),
-             estimator_label = label, estimand_label = "did_X_cause_Y", result = result)}
+  observed <- data[, result]
+  p_E_H <- ifelse(observed, p_E_H, 1 - p_E_H)
+  p_E_not_H <- ifelse(observed, p_E_not_H, 1 - p_E_not_H)
+  data.frame(posterior_H = p_E_H * p_H / (p_E_H * p_H + p_E_not_H * (1 - p_H)), result = observed)}
 ```
 
 Bayes' rule makes use of the probability of observing $E$ if $H$ is true and the probability of observing $E$ if $H$ is not true. The more different these probabilities are the more you learn from new data. 
@@ -122,19 +124,21 @@ design <-
   design_stub + 
   
   declare_estimator(
-    result    = data$SIW_observed, 
+    result    = "SIW_observed", 
     p_H       = .5, 
-    p_E_H     = ifelse(test = data$SIW_observed, .75, .25),
-    p_E_not_H = ifelse(test = data$SIW_observed, .25, .75),
+    p_E_H     = .75,
+    p_E_not_H = .25,
     label     = "Straw in Wind",
+    estimand  = "did_X_cause_Y",
     handler   = calculate_posterior) +
   
   declare_estimator(
-    result    = data$SMG_observed, 
+    result    = "SMG_observed", 
     p_H       = .5, 
-    p_E_H     = ifelse(test = data$SMG_observed, .3,  .7),
-    p_E_not_H = ifelse(test = data$SMG_observed, .05, .95),
+    p_E_H     = .3,
+    p_E_not_H = .05,
     label     = "Smoking Gun",
+    estimand  = "did_X_cause_Y",
     handler   = calculate_posterior)
 ```
 
@@ -232,7 +236,7 @@ corr_design <- replace_step(
 
 corr_design <- corr_design + 
   declare_estimator(
-    result = data$SIW_SMG,
+    result = "SIW_SMG",
     p_H = .5, 
     p_E_H = joint_prob(.75, .30, rho_H)[[data$SIW_SMG]],
     p_E_not_H = joint_prob(.25, .05, rho_not_H)[[data$SIW_SMG]],

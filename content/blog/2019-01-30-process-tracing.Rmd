@@ -102,14 +102,14 @@ draw_data(design_stub) %>% kable(digits = 2, align = "c")
 
 We now turn to the answer strategy. For this, we'll assume that at the analysis stage researchers use Bayes' rule to figure out $Pr(H \mid E)$: the posterior probability that $X$ caused $Y$ in the case we chose, given the clue evidence we found. We make a function that calculates the posterior using Bayes' rule:
 
-$$Pr(H \mid E) = \frac{Pr(H) Pr(E|H)}{Pr(H)Pr(E\mid(H)) + Pr(\neg H)Pr(E\mid\neg H)}$$ 
+$$Pr(H \mid E) = \frac{Pr(H) Pr(E|H)}{Pr(H)Pr(E\mid H) + Pr(\neg H)Pr(E\mid\neg H)}$$ 
 
 ```{r}
-calculate_posterior <- function(data, p_H, p_E_H, p_E_not_H, label, result) {
-  observed <- data[, result]
-  p_E_H <- ifelse(observed, p_E_H, 1 - p_E_H)
-  p_E_not_H <- ifelse(observed, p_E_not_H, 1 - p_E_not_H)
-  data.frame(posterior_H = p_E_H * p_H / (p_E_H * p_H + p_E_not_H * (1 - p_H)), result = observed)}
+calculate_posterior <- function(data, p_H, p_clue_found_H, p_clue_found_not_H, test, label) {
+  clue_found <- data[, test]
+  p_E_H <- ifelse(clue_found, p_clue_found_H, 1 - p_clue_found_H)
+  p_E_not_H <- ifelse(clue_found, p_clue_found_not_H, 1 - p_clue_found_not_H)
+  data.frame(posterior_H = p_E_H * p_H / (p_E_H * p_H + p_E_not_H * (1 - p_H)), clue_found = clue_found)}
 ```
 
 Bayes' rule makes use of the probability of observing $E$ if $H$ is true and the probability of observing $E$ if $H$ is not true. The more different these probabilities are the more you learn from new data. 
@@ -120,26 +120,27 @@ We use the `calculate_posterior()` function we made above to declare two differe
 
 ```{r}
 design <-
-    
+  
   design_stub + 
   
   declare_estimator(
-    result    = "SIW_observed", 
-    p_H       = .5, 
-    p_E_H     = .75,
-    p_E_not_H = .25,
-    label     = "Straw in Wind",
-    estimand  = "did_X_cause_Y",
-    handler   = calculate_posterior) +
+    test               = "SIW_observed", 
+    p_H                = .5, 
+    p_clue_found_H     = .75,
+    p_clue_found_not_H = .25,
+    label              = "Straw in Wind",
+    estimand           = "did_X_cause_Y",
+    handler            = tidy_estimator(calculate_posterior)) +
   
   declare_estimator(
-    result    = "SMG_observed", 
-    p_H       = .5, 
-    p_E_H     = .3,
-    p_E_not_H = .05,
-    label     = "Smoking Gun",
-    estimand  = "did_X_cause_Y",
-    handler   = calculate_posterior)
+    test               = "SMG_observed", 
+    p_H                = .5, 
+    p_clue_found_H     = .30,
+    p_clue_found_not_H = .05,
+    label              = "Smoking gun",
+    estimand           = "did_X_cause_Y",
+    handler            = tidy_estimator(calculate_posterior)) 
+  
 ```
 
 # Diagnosis
@@ -150,15 +151,16 @@ Below we plot the distribution of inferences, $Pr(H|E)$, given strategies and tr
 
 ```{r, eval=FALSE, echo = FALSE}
 simulate_design(design) %>% 
-  mutate(test = paste0("H is ",result == 1)) %>% 
-  ggplot(aes(posterior_H, fill = as.factor(result))) +
+  mutate(test = paste0("H is ",estimand)) %>% 
+  ggplot(aes(posterior_H, fill = as.factor(clue_found))) +
   scale_fill_discrete("Clue observed",labels = c("No","Yes")) +
   geom_histogram(binwidth = .1) +
-  geom_vline(aes(xintercept = result), linetype = "dashed") +
+  geom_vline(aes(xintercept = as.numeric(estimand)), linetype = "dashed") +
   scale_x_continuous(limits = c(-.1,1.1), 
                      breaks = seq(0,1,.2)) + 
-  facet_grid(estimator_label ~ test) + 
-  theme_bw()
+  facet_grid(test ~ estimator_label) + 
+  theme_bw() +
+  theme(strip.background = element_blank())
 ```
 
 
@@ -174,14 +176,14 @@ custom_diags <- get_simulations(diagnosis) %>%
   summarize(bias = mean(posterior_H - estimand),
             rmse = sqrt(mean((posterior_H - estimand)^2)),
             mean_post = mean(posterior_H),
-            mean_post_H_no_E = mean(posterior_H[result == 0]),
-            mean_post_H_E = mean(posterior_H[result == 1]),
+            mean_post_H_no_E = mean(posterior_H[clue_found == 0]),
+            mean_post_H_E = mean(posterior_H[clue_found == 1]),
             mean_estimand = mean(estimand)
             )
 
 get_simulations(diagnosis) %>% 
   mutate(test = paste0("H is ",estimand)) %>% 
-  ggplot(aes(posterior_H, fill = as.factor(result))) +
+  ggplot(aes(posterior_H, fill = as.factor(clue_found))) +
   scale_fill_discrete("Clue observed",labels = c("No","Yes")) +
   geom_histogram(binwidth = .1) +
   geom_vline(aes(xintercept = as.numeric(estimand)), linetype = "dashed") +
@@ -218,6 +220,13 @@ joint_prob <- function(p1, p2, rho) {
 rho_H <- 0
 rho_not_H <- 0
 
+calculate_posterior_joint <- function(data, p_H, p_clue_1_found_H, p_clue_1_found_not_H, p_clue_2_found_H, p_clue_2_found_not_H, test){
+  clue_found <- data[, test]
+  p_E_H <- joint_prob(p1 = p_clue_1_found_H, p2 = p_clue_2_found_H, rho = rho_H)[clue_found]
+  p_E_not_H <- joint_prob(p1 = p_clue_1_found_not_H, p2 = p_clue_2_found_not_H, rho = rho_H)[clue_found]
+  data.frame(posterior_H = p_E_H * p_H / (p_E_H * p_H + p_E_not_H * (1 - p_H)), clue_found = clue_found)
+}
+  
 corr_design <- replace_step(
   design = design, 
   step = "Independent Clues",
@@ -235,13 +244,16 @@ corr_design <- replace_step(
   label = "Correlated Clues"))
 
 corr_design <- corr_design + 
-  declare_estimator(
-    result = "SIW_SMG",
-    p_H = .5, 
-    p_E_H = joint_prob(.75, .30, rho_H)[[data$SIW_SMG]],
-    p_E_not_H = joint_prob(.25, .05, rho_not_H)[[data$SIW_SMG]],
-    label = "Update from both clues",
-    handler = calculate_posterior)
+    declare_estimator(
+    test                 = "SIW_SMG", 
+    p_H                  = .5, 
+    p_clue_1_found_H     = .75,
+    p_clue_1_found_not_H = .25,
+    p_clue_2_found_H     = .30,
+    p_clue_2_found_not_H = .05,
+    label                = "Update from both clues",
+    estimand             = "did_X_cause_Y",
+    handler              = tidy_estimator(calculate_posterior_joint)) 
 ```
 
 ```{r,echo=FALSE}
@@ -296,6 +308,13 @@ joint_prob <- function(p1, p2, rho) {
 rho_H <- 0
 rho_not_H <- 0
 
+calculate_posterior_joint <- function(data, p_H, p_clue_1_found_H, p_clue_1_found_not_H, p_clue_2_found_H, p_clue_2_found_not_H, test){
+  clue_found <- data[, test]
+  p_E_H <- joint_prob(p1 = p_clue_1_found_H, p2 = p_clue_2_found_H, rho = rho_H)[clue_found]
+  p_E_not_H <- joint_prob(p1 = p_clue_1_found_not_H, p2 = p_clue_2_found_not_H, rho = rho_H)[clue_found]
+  data.frame(posterior_H = p_E_H * p_H / (p_E_H * p_H + p_E_not_H * (1 - p_H)), clue_found = clue_found)
+}
+  
 corr_design <- replace_step(
   design = design, 
   step = "Independent Clues",
@@ -313,13 +332,16 @@ corr_design <- replace_step(
   label = "Correlated Clues"))
 
 corr_design <- corr_design + 
-  declare_estimator(
-    result = data$SIW_SMG,
-    p_H = .5, 
-    p_E_H = joint_prob(.75, .30, rho_H)[[data$SIW_SMG]],
-    p_E_not_H = joint_prob(.25, .05, rho_not_H)[[data$SIW_SMG]],
-    label = "Update from both clues",
-    handler = calculate_posterior)
+    declare_estimator(
+    test                 = "SIW_SMG", 
+    p_H                  = .5, 
+    p_clue_1_found_H     = .75,
+    p_clue_1_found_not_H = .25,
+    p_clue_2_found_H     = .30,
+    p_clue_2_found_not_H = .05,
+    label                = "Update from both clues",
+    estimand             = "did_X_cause_Y",
+    handler              = tidy_estimator(calculate_posterior_joint)) 
 ```
 
 

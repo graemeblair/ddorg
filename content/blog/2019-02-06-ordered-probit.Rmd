@@ -1,0 +1,159 @@
+---
+title: "Do you need to model the data generation process well in order to estimate treatment effects well?"
+author: "Declare Design Team"
+date: "2019-02-06"
+output:
+  html_document:
+    highlight: tango
+    theme: cerulean
+    code_folding: show
+bibliography: bib/blog.bib
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE)
+library(future)
+plan(multiprocess)
+library(DeclareDesign)
+library(knitr)
+library(tidyverse)
+set.seed(3)
+sims <- 1000
+do_diagnosis <- FALSE
+
+dd_theme <-
+  function() {
+    theme_bw() +
+      theme(
+        axis.ticks = element_blank(),
+        axis.line = element_blank(),
+        panel.border = element_blank(),
+        panel.grid.major = element_line(color = '#eeeeee'),
+        strip.background = element_blank(),
+        legend.position = "bottom",
+        text = element_text(family = "Palatino")
+      )
+  }
+
+theme_set(dd_theme())
+```
+
+We sometimes worry about whether we need to model data generating processes correctly. For example you have ordinal outcome variables, on a five-point Likert scale. How should you model the data generation process? Do you need to model it at all? Go-to approaches include ordered probit and ordered logit models which are designed for this kind of outcome variable. But maybe you don't need them. After all, the argument that the difference-in-means procedure estimates the treatment effect doesn't depend on any assumptions about the type of data (as long as expectations are defined)---ordered, count, censored, etc. We diagnose a design that hedges by using both differences in means and an ordered probit model. We do so assuming that the ordered probit model correctly describes data generation. Which does better?
+
+For the design declaration we assume that the estimand of interest is the average treatment effect on the scale of the data. We do this, perhaps contentiously, even though our outcome is ordered on a 1 to 5 ordinal scale. The estimand can be thought of as the average number of steps up or down induced by treatment.  This estimand has to be interpreted cautiously, however. In particular it presupposes an interest in outcomes in terms of "steps." But the "size" of steps depends on the categories provided. Adding in an extra option in the middle of a scale, for example,  changes the range of the scale and changes the value of the estimand. Given these issues, other estimands are possible and perhaps preferable [@volfovsky2015causal], but for this design, we'll focus on the ATE.
+
+Surprisingly, perhaps, we find no real difference between the model-based ordinal logit approach and the differences in means approach. The ordered probit is much more complicated to implement and to draw inferences from: the model is estimated using maximum likelihood, simulation is then used to generate a distribution of fitted values, from which a simulation of the distribution of treatment effects is produced. The standard deviation of these differences is used as an estimate of the standard deviation of treatment effects. The Zelig package [@Zelig] makes it easy to do all this quite compactly and turn it all into a step in our design.  
+
+We call the `zelig` library, set some parameters, and define a function to take data in and return results.
+
+```{r, echo = TRUE, message = FALSE}
+library(zeligverse)
+
+# This helper function implements an ordered probit model using zelig; calculates 
+# quantities of interest and return tidy output
+
+ordered_probit <-
+  
+  function(data) {
+    zelig_out <- zelig(Y ~ Z, model = "oprobit", data = data, cite = FALSE)
+    
+    sim_out <- sim(zelig_out, x = setx(zelig_out, Z = 0), x1 = setx(zelig_out, Z = 1))
+    
+    zelig_df <- zelig_qi_to_df(sim_out)
+    
+    predictions <- with(zelig_df,
+                        (X1 + 2 * X2 + 3 * X3 + 4 * X4 + 5 * X5)[Z == 1] -
+                        (X1 + 2 * X2 + 3 * X3 + 4 * X4 + 5 * X5)[Z == 0])
+    
+    return_dat <-
+      data.frame(term = "Z",
+                 estimate = mean(predictions),
+                 std.error = sd(predictions),
+                 conf.low = quantile(predictions, .025),
+                 conf.high = quantile(predictions, .975))
+    }
+```
+
+<!-- (\@Zelig friends -- can you advise on how to get $p$ values after calculating quantities of interest with Zelig?) -->
+
+We can now declare the design:
+
+```{r}
+ordered_probit_design <- 
+  
+  declare_population(N = 200, noise = rnorm(N)) + 
+  
+  declare_potential_outcomes(Y ~ draw_ordered(1 * Z + noise, breaks = c(0, 0.75, 1, 1.25))) +
+  
+  declare_assignment(prob = 0.5) +
+  
+  declare_estimand(ate = mean(Y_Z_1 - Y_Z_0)) +
+  
+  declare_reveal(Y) +
+  
+  declare_estimator(Y ~ Z, estimand = "ate", label = "DIM") +
+  
+  declare_estimator(handler = tidy_estimator(ordered_probit), estimand = "ate", label = "Ordered Probit")
+```
+
+Sample treatment/outcome data look like this:
+
+```{r, echo = FALSE}
+draw_data(ordered_probit_design) %>%
+  ggplot(aes(Y)) +
+  geom_bar() +
+  facet_wrap( ~ Z, labeller = label_both) +
+  theme_bw() +
+  theme(strip.background = element_blank())
+```
+
+Sample estimates look like this:
+
+```{r, eval = FALSE, message = FALSE}
+draw_estimates(ordered_probit_design)
+```
+
+
+```{r, echo = FALSE, message = FALSE, error = FALSE, warning = FALSE}
+kable(draw_estimates(ordered_probit_design)[,c(-2, -9, -10)], digits = 2)
+```
+
+
+Diagnosis goes like this:
+
+```{r, eval = FALSE}
+diagnose_design(ordered_probit_design)
+```
+
+```{r, echo = FALSE}
+if(do_diagnosis) {
+  diagnosis <- diagnose_design(ordered_probit_design, sims = sims)
+  write_rds(diagnosis, path = "rfiles/19_oprobit.rds")
+}
+
+diagnosis <- read_rds(path = "rfiles/19_oprobit.rds")
+kable(reshape_diagnosis(diagnosis)[,-(1:2)])
+```
+
+Next, we show a histogram of the difference-in-means and ordered probit estimates of the average treatment effect.
+
+```{r, echo = FALSE}
+summary_df <- get_diagnosands(diagnosis) %>% 
+  gather(key, value, mean_estimate, mean_estimand) %>% 
+  mutate(Diagnosand = recode(key, "mean_estimand" = "Mean Estimand", "mean_estimate" = "Mean Estimate"))
+
+diagnosis %>%
+  get_simulations() %>%
+  ggplot(aes(estimate)) +
+  geom_histogram(bins = 30, alpha = 0.6) +
+  geom_vline(data = summary_df, aes(xintercept = value, linetype = Diagnosand)) +
+  facet_wrap(~ estimator_label) +
+  theme_bw() +
+  theme(strip.background = element_blank())
+```
+
+Strikingly, difference-in-means and inferences using an ordered probit model perform very similarly.^[The ordered probit estimates are very slightly biased. The bias disappears as the sample size increases.] We often reach for ordered models to accomodate the fact that the outcome variable is ordinal and not cardinal, but if your goal is to estimate the average shift in outcomes *in terms of shifts in points on the outcome variable* you might be making more assumptions than you need. 
+
+To be clear, the point is not that there is no need to model the data properly. Modelling data generating processes lets you answer questions that difference-in-means does not. For example, assuming the model is correct, you get an estimate for treatment effects on a latent variable. Or you can ask how a treatment affects the probability of moving from a "3" to a "4" on this scale. So there may well be good reasons to use tailored models to model elaborate data generating processes, and buying the assumptions they require. But estimating average treatment effects doesn't appear to be one of them.
+
+# References

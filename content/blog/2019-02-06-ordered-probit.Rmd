@@ -107,17 +107,6 @@ draw_data(ordered_probit_design) %>%
   theme(strip.background = element_blank())
 ```
 
-Sample estimates look like this:
-
-```{r, eval = FALSE, message = FALSE}
-draw_estimates(ordered_probit_design)
-```
-
-
-```{r, echo = FALSE, message = FALSE, error = FALSE, warning = FALSE}
-kable(draw_estimates(ordered_probit_design)[,c(-2, -9, -10)], digits = 2)
-```
-
 
 Diagnosis goes like this:
 

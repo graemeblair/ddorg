@@ -18,8 +18,8 @@ library(DeclareDesign)
 library(knitr)
 library(tidyverse)
 set.seed(3)
-sims <- 5000
-do_diagnosis <- TRUE
+sims <- 1000
+do_diagnosis <- FALSE
 
 dd_theme <-
   function() {

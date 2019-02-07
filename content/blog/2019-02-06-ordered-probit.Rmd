@@ -1,5 +1,5 @@
 ---
-title: "Do you need to model the data generation process well in order to estimate treatment effects well?"
+title: "Estimating Average Treatment Effects with Ordered Probit"
 author: "Declare Design Team"
 date: "2019-02-06"
 output:

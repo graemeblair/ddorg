@@ -160,4 +160,4 @@ This kind of problem is surprisingly common. Consider the instances below:
 
 All of these examples exhibit a form of post-treatment bias but the issue goes beyond picking the right estimator. Our problem here is conceptual: the effect of treatment on the outcome just doesn't exist for some subjects. This means that design that is not "diagnosand-complete" in the sense we discuss in [this paper](https://declaredesign.org/declare.pdf). But interestingly, we think, the incompleteness is not obvious. You could implement the design and do your analysis on the data from this design without realizing that the estimand is badly defined. Declaration and diagnosis can alert you to the problem.
 
-
+# References

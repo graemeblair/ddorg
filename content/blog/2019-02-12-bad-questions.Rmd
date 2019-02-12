@@ -37,7 +37,7 @@ An obvious requirement of a good research design is that the question it seeks t
 
 How could a question not have an answer? These situations can arise when inquiries depend on variables that do not exist or are undefined for some units. In this post, we'll look at one way a question might not have an answer, but there are others.
 
-Consider an audit experiment that seeks to assess the effects of an email from a person indicating that they a Democrat (versus not revealing their party identification) on *whether* and *how well* election officials respond to requests for information. Whether or not a response is sent is easily observed and measured. The quality of the response is harder to measure, though some aspects, like the tone of the response, can be measured by human coders or possibly computers if fed enough training data. 
+Consider an audit experiment that seeks to assess the effects of an email from a person indicating that they are a Democrat (versus not revealing their party identification) on *whether* and *how well* election officials respond to requests for information. Whether or not a response is sent is easily observed and measured. The quality of the response is harder to measure, though some aspects, like the tone of the response, can be measured by human coders or possibly computers if fed enough training data. 
 
 More difficult than the measurement problem, though, is the problem of the "tone" of **responses never sent**. Simply dropping such observations is no good, because of the possibility that some officials would have responded in one condition but not in the other. After all, a main purpose of audit experiments is to measure the average effect of treatment on response rates, which requires believing that at least some officials would respond in one condition but not another. 
 
@@ -51,7 +51,7 @@ To summarize:
 
 # Design delaration in words
 
-Following Here are the key parts of the design:
+Here are the key parts of the design:
 
 - **M**odel: The model has two outcome variables, $R_i$ and $Y_i$. $R_i$ stands for "response" and is equal to 1 if a response is sent, and 0 otherwise. $Y_i$ is the tone of the response, which we'll measure on a 1-7 "friendliness" scale. $Z_i$ is the treatment indicator and equals 1 if the email indicates the sender is a Democrat and 0 otherwise. The table below describes four possible types of subjects who differ in terms of the potential outcomes of $R_i$.
     

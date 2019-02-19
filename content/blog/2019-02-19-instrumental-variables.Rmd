@@ -235,7 +235,7 @@ Here's some intuition. In both the heterogeneous and homogeneous cases, we misat
 
 Although we have described $Z$ as being the instrument, you can see in this DAG that both $Z$ and $U_1$ can affect $X$. So perhaps $U_1$ should thought of as an instrument even if it is unobserved? And perhaps compliers should be thought of as units that comply with $U_1$ and not $Z$? 
 
-To explore this possibility, we explore design modifications that shift probability mass between two special cases of the DAG.
+To explore this possibility, we diagnose design modifications that shift probability mass between two special cases of the DAG.
 
 The first special case is the standard IV setup with no arrow between $U_1$ and $X$. The second special case is one discussed in @Swanson2017 in which $Z$ is a "noncausal instrument" and the true causal instrument is the unobserved $U_1$. We get this by removing the path from $Z$ to $X$. @Swanson2017 show that **even though** $Z$ does not itself affect $X$, instrumenting $X$ with $Z$ will recover good estimates of a well-defined estimand. You guessed it, that estimand is the LATE for $U_1$ compliers. Amazing!
 

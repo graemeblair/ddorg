@@ -2,6 +2,7 @@
 title: "An instrument does not have to be exogenous to be consistent"
 author: "Declare Design Team"
 slug: "2019-02-05-instrumental-variables"
+date: 2019-02-19
 output:
   html_document:
     highlight: tango
@@ -60,9 +61,10 @@ hj_dag <- function(x,
 }
 ```
 
-We often think of an instrumental variable ($Z$) as a random shock that generates exogenous variation in a treatment of interest $X$. The randomness of $Z$ lets us identify the effect of $X$ on $Y$, at least for units for which $Z$ perturbs $X$ ("compliers"), in a way that's not possible by just looking at the relationship between $X$ and $Y$.  But surprisingly, we think, the instrumental variables estimator can be consistent for the effect of $X$ on $Y$  even when the relationship between the instrument ($Z$) and the endogenous variable ($X$) is confounded [@hernan2006instruments]. That's the good news. Less good news is that when there is effect heterogeneity it can be hard to know *whose* average treatments effects get estimated [@Swanson2017]. We use a declaration and diagnosis to illustrate these points. We show first that instrumental variables approaches can do well even with confounded instruments if there are constant treatment effects. We then show that with a confounded instrument and effect heterogeneity  the interpretation of who the compliers are for "complier average effects" really depends on the nature of confounding. 
+We often think of an instrumental variable ($Z$) as a random shock that generates exogenous variation in a treatment of interest $X$. The randomness of $Z$ lets us identify the effect of $X$ on $Y$, at least for units for which $Z$ perturbs $X$ ("compliers"), in a way that's not possible by just looking at the relationship between $X$ and $Y$.  But surprisingly, we think, if effects are constant the instrumental variables estimator can be consistent for the effect of $X$ on $Y$ even when the relationship between the instrument ($Z$) and the endogenous variable ($X$) is confounded (for example, @hernan2006instruments). That's the good news. Less good news is that when there is effect heterogeneity you can get good estimates for some unit but it can be hard to know *which* units those are [@Swanson2017]. We use a declaration and diagnosis to illustrate these points. 
+<!-- We show first that instrumental variables approaches can do well even with confounded instruments if there are constant treatment effects. We then show that with a confounded instrument and effect heterogeneity  the interpretation of who the compliers are for "complier average effects" really depends on the nature of confounding.  -->
 
-Consider the causal graph below (a directed acyclic graph, or DAG). As usual, $U_2$ confounds the relationship between $X$ and $Y$, but now a binary $U_1$ also confounds the relationship between $Z$ and $X$ (see for instance Fig 2d @swanson2018partial). To emphasize, in this set up, the instrumental variable and the **instrumented** variable share a common cause in $U_1$.
+Consider the causal graph below (a directed acyclic graph, or DAG). Here $U_2$ confounds the relationship between $X$ and $Y$. That's the usual thing and the reason for why you need something like an instrument in the first place. But now a binary $U_1$ also confounds the relationship between $Z$ and $X$ (see for instance Fig 2d @swanson2018partial). To emphasize, in this set up, the instrumental variable and the **instrumented** variable share a common cause in $U_1$.
 
 ```{r, fig.cap="Figure: DAG for a non-randomized instrument. Z is an instrument for the effect of X on Y",  out.height = '30%', out.width = '50%', fig.align = "center", echo = FALSE}
 hj_dag(x = 1:5, 
@@ -104,11 +106,10 @@ design <-
   
   # U2 is the compliance "type" (U1 complier, Z complier, or Never Taker)
   declare_population(N = 2000, 
-                     U2 = complete_ra(N, 
-                                      prob_each = c(path_weight * 0.6, 
-                                                    (1 - path_weight) * 0.6, 
-                                                    0.4), 
-                                      conditions = c("U1_c", "Z_c", "NT")),
+                     U2 = complete_ra(
+                             N, 
+                             prob_each = c(path_weight * 0.6, (1 - path_weight) * 0.6, 0.4), 
+                             conditions = c("U1_c", "Z_c", "NT")),
                      noise = rnorm(N)) +
   
   # U1 is binary
@@ -117,12 +118,12 @@ design <-
   # Z is affected by U1: among U1 = 0, Z has probability 0.3; among U1 = 1, probability 0.6
   declare_assignment(blocks = U1, block_prob = c(0.3, 0.6), assignment_variable = "Z") +
   
-  # X potential outcomes in terms of u1 and Z (there are **four**)
+  # X potential outcomes in terms of U1 and Z, given U2 (there are **four**)
   declare_potential_outcomes(X ~ as.numeric((U2 == "U1_c") * U1 +
                                             (U2 == "Z_c")  * Z),
                              assignment_variables = c(U1, Z)) +
 
-  # X potential outcomes in terms of  Z given u1 (there are **two**)
+  # X potential outcomes in terms of Z given U1 and U2 (there are **two**)
   declare_potential_outcomes(X ~ as.numeric((U2 == "U1_c") * U1 +
                                             (U2 == "Z_c")  * Z),
                              assignment_variables = Z) +
@@ -157,8 +158,8 @@ design <-
     first_stage = mean(X_Z_1) - mean(X_Z_0)) + 
   
   # Three estimators
-  declare_estimator(Y ~ Z, estimand = "ITT", model = lm_robust, label =  "lm_robust_itt") +
-  declare_estimator(X ~ Z, estimand = "first_stage", model = lm_robust, label =  "lm_robust_first_stage") +
+  declare_estimator(Y ~ Z, estimand = "ITT", model = lm_robust, label =  "itt") +
+  declare_estimator(X ~ Z, estimand = "first_stage", model = lm_robust, label =  "first") +
   declare_estimator(Y ~ X | Z, estimand = c("ATE", "LATE_U1", "LATE_Z"), 
                               model = iv_robust, label =  "iv_robust")
 ```
@@ -188,7 +189,7 @@ kable(reshape_diagnosis(diagnosis_1))
 
 Let's take the diagnosis estimand-by-estimand:
 
-1. The ATE is very badly estimated by the naive approach. It is, however, well-estimated by the instrumental variables estimator. This, despite the fact that:
+1. The ATE is well-estimated by the instrumental variables estimator. This, despite the fact that:
 2. The first stage regression estimates are biased for the average effect of $Z$ on $X$ because of the unobserved confounder $U_1$. 
 3. The ITT estimates are **also** biased because of the confounding between $Y$ and $Z$. 
 4. The instrumental variables performs well for the LATE, as defined here. But in this case the LATE is the same as the ATE so this is not surprising.
@@ -199,7 +200,7 @@ The upshot is that when assessing the validity of IV you might be imposing an ad
 
 # Allowing heterogeneity
 
-We show here that we lose the ability to estimate the effect of $X$ on $Y$ when this effect varies among compliance types  -- the $U_1$-compliers, the $Z$-compliers, and the never-takers.^[More precisely, weaker conditions than homogeneity can be sufficient for identification. As put by @hernan2006instruments, a sufficient assumption is that "the X–Y causal risk difference is the same among treated subjects with $Z=1$ as among treated subjects with $Z=0$, and similarly among untreated subjects." See other conditions discussed in @swanson2018partial.] We can quickly redesign to allow heterogeneity, and see that now, we are biased for all the estimands!
+We show here that we lose the ability to estimate the effect of $X$ on $Y$ when this effect varies among compliance types  -- the $U_1$-compliers, the $Z$-compliers, and the never-takers.^[More precisely, weaker conditions than homogeneity can be sufficient for identification. As put by @hernan2006instruments, a sufficient assumption is that "the X-Y causal risk difference is the same among treated subjects with $Z=1$ as among treated subjects with $Z=0$, and similarly among untreated subjects." See other conditions discussed in @swanson2018partial.] We can quickly redesign to allow heterogeneity, and see that now, we are biased for all the estimands!
 
 ```{r, eval = FALSE, message = FALSE}
 design_h <- redesign(design, heterogeneity = 1)
@@ -232,7 +233,7 @@ Here's some intuition. In both the heterogeneous and homogeneous cases, we misat
 
 # With non causal instruments the "compliers" are those that comply with respect to the unobserved causal instrument
 
-Although we have described $Z$ as being the instrument, you can see in this DAG that both $Z$ and $U_1$ can affect $X$. So perhaps $U_1$ should of as an instrument even if it is unobserved? And perhaps compliers should be thought of as units that comply with $U_1$ and not $Z$? 
+Although we have described $Z$ as being the instrument, you can see in this DAG that both $Z$ and $U_1$ can affect $X$. So perhaps $U_1$ should thought of as an instrument even if it is unobserved? And perhaps compliers should be thought of as units that comply with $U_1$ and not $Z$? 
 
 To explore this possibility, we explore design modifications that shift probability mass between two special cases of the DAG.
 

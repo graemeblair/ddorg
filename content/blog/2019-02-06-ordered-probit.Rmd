@@ -1,5 +1,5 @@
 ---
-title: "Estimating Average Treatment Effects with Ordered Probit: Is is worth it?"
+title: "Estimating Average Treatment Effects with Ordered Probit: Is it worth it?"
 author: "Declare Design Team"
 date: "2019-02-06"
 output:

@@ -43,6 +43,8 @@ with open(".travis.yml") as travis_yml:
 global_environment_variables = travis_environment_variables["env"]["global"]
 package_environment_variables = travis_environment_variables["env"]["matrix"]
 
+# Filter out lines that were not parsed properly into strings
+# (i.e. lines that start with 'secure')
 global_environment_variables = [variable for variable in global_environment_variables if isinstance(variable, str)]
 package_environment_variables = [variable for variable in package_environment_variables if isinstance(variable, str)]
 

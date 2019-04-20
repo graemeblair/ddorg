@@ -1,5 +1,6 @@
 language: r
 pandoc_version: 2.5
+dist: xenial
 
 cache:
   packages: true

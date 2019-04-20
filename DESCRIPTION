@@ -7,6 +7,7 @@ Imports:
   broom,
   blogdown,
   checkpoint,
+  diffobj,
   pkgdown,
   testthat
 Remotes:

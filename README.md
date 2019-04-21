@@ -37,6 +37,8 @@
     - diffobj
     - formatR
 
+![Installing packages in R.](readme/install_packages.png)
+
 11. Run `devtools::install_github("Nick-Rivera/pkgdown")` in the R console and select the 3rd option when prompted.
 
 ![The R console.](readme/console.png)

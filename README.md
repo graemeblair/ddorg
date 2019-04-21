@@ -91,4 +91,4 @@ After closing your terminal session, you will need to rerun `source venv/bin/act
 
 ## Travis Secure Keys
 
-The secure keys in Travis are for invalidating the CloudFront cache.
+The secure keys at the top of the page in Travis are for invalidating the CloudFront cache. The secure key at the bottom of the page is for uploading built files to S3.

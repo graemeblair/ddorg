@@ -81,10 +81,10 @@ Next, add a GitHub Personal Access API token to the top of the file `scripts/run
 
 ![GitHub API Token](readme/api_token.png)
 
-Now, run that scrip with Python:
+Now, run that script with Python:
 
 ```sh
 python3 scripts/run_build_locally.py
 ```
 
-After closing your terminal session, you will need to rerun `source venv/bin/activate` in the `declaredesign.org` if you want to run the build script again.
+After closing your terminal session, you will need to rerun `source venv/bin/activate` in the `declaredesign.org` directory if you want to run the build script again.

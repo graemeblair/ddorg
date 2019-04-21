@@ -16,5 +16,5 @@ not_installed_packages <- found_packages[!found_packages %in% installed.packages
 
 if (length(not_installed_packages) > 0)
 {
-  install.packages(not_installed_packages)
+  install.packages(not_installed_packages, repos = "https://cloud.r-project.org")
 }

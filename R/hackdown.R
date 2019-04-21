@@ -42,6 +42,6 @@ pkg <- arguments[2]
 parent_directory <- arguments[3] # Folder where we'll save rendered markdown files.
 pkgdown_templates <- arguments[4]
 
-devtools::install_cran("DesignLibrary", keep_source = TRUE, force = TRUE)
+devtools::install_cran("DesignLibrary", keep_source = TRUE, force = TRUE, repos = "https://cloud.r-project.org")
 
 build_package(pkg, out, parent_directory, pkgdown_templates)

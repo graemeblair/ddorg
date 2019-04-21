@@ -38,10 +38,15 @@ user_environment_variables = os.environ.copy()
 user_path = user_environment_variables["PATH"]
 
 with open(".travis.yml") as travis_yml:
-    travis_environment_variables = yaml.load(travis_yml)
+    travis_environment_variables = yaml.safe_load(travis_yml)
 
 global_environment_variables = travis_environment_variables["env"]["global"]
 package_environment_variables = travis_environment_variables["env"]["matrix"]
+
+# Filter out lines that were not parsed properly into strings
+# (i.e. lines that start with 'secure')
+global_environment_variables = [variable for variable in global_environment_variables if isinstance(variable, str)]
+package_environment_variables = [variable for variable in package_environment_variables if isinstance(variable, str)]
 
 # Split up the list of environment variables into one list of environment variables per package.
 package_environment_variables = [x.split(" ") for x in package_environment_variables]

@@ -29,21 +29,21 @@
 
 10. After that, install the following dependencies by clicking on the `Install` button (next to the `Update` button).
 
-  1. tidyverse
-  2. devtools
-  3. blogdown
-  4. checkpoint
-  5. testthat
-  6. diffobj
-  7. formatR
+    - tidyverse
+    - devtools
+    - blogdown
+    - checkpoint
+    - testthat
+    - diffobj
+    - formatR
 
-10. Run `devtools::install_github("Nick-Rivera/pkgdown")` in the R console and select the 3rd option when prompted.
+11. Run `devtools::install_github("Nick-Rivera/pkgdown")` in the R console and select the 3rd option when prompted.
 
 ![The R console.](readme/console.png)
 
-11. Also run `devtools::install_github("tidymodels/broom")` in the R console.
+12. Also run `devtools::install_github("tidymodels/broom")` in the R console.
 
-12. Follow all the steps below in this README to get the Python environment set up for local building.
+13. Follow all the steps below in this README to get the Python environment set up for local building.
 
 ## How do I run the build script locally?
 

@@ -8,7 +8,7 @@
 
 2. [Change the default shell](https://apple.stackexchange.com/a/232983) to the latest Bash version.
 
-3. [Install](https://apple.stackexchange.com/a/69332) the GNU versions of the shell utilities (coreutils, findutils, gnu-tar, gnu-sed, gawk, gnutls, gnu-indent, gnu-getopt, grep) and [set them as default](https://stackoverflow.com/a/16288733) on your path. An example of what the `/etc/paths` file should look like is [here](https://gist.github.com/Nick-Rivera/0d7d841ebb3aeff3e9cd556b43344459). Add the first five lines in that example file to your `/etc/paths` file.
+3. [Install](https://apple.stackexchange.com/a/69332) the GNU versions of the shell utilities (coreutils, findutils, gnu-tar, gnu-sed, gawk, gnutls, gnu-indent, gnu-getopt, grep) and [set them as default](https://stackoverflow.com/a/16288733) on your path. An example of what the `/etc/paths` file should look like is [here](https://gist.github.com/Nick-Rivera/0d7d841ebb3aeff3e9cd556b43344459). Add the first five lines in that example file to the top of your `/etc/paths` file.
 
 4. Install Node, Python 3, Hugo, Pandoc, and Pandoc-citeproc with Homebrew:
 `brew install node python hugo pandoc pandoc-citeproc`.
@@ -50,7 +50,7 @@
 ## How do I run the build script locally?
 
 **Warning**: Running this script will erase blog posts in the content directory.
-Make sure that you have committed them before running this script. Also, you must reset the project directory before you build the blog pages because building any of the other sections deletes the blog pages.
+Make sure that you have committed them before running this script. Also, you must `git reset` the project directory before you build the blog pages because building any of the other sections deletes the blog pages.
 
 Steps for running locally on macOS:
 

@@ -88,3 +88,7 @@ python3 scripts/run_build_locally.py
 ```
 
 After closing your terminal session, you will need to rerun `source venv/bin/activate` in the `declaredesign.org` directory if you want to run the build script again.
+
+## Travis Secure Keys
+
+The secure keys in Travis are for invalidating the CloudFront cache.

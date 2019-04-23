@@ -86,7 +86,6 @@ before_install:
   - node --version
   - npm --version
   - npm install
-  - npm install Nick-Rivera/broken-link-checker -g
   - npm install netlify-cli -g
 
 before_script:
@@ -95,17 +94,10 @@ before_script:
 script:
   - ./scripts/run_build_travis.sh
 
-jobs:
-  include:
-    - stage: check for broken links
-      script: blc https://declaredesign.org -ro --only-404 --hide-ok || exit 1
-
 # Unfortunately, the default name in Travis for the stage that uses all the
 # options from our build matrix is called Test.
 stages:
   - test
-  - name: check for broken links
-    if: branch = master
 
 notifications:
   slack:

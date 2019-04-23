@@ -31,6 +31,7 @@ if [ -z "$PACKAGE" ]; then
   # build so that the cache has a chance to upload.
   duration=$(( SECONDS - start ))
   if [ "$duration" -gt "1200" ]; then
+    echo "Killing the build to upload dependencies. Please rerun to actually render the files."
     exit 1
   fi
 
@@ -72,6 +73,7 @@ else
     # build so that the cache has a chance to upload.
     duration=$(( SECONDS - start ))
     if [ "$duration" -gt "1200" ]; then
+      echo "Killing the build to upload dependencies. Please rerun to actually render the files."
       exit 1
     fi
 

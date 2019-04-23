@@ -27,10 +27,10 @@ if [ -z "$PACKAGE" ]; then
   echo 'Installing package dependencies for the blog...'
   Rscript 'R/install_dependencies.R' ''
 
-  # If it took longer than 20 minutes (1,200 seconds) to install the dependencies, kill the
+  # If it took longer than 2 minutes (120 seconds) to install the dependencies, kill the
   # build so that the cache has a chance to upload.
   duration=$(( SECONDS - start ))
-  if [ "$duration" -gt "1200" ]; then
+  if [ "$duration" -gt "120" ]; then
     echo "Killing the build to upload dependencies. Please rerun to actually render the files."
     exit 1
   fi
@@ -69,10 +69,10 @@ else
     echo 'Installing package dependencies...'
     Rscript 'R/install_dependencies.R' "$temporary_directory"
 
-    # If it took longer than 20 minutes (1,200 seconds) to install the dependencies, kill the
+    # If it took longer than 2 minutes (120 seconds) to install the dependencies, kill the
     # build so that the cache has a chance to upload.
     duration=$(( SECONDS - start ))
-    if [ "$duration" -gt "1200" ]; then
+    if [ "$duration" -gt "120" ]; then
       echo "Killing the build to upload dependencies. Please rerun to actually render the files."
       exit 1
     fi

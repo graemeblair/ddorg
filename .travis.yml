@@ -97,15 +97,12 @@ script:
 
 jobs:
   include:
-    - stage: prepare cache
-      script: skip
     - stage: check for broken links
       script: blc https://declaredesign.org -ro --only-404 --hide-ok || exit 1
 
 # Unfortunately, the default name in Travis for the stage that uses all the
 # options from our build matrix is called Test.
 stages:
-  - prepare cache
   - test
   - name: check for broken links
     if: branch = master

@@ -27,7 +27,7 @@
 {{partial "head_twitter_card.html" .}}
 
 {{range .Site.Params.customCSS}}
-<link rel="stylesheet" href="{{. | relURL}}">
+  <link rel="stylesheet" href="{{. | relURL}}">
 {{end}}
 
 {{/* All non-partial items will go in head_custom. */}}

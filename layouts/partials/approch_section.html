@@ -1,0 +1,45 @@
+<!--Approach Section Start-->
+
+<section>
+    <div class="approach-panel">
+      <div class="container">
+        <h2 class="text-center mb-5">See our approach in action:</h2>
+        <ul class="row list-unstyled">
+          {{range (.Paginator 3).Pages.ByPublishDate.Reverse}}
+            <li class="col-lg-4">
+              <div class="card p-4 aprch-block">
+                <div class="card-header bg-white border-0 pb-0">
+                  <h5>{{.Title | markdownify}}</h5>
+                </div>
+                <div class="card-body">
+                  <article>
+                    <p>
+                      {{with .Description}}
+                        {{$.Scratch.Set "summary" (markdownify .)}}
+                      {{else}}
+                        {{$.Scratch.Set "summary" ((index (findRE "(<p.*?>(.|\n)*?</p>)" .Content 1) 0) | safeHTML)}}
+                      {{end}}
+                      {{$.Scratch.Get "summary"}}
+                    </p>
+                  </article>
+                </div>
+                <div class="card-footer bg-white border-0 pt-0"> <a href="{{.RelPermalink}}" class="read-more">READ MORE</a> </div>
+              </div>
+            </li>
+          
+            <!-- <article class="archive-item">
+              <a href="{{.RelPermalink}}" class="archive-item-link">{{.Title | markdownify}}</a>
+              <span class="archive-item-date">
+                {{.Date.Format "2006/01/02"}}
+              </span>
+            </article> -->
+          {{end}}
+        </ul>
+        <div class="row mt-5">
+          <div class="col-md-12 text-center"> <a href="/blog" class="btn-dd">VIEW BLOG</a> </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!--Approach Section End--> 

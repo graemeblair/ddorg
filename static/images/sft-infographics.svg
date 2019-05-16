@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="695.27" height="670.976" viewBox="0 0 695.27 670.976">
+  <g id="Group_606" data-name="Group 606" transform="translate(-306.058 -1852.236)">
+    <g id="Group_228" data-name="Group 228" transform="translate(-294 -409)">
+      <path id="Path_100" data-name="Path 100" d="M723.3,10546.125,608.678,10612.3v132.351l114.618,66.174,114.618-66.174V10612.3Z" transform="translate(-4.62 -8280.13)" fill="#fff" stroke="#31b8ff" stroke-width="8"/>
+      <text id="fabricatr" transform="translate(603.997 2380.365)" font-size="28" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="60.975" y="29">fabricatr</tspan></text>
+      <path id="Path_100-2" data-name="Path 100" d="M723.3,10546.125,608.678,10612.3v132.351l114.618,66.174,114.618-66.174V10612.3Z" transform="translate(224.397 -8280.13)" fill="#fff" stroke="#31b8ff" stroke-width="8"/>
+      <text id="randomizr" transform="translate(833.014 2380.365)" font-size="28" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="50.564" y="29">randomizr</tspan></text>
+      <path id="Path_100-3" data-name="Path 100" d="M723.3,10546.125,608.678,10612.3v132.351l114.618,66.174,114.618-66.174V10612.3Z" transform="translate(453.413 -8280.27)" fill="#fff" stroke="#31b8ff" stroke-width="8"/>
+      <text id="estimatr" transform="translate(1062.031 2380.365)" font-size="28" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="61.918" y="29">estimatr</tspan></text>
+      <path id="Path_135" data-name="Path 135" d="M723.3,10546.125,608.678,10612.3v132.351l114.618,66.174,114.618-66.174V10612.3Z" transform="translate(223.397 -7883.23)" fill="#fff" stroke="#31b8ff" stroke-width="8"/>
+      <text id="DesignLibrary" transform="translate(832.014 2771.264)" font-size="28" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="28.874" y="29">Design</tspan><tspan y="29" font-family="Roboto-Light, Roboto" font-weight="300">Library</tspan></text>
+      <path id="Path_136" data-name="Path 136" d="M723.3,10546.125,608.678,10612.3v132.351l114.618,66.174,114.618-66.174V10612.3Z" transform="translate(452.413 -7883.369)" fill="#f0f2f4" stroke="#31b8ff" stroke-width="8"/>
+      <text id="DesignWizard" transform="translate(1061.031 2771.264)" font-size="28" font-family="Roboto-Bold, Roboto" font-weight="700"><tspan x="28.73" y="29">Design</tspan><tspan y="29" font-family="Roboto-Light, Roboto" font-weight="300">Wizard</tspan></text>
+      <path id="Path_100-4" data-name="Path 100" d="M723.3,10546.125,608.678,10612.3v132.351l114.618,66.174,114.618-66.174V10612.3Z" transform="translate(338.397 -8081.625)" fill="#063061" stroke="#31b8ff" stroke-width="8"/>
+    </g>
+    <g id="Group_603" data-name="Group 603" transform="translate(430.944 1729.68)">
+      <path id="Path_750" data-name="Path 750" d="M361.154,380.231v23.157H339.123v20.073h22.031V446.6h20.073V380.231Z" transform="translate(4.876)" fill="#fff"/>
+      <g id="Group_588" data-name="Group 588" transform="translate(323.996 423.39)">
+        <path id="Path_751" data-name="Path 751" d="M362.8,463.208h-21.08a21.047,21.047,0,0,1-21.023-21.023V420h20.073v22.187a.952.952,0,0,0,.951.951H362.8Z" transform="translate(-320.693 -419.998)" fill="#31b8ff"/>
+      </g>
+      <g id="Group_589" data-name="Group 589" transform="translate(281.963 466.529)">
+        <path id="Path_752" data-name="Path 752" d="M324.067,502.957h-42.1V459.747h20.073v23.137h22.031Z" transform="translate(-281.963 -459.747)" fill="#fff"/>
+      </g>
+      <g id="Group_590" data-name="Group 590" transform="translate(301.965 446.527)">
+        <path id="Path_753" data-name="Path 753" d="M342.5,484.527H322.424V462.34a.952.952,0,0,0-.951-.951H300.393V441.317h21.081A21.047,21.047,0,0,1,342.5,462.34Z" transform="translate(-300.393 -441.317)" fill="#31b8ff"/>
+      </g>
+    </g>
+  </g>
+</svg>

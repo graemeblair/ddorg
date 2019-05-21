@@ -89,11 +89,8 @@ before_install:
   - npm install Nick-Rivera/broken-link-checker -g
   - npm install netlify-cli -g
 
-before_script:
-  - Rscript -e 'blogdown::install_hugo()'
-
 script:
-  - ./scripts/run_build_travis.sh
+  - ./scripts/install_common_dependencies.sh && ./scripts/run_build_travis.sh
 
 jobs:
   include:

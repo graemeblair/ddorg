@@ -1,6 +1,6 @@
 # DeclareDesign project web site - declaredesign.org
 
-[![Build Status](https://travis-ci.org/DeclareDesign/declaredesign.org.svg?branch=master)](https://travis-ci.org/DeclareDesign/declaredesign.org)
+[![Build Status](https://travis-ci.com/DeclareDesign/declaredesign.org.svg?branch=master)](https://travis-ci.com/DeclareDesign/declaredesign.org)
 
 ## Setting up the build environment on macOS Mojave.
 
@@ -30,6 +30,7 @@
 10. After that, install the following dependencies by clicking on the `Install` button (next to the `Update` button).
 
     - tidyverse
+    - texreg
     - devtools
     - blogdown
     - checkpoint
@@ -43,7 +44,7 @@
 
 ![The R console.](readme/console.png)
 
-12. Also run `devtools::install_github("tidymodels/broom")` in the R console.
+12. Also run `devtools::install_github("tidymodels/broom")` and `devtools::install_github("gibbonscharlie/bfe")` in the R console.
 
 13. Follow all the steps below in this README to get the Python environment set up for local building.
 

@@ -249,3 +249,8 @@ table, img {
 .hero-panel{
 	padding: 75px 20px;
 }
+
+#hex .hex_path:hover path{
+	fill: rgb(240, 242, 244);
+	cursor: pointer;
+}

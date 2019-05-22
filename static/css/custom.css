@@ -217,3 +217,35 @@ footer{}
 	-webkit-overflow-scrolling: touch;
 	-ms-overflow-style: -ms-autohiding-scrollbar;
 }
+
+.navbar-light .navbar-nav .nav-link{
+	font-size: 16px;
+}
+
+.navbar{
+	border-width: 0;
+	padding: 15px 0px;
+}
+
+.navbar-light .navbar-nav .nav-link{
+	font-size: 16px;
+}
+
+.navbar{
+	border-width: 0;
+	padding: 15px 20px;
+}
+
+table, img {
+	overflow: auto;
+	max-width: 100%;
+	display: inline-block;
+}
+
+.archive, .article, #TOC{
+	padding-top: 140px;
+}
+
+.hero-panel{
+	padding: 75px 20px;
+}

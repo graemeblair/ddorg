@@ -250,7 +250,43 @@ table, img {
 	padding: 75px 20px;
 }
 
-#hex .hex_path:hover path{
-	fill: rgb(240, 242, 244);
-	cursor: pointer;
+
+#Path_100-4,
+#Path_100,
+#Path_100-2,
+#Path_100-3,
+#Path_135,
+#Path_136 {
+	transition: fill 500ms ease;
+}
+
+
+.hex_box1:hover #Path_100,
+.hex_box2:hover #Path_100-2,
+.hex_box3:hover #Path_100-3,
+.hex_box4:hover #Path_135,
+.hex_box5:hover #Path_136 {
+	fill: #F0F2F4 !important;
+	transition: fill 400ms ease;
+}
+
+.hex_brand:hover #Path_100-4 {
+	fill: #16164c !important;
+
+}
+
+.hex_brand:hover #poly1 {
+	fill: #fff !important;
+}
+
+.hex_brand:hover #poly2 {
+	fill: #fff !important;
+}
+
+.hex_brand:hover .brand_text {
+	fill: #fff !important;
+}
+
+.hex_brand:hover .brand_plus {
+	fill: #53B2E4 !important;
 }

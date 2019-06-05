@@ -67,7 +67,6 @@ a:hover, a:focus{text-decoration: none;}
 .aprch-block .read-more{font-size: 12px; text-transform: uppercase; font-weight: 700; letter-spacing: 2px;}
 .aprch-block .read-more:hover, .aprch-block .read-more:focus{text-decoration: underline;}
 
-footer{}
 .footer-top{background-color: #F8F8F8; padding: 10rem 0;}
 .footer-top a{color: #4A4A4A; font-size: 12px;}
 .footer-top a:hover, .footer-top a:focus{text-decoration: underline;}
@@ -289,4 +288,31 @@ table, img {
 
 .hex_brand:hover .brand_plus {
 	fill: #53B2E4 !important;
+}
+
+/* June 4th changes */
+footer {
+	margin-top: 65px;
+}
+
+:root{
+	--blue: #31B8FF;
+	--primary: #0037E5;
+}
+
+.page-item.active .page-link{
+	background-color: var(--primary);
+	border-color: var(--primary);
+}
+
+.page-link{
+	color: var(--primary);
+}
+
+a{
+	color: var(--primary);
+}
+
+.btn-dd{
+	background-color: var(--primary);
 }

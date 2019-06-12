@@ -326,4 +326,7 @@ a{
 	.d-lg-block {
 		padding-top: 140px;
 	}
+	.pt-3, .py-3{
+		padding-left: 5rem;
+	}
 }

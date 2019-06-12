@@ -265,12 +265,18 @@ table, img {
 .hex_box4:hover #Path_135,
 .hex_box5:hover #Path_136 {
 	fill: #063061 !important;
-	transition: fill 400ms ease;
+}
+
+.hex_box1:hover > g > g > path,
+.hex_box2:hover > g > g > path,
+.hex_box3:hover > g > g > path,
+.hex_box4:hover > g > g > path,
+.hex_box5:hover > g > g > path{
+	fill: #fff !important;
 }
 
 .hex_brand:hover #Path_100-4 {
-	fill: #fff !important;
-
+	fill: #063061 !important;
 }
 
 .hex_brand:hover #poly1 {

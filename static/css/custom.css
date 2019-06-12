@@ -259,18 +259,17 @@ table, img {
 	transition: fill 500ms ease;
 }
 
-
 .hex_box1:hover #Path_100,
 .hex_box2:hover #Path_100-2,
 .hex_box3:hover #Path_100-3,
 .hex_box4:hover #Path_135,
 .hex_box5:hover #Path_136 {
-	fill: #F0F2F4 !important;
+	fill: #063061 !important;
 	transition: fill 400ms ease;
 }
 
 .hex_brand:hover #Path_100-4 {
-	fill: #16164c !important;
+	fill: #fff !important;
 
 }
 

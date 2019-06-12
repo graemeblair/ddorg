@@ -321,3 +321,9 @@ a{
 .btn-dd{
 	background-color: var(--primary);
 }
+
+@media (min-width: 992px){
+	.d-lg-block {
+		padding-top: 140px;
+	}
+}

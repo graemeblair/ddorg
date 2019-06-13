@@ -329,3 +329,8 @@ a{
 		padding-left: 5rem;
 	}
 }
+
+.d-lib-img-wrap{
+	z-index: -2;
+	position: relative;
+}

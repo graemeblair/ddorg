@@ -328,6 +328,9 @@ a{
 	.pt-3, .py-3{
 		padding-left: 5rem;
 	}
+	.d-lib-img-wrap {
+		margin-top: -75px;
+	}
 }
 
 .d-lib-img-wrap{

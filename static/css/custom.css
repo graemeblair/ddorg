@@ -196,14 +196,6 @@ a:hover, a:focus{text-decoration: none;}
 		
 }
 
-.archive, .article{
-	padding-top: 100px;
-}
-
-#TOC{
-	padding-top: 100px;
-}
-
 .pagination{
 	margin-bottom: 25px!important;
 }
@@ -235,7 +227,8 @@ table, img {
 	display: inline-block;
 }
 
-.container .justify-content-between{
+.container .justify-content-between, 
+.container .archive{
 	padding-top: 140px;
 }
 

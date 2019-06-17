@@ -10,7 +10,7 @@ a:hover, a:focus{text-decoration: none;}
 
 
 /*++++++Theming+++++*/
-.btn-dd{padding: 15px 30px; min-width: 225px; display: inline-block; text-align: center; border-radius: 30px; color: #ffffff; font-size: 16px; font-weight: 700; letter-spacing: 1px; background-color: #0061FF; border: 1px solid #31B8FF; box-shadow: 2px 3px 16px rgba(0,0,0,0.16);}
+.btn-dd{padding: 15px 30px; min-width: 225px; display: inline-block; text-align: center; border-radius: 30px; color: #ffffff; font-size: 16px; font-weight: 700; letter-spacing: 1px; background-color: #0061FF; border: 1px solid #0036e5; box-shadow: 2px 3px 16px rgba(0,0,0,0.16);}
 .btn-dd:hover,
 .btn-dd:focus{color: #ffffff; opacity: 0.75}
 
@@ -52,7 +52,7 @@ a:hover, a:focus{text-decoration: none;}
 .sft-img-wrap {padding-right: 6rem;}
 
 .design-lib-panel{padding:0 0 11rem 0;}
-.lib-content-wrap {position: relative; left: 7rem; top: 5rem;}
+.lib-content-wrap {position: relative; top: 5rem;}
 
 
 .home-cta-panel{background-color: #171D30; padding: 6rem 0;}
@@ -220,18 +220,13 @@ a:hover, a:focus{text-decoration: none;}
 	font-size: 16px;
 }
 
-.navbar{
+.navbar-light.navbar{
 	border-width: 0;
 	padding: 15px 0px;
 }
 
 .navbar-light .navbar-nav .nav-link{
 	font-size: 16px;
-}
-
-.navbar{
-	border-width: 0;
-	padding: 15px 20px;
 }
 
 table, img {
@@ -323,7 +318,7 @@ a{
 
 @media (min-width: 992px){
 	.d-lg-block {
-		padding-top: 140px;
+		padding-top: 0px;
 	}
 	.pt-3, .py-3{
 		padding-left: 5rem;
@@ -336,4 +331,9 @@ a{
 .d-lib-img-wrap{
 	z-index: -2;
 	position: relative;
+}
+
+.down-arrow-row{
+	position: relative;
+	bottom: 60px;
 }

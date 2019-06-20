@@ -34,12 +34,6 @@ a:hover, a:focus{text-decoration: none;}
 .hero-content a{margin-top: 2rem;}
 
 
-.bounce {
-  -moz-animation: bounce 2s infinite;
-  -webkit-animation: bounce 2s infinite;
-  animation: bounce 2s infinite;
-}
-
 @keyframes bounce {
   0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
   40% {transform: translateY(-30px);}
@@ -328,6 +322,7 @@ a{
 	}
 	.pt-3, .py-3{
 		padding-left: 5rem;
+		padding-top: 4rem !important;
 	}
 	.d-lib-img-wrap {
 		margin-top: -75px;

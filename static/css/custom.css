@@ -72,6 +72,12 @@ a:hover, a:focus{text-decoration: none;}
 .footer-bottom{ padding: 2rem 0; font-size: 12px;}
 .fbl-link-wrap{text-align: right;}
 
+#TOC > .navbar{display: block;}
+
+.pill_badge{display: block; margin-bottom: .5rem;}
+
+/* On the reference page, make the links to functions stack on top of each other instead of displaying in a line. */
+.ref-index .alias_column code{display: block; margin-bottom: 0.3rem; word-break: normal;}
 
 /*++++++++++++++++++++++++
 		Responsive
@@ -79,7 +85,7 @@ a:hover, a:focus{text-decoration: none;}
 
 /*For below tablet devices*/
 @media (max-width:767px) {
-	
+
 	body{font-size: 0.85rem;}
 	.navbar-collapse{position: absolute; top: 100%; right: 15px; background-color: #fff; min-width: 150px; text-align: right;    box-shadow: 2px 2px 5px rgba(0,0,0,0.15)}
 	.navbar-light .navbar-nav .nav-link{border-bottom: 1px solid #ddd; padding: 10px; }
@@ -96,8 +102,8 @@ a:hover, a:focus{text-decoration: none;}
 	.btn-dd, .btn-white{padding: 10px 20px; min-width: 200px; font-size: 13px;}
 	.sft-panel{padding: 2.5rem 0;}
 	.sft-img-wrap{ padding-right: 0rem; padding: 2rem;}
-	.sft-content-wrap h2{font-size: 1.5rem;} 
-	
+	.sft-content-wrap h2{font-size: 1.5rem;}
+
 	.design-lib-panel{padding-bottom: 2.5rem;}
 	.lib-content-wrap{position: static;}
 	.lib-content-wrap h2{font-size: 1.5rem;}
@@ -115,25 +121,25 @@ a:hover, a:focus{text-decoration: none;}
 	.navbar-brand{
 		margin-left: 10px;
 	}
-	
+
 }
 
 /*For small mobile devices*/
 @media (min-width:320px) and (max-width:480px) {
-	
-	
+
+
 }
 
 /*For landscape mobiles devices*/
 @media (max-width:736px) and (orientation:landscape) {
-	
+
 	.container{max-width: 540px;}
-	
+
 }
 
 /*For tablet devices (both orentations)*/
 @media (min-width:768px) and (max-width:979px) {
-	
+
 	body{font-size: 0.85rem;}
 	.container{max-width: 720px;}
 	.navbar-light .navbar-brand{max-width: 200px;}
@@ -147,8 +153,8 @@ a:hover, a:focus{text-decoration: none;}
 	.btn-dd, .btn-white{padding: 10px 20px; min-width: 200px; font-size: 13px;}
 	.sft-panel{padding: 2.5rem 0;}
 	.sft-img-wrap{ padding-right: 0rem; padding: 2rem;}
-	.sft-content-wrap h2{font-size: 1.5rem;} 
-	
+	.sft-content-wrap h2{font-size: 1.5rem;}
+
 	.d-lib-img-wrap{position: static;}
 	.design-lib-panel{padding-bottom: 2.5rem;}
 	.lib-content-wrap{position: static; text-align: center; max-width: 70%; margin: auto;}
@@ -164,12 +170,12 @@ a:hover, a:focus{text-decoration: none;}
 	.footer-brand {text-align: center; margin-bottom: 25px;}
 	.footer-bottom{text-align: center; padding: 1rem 0;}
 	.fbl-link-wrap{text-align: center;}
-	
+
 }
 
 /*For small screens and laptops devices*/
 @media (min-width:980px) and (max-width:1199px) {
-	
+
 	.container{max-width: 960px;}
 	.hero-panel{height: auto; min-height: 70vh; text-align: center;}
 	.hero-content h1 {font-size: 2rem; line-height: 2.5rem;}
@@ -183,20 +189,20 @@ a:hover, a:focus{text-decoration: none;}
 	.sft-content-wrap h2{font-size: 1.5rem;}
 	.lib-content-wrap{z-index: 1}
 	.approach-panel, .footer-top{padding: 5rem 0;}
-	
-	
-	
+
+
+
 }
 
 
 @media (min-width:1400px) and (max-width:1920px) {
-	
-	
+
+
 }
 
 /*===Safari Specific===*/
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
-		
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
 }
 
 .pagination{
@@ -230,7 +236,7 @@ table, img {
 	display: inline-block;
 }
 
-.container .justify-content-between, 
+.container .justify-content-between,
 .container .archive{
 	padding-top: 140px;
 }
@@ -296,7 +302,7 @@ footer {
 	--light-blue: #5DB5F9;
 	--blue: var(--light-blue);
 	--primary: var(--electric-blue);
-	
+
 }
 
 .page-item.active .page-link{

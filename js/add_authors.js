@@ -24,7 +24,7 @@ if (!authors[package_name])
     return; // There are no authors given for the current package.
 }
 
-if (!$("#toc_column"))
+if (!$("#toc_column").length)
 {
     // Shrink the size of the main column so that the author names can fit.
     $("#content_column").toggleClass("col-lg-12 col-lg-8");

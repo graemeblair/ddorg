@@ -16,15 +16,15 @@ const package_name = process.argv[3];
 const authors_file_name = process.argv[4];
 const authors_yaml      = fs.readFileSync(authors_file_name, "utf8");
 const authors           = yaml.safeLoad(authors_yaml);
-const header_text = process.argv[5];
+const header_text       = process.argv[5];
 
 
-if (authors[package_name] === undefined)
+if (!authors[package_name])
 {
     return; // There are no authors given for the current package.
 }
 
-if ($("#toc_column").length === 0)
+if (!$("#toc_column"))
 {
     // Shrink the size of the main column so that the author names can fit.
     $("#content_column").toggleClass("col-lg-12 col-lg-8");
@@ -39,7 +39,7 @@ const authors_list = $(`<div>
 </div>
 `);
 
-for (const [key, value] of Object.entries(authors[package_name]))
+for (const value of Object.values(authors[package_name]))
 {
     const roles = Array.isArray(value["role"]) ? value["role"].join(", ") : value["role"];
 

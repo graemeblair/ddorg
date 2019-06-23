@@ -1,5 +1,5 @@
 language: r
-pandoc_version: 2.5
+pandoc_version: 2.7.3
 dist: xenial
 
 cache:
@@ -80,29 +80,19 @@ env:
       CUSTOM_SCRIPT=''
 
 before_install:
-  - nvm install node
+  - nvm install node 12.4.0
   - nvm use node
-  - npm install npm@latest -g
   - node --version
   - npm --version
   - npm install
-  - npm install Nick-Rivera/broken-link-checker -g
-  - npm install netlify-cli -g
 
 script:
   - ./scripts/install_common_dependencies.sh && ./scripts/run_build_travis.sh
-
-jobs:
-  include:
-    - stage: check for broken links
-      script: blc https://declaredesign.org -ro --only-404 --hide-ok || exit 0
 
 # Unfortunately, the default name in Travis for the stage that uses all the
 # options from our build matrix is called Test.
 stages:
   - test
-  - name: check for broken links
-    if: branch = master
 
 notifications:
   slack:

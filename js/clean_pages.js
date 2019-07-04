@@ -88,7 +88,7 @@ function add_twitter_card_image()
     {
         const page_head  = $("head");
         const card_image = `<meta name="twitter:image" content="${BASE_URL + first_image_source}">`;
-      
+
         page_head.append(card_image);
     }
 }

@@ -16,7 +16,7 @@ console.log("PREVIEW_URL:", PREVIEW_URL);
 console.log("PULL_REQUEST_NUMBER:", PULL_REQUEST_NUMBER);
 
 // If we were not passed a preview URL, there was a problem.
-if (PREVIEW_URL === "")
+if (!PREVIEW_URL)
 {
     throw new Error("No preview URL was given. There was a problem uploading the files to Netlify.")
 }

@@ -104,7 +104,7 @@ a:hover, a:focus{text-decoration: none;}
 	.d-lib-img-wrap{position: static;}
 	.home-cta-panel{padding: 3.5rem 0;}
 	.cta-content-wrap h2{font-size: 1.5rem;}
-	.approach-panel{padding: 2.5rem;}
+	.approach-panel { padding: 50px 15px 15px 15px; }
 	.approach-panel h2{font-size: 1.5rem;}
 	.aprch-block{margin-bottom: 15px;}
 	.aprch-block h5{font-size: 18px;}
@@ -120,7 +120,9 @@ a:hover, a:focus{text-decoration: none;}
 
 /*For small mobile devices*/
 @media (min-width:320px) and (max-width:480px) {
-	
+	.navbar-light.navbar.navbar-expand-lg{
+		padding: 15px 5px;
+	}
 	
 }
 
@@ -217,7 +219,6 @@ a:hover, a:focus{text-decoration: none;}
 
 .navbar-light.navbar.navbar-expand-lg{
 	border-width: 0;
-	padding: 15px 0px;
 }
 
 .navbar-light .navbar-nav .nav-link{

@@ -26,7 +26,7 @@ You're partnering with an education nonprofit and you are planning on running a 
 
 We'll show first how you do it and then talk through some of the principles, wrinkles, and checks you might do. Here's the code:
 
-```{r}
+```{r, warning = FALSE}
 library(DeclareDesign)
 
 set.seed(20181204)

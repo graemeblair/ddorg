@@ -18,6 +18,10 @@ library(blockTools)
 library(tidyverse)
 # library(writexl)
 theme_set(theme_bw())
+
+here_you_go <- fabricate(school = add_level(N = 20),
+                         class  = add_level(N = 4, treatment = block_ra(blocks = school)))
+
 ```
 
 You're partnering with an education nonprofit and you are planning on running a randomized control trial in 80 classrooms spread across 20 community schools. The request is in: please send us a spreadsheet with random assignments. The assignment's gotta be blocked by school, it's gotta be reproducible, and it's gotta be tonight.  The good news is that you can do all this in a couple of lines of code. We show how using some DeclareDesign tools and then walk through handling of more complex cases.
@@ -26,7 +30,7 @@ You're partnering with an education nonprofit and you are planning on running a 
 
 We'll show first how you do it and then talk through some of the principles, wrinkles, and checks you might do. Here's the code:
 
-```{r, warning = FALSE}
+```{r, warning = FALSE, message = FALSE}
 library(DeclareDesign)
 
 set.seed(20181204)

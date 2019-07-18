@@ -1,5 +1,6 @@
 language: r
-pandoc_version: 2.5
+pandoc_version: 2.7.3
+dist: xenial
 
 cache:
   packages: true
@@ -8,12 +9,6 @@ cache:
     - "$HOME/cache"
 
 bioc_packages: Biobase
-
-addons:
-  apt:
-    packages:
-      - python3.5
-      - python3-pip
 
 env:
   global:
@@ -79,32 +74,21 @@ env:
       CUSTOM_SCRIPT=''
 
 before_install:
-  - nvm install node
+  - sudo apt-get install -y python3.5 python3-pip
+  - sudo -H pip3 install pip==19.1.1
+  - nvm install node 12.4.0
   - nvm use node
-  - npm install npm@latest -g
   - node --version
   - npm --version
   - npm install
-  - npm install Nick-Rivera/broken-link-checker -g
-  - npm install netlify-cli -g
-
-before_script:
-  - Rscript -e 'blogdown::install_hugo()'
 
 script:
-  - ./scripts/run_build_travis.sh
-
-jobs:
-  include:
-    - stage: check for broken links
-      script: blc https://declaredesign.org -ro --only-404 --hide-ok || exit 1
+  - ./scripts/install_common_dependencies.sh && ./scripts/run_build_travis.sh
 
 # Unfortunately, the default name in Travis for the stage that uses all the
 # options from our build matrix is called Test.
 stages:
   - test
-  - name: check for broken links
-    if: branch = master
 
 notifications:
   slack:
@@ -140,5 +124,5 @@ deploy:
 # Invalidate CloudFront so that we see the latest version of the files.
 after_deploy:
   - ./ecr_credentials.sh
-  - pip3 install --user awscli
+  - pip3 install --user awscli==1.16.184
   - aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths '/*'

@@ -2,14 +2,3 @@ Package: declare_design_blog
 Type: Website
 Title: Declare Design Blog.
 Version: 1.1.7
-Imports:
-  bfe,
-  broom,
-  blogdown,
-  checkpoint,
-  pkgdown,
-  testthat
-Remotes:
-  Nick-Rivera/pkgdown,
-  gibbonscharlie/bfe,
-  tidymodels/broom

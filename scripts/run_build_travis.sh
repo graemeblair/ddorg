@@ -22,8 +22,18 @@ for content_folder in $CONTENT_FOLDERS; do
 done
 
 if [ -z "$PACKAGE" ]; then
+  start=$SECONDS
+
   echo 'Installing package dependencies for the blog...'
   Rscript 'R/install_dependencies.R' ''
+
+  # If it took longer than 2 minutes (120 seconds) to install the dependencies, kill the
+  # build so that the cache has a chance to upload.
+  duration=$(( SECONDS - start ))
+  if [ "$duration" -gt "120" ]; then
+    echo "Killing the build to upload dependencies. Please rerun to actually render the files."
+    exit 1
+  fi
 
   echo "Moving the cache into the package's folder..."
   mv --verbose ~/cache/ "${CONTENT_FOLDER}/"
@@ -54,8 +64,18 @@ else
     popd
     pwd
 
+    start=$SECONDS
+
     echo 'Installing package dependencies...'
     Rscript 'R/install_dependencies.R' "$temporary_directory"
+
+    # If it took longer than 2 minutes (120 seconds) to install the dependencies, kill the
+    # build so that the cache has a chance to upload.
+    duration=$(( SECONDS - start ))
+    if [ "$duration" -gt "120" ]; then
+      echo "Killing the build to upload dependencies. Please rerun to actually render the files."
+      exit 1
+    fi
 
     # Runs the R script that builds the reference pages using pkgdown.
     Rscript 'R/hackdown.R' "$temporary_directory" "$PACKAGE" "${CONTENT_FOLDER}/${HOME_FOLDER}" "$PKGDOWN_TEMPLATES"

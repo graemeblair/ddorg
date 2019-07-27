@@ -5,8 +5,7 @@ packages <- c(
   "diffobj",
   "formatR",
   "testthat",
-  "texreg",
-  "pkgload"
+  "texreg"
 )
 
 packages_github <- c(
@@ -29,3 +28,5 @@ if (length(not_installed_packages_github) > 0)
   print("Installing common dependencies from GitHub...")
   devtools::install_github(not_installed_packages_github)
 }
+
+update.packages(ask = FALSE, repos = "https://cloud.r-project.org")

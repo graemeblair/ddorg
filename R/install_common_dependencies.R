@@ -23,10 +23,10 @@ if (length(not_installed_packages) > 0)
   install.packages(not_installed_packages, repos = "https://cloud.r-project.org")
 }
 
+update.packages(ask = FALSE, repos = "https://cloud.r-project.org")
+
 if (length(not_installed_packages_github) > 0)
 {
   print("Installing common dependencies from GitHub...")
   devtools::install_github(not_installed_packages_github)
 }
-
-update.packages(ask = FALSE, repos = "https://cloud.r-project.org")

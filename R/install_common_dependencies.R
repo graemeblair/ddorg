@@ -5,7 +5,8 @@ packages <- c(
   "diffobj",
   "formatR",
   "testthat",
-  "texreg"
+  "texreg",
+  "pkgload"
 )
 
 packages_github <- c(

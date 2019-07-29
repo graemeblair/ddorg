@@ -75,8 +75,9 @@ env:
 
 before_install:
   - sudo apt-get install -y python3.5 python3-pip
-  - sudo -H pip3 install pip==19.1.1
-  - nvm install node 12.4.0
+  - sudo -H pip3 install pip==19.2.1 setuptools==41.0.1
+  - nvm install node 12.6.0
+  - npm install -g npm@6.10.2
   - nvm use node
   - node --version
   - npm --version

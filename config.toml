@@ -42,7 +42,7 @@ paginate = 5 # Default number of blog posts per page in pagination.
   name = "Reference"
   url = "/r/declaredesign/reference/"
   weight = 3
-[[menu.main]]
+[[menu.declaredesign]]
   name = "About"
   url = "/about/"
   weight = 4

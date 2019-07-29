@@ -43,6 +43,11 @@
         {{else if (hasPrefix .Dir "library")}}
           <li class="nav-item"><a class="nav-link" href="/library/">Design Library</a></li>
           {{template "menu_items_template" dict "section" "library" "context" .}}
+        {{else if (hasPrefix .Dir "blog")}}
+          <div></div> {{/* Empty table of contents. */}}
+        {{else}}
+          <li class="nav-item"><a class="nav-link" href="/r/declaredesign/">DeclareDesign for R</a></li>
+          {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
         {{end}}
       </ul>
     </nav>

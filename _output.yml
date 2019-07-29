@@ -1,4 +1,4 @@
-# Uncomment this to turn the individual article table of contents on.
+# Uncomment this to turn the original style table of contents on.
 #blogdown::html_page:
 #  toc: true
 #  toc_depth: 2

@@ -74,7 +74,7 @@ env:
       CUSTOM_SCRIPT=''
 
 before_install:
-  - sudo apt-get install -y python3.5 python3-pip libudunits2-dev
+  - sudo apt-get install -y python3.5 python3-pip libudunits2-dev libgdal-dev
   - sudo -H pip3 install pip==19.2.1 setuptools==41.0.1
   - nvm install node 12.6.0
   - npm install -g npm@6.10.2

@@ -20,35 +20,31 @@
 {{/* ------------------------------------------------------------------------------------------------------- */}}
 {{/* Picks which menu items should be displayed depending on the package that is currently being viewed.     */}}
 {{/* ------------------------------------------------------------------------------------------------------- */}}
-<div id="TOC" class="mb-3">
-  <nav class="navbar navbar-light bg-light"><a class="navbar-brand" href="#">Table of Contents</a>
-    <ul class="nav nav-pills flex-column">
-      {{/* Unique menu items */}}
-      {{if (hasPrefix .Dir "r/declaredesign")}}
-        <li class="nav-item"><a class="nav-link" href="/r/declaredesign/">DeclareDesign for R</a></li>
-        {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
-      {{else if (hasPrefix .Dir "r/randomizr")}}
-        <li class="nav-item"><a class="nav-link" href="/r/randomizr/">randomizr for R</a></li>
-        {{template "menu_items_template" dict "section" "randomizr" "context" .}}
-      {{else if (hasPrefix .Dir "stata/randomizr")}}
-        <li class="nav-item"><a class="nav-link" href="/stata/randomizr/">randomizr for Stata</a></li>
-        {{template "menu_items_template" dict "section" "strandomizr" "context" .}}
-      {{else if (hasPrefix .Dir "r/fabricatr")}}
-        <li class="nav-item"><a class="nav-link" href="/r/fabricatr/">fabricatr for R</a></li>
-        {{template "menu_items_template" dict "section" "fabricatr" "context" .}}
-      {{else if (hasPrefix .Dir "r/estimatr")}}
-        <li class="nav-item"><a class="nav-link" href="/r/estimatr/">estimatr for R</a></li>
-        {{template "menu_items_template" dict "section" "estimatr" "context" .}}
-      {{else if (hasPrefix .Dir "library")}}
-        <li class="nav-item"><a class="nav-link" href="/library/">Design Library</a></li>
-        {{template "menu_items_template" dict "section" "library" "context" .}}
-      {{else if (hasPrefix .Dir "blog")}}
-        <li class="nav-item"><a class="nav-link" href="/blog/">DeclareDesign Blog</a></li>
-        {{template "menu_items_template" dict "section" "main" "context" .}} {{/* Reuse the default menu layout */}}
-      {{else}}
-        <li class="nav-item"><a class="nav-link" href="/">DeclareDesign</a></li>
-        {{template "menu_items_template" dict "section" "main" "context" .}}
-      {{end}}
-    </ul>
-  </nav>
+<div class="col-lg-3" id="toc_column">
+  <div id="TOC" class="mb-3">
+    <nav class="navbar navbar-light bg-light"><a class="navbar-brand" href="#">Table of Contents</a>
+      <ul class="nav nav-pills flex-column">
+        {{/* Unique menu items */}}
+        {{if (hasPrefix .Dir "r/declaredesign")}}
+          <li class="nav-item"><a class="nav-link" href="/r/declaredesign/">DeclareDesign for R</a></li>
+          {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
+        {{else if (hasPrefix .Dir "r/randomizr")}}
+          <li class="nav-item"><a class="nav-link" href="/r/randomizr/">randomizr for R</a></li>
+          {{template "menu_items_template" dict "section" "randomizr" "context" .}}
+        {{else if (hasPrefix .Dir "stata/randomizr")}}
+          <li class="nav-item"><a class="nav-link" href="/stata/randomizr/">randomizr for Stata</a></li>
+          {{template "menu_items_template" dict "section" "strandomizr" "context" .}}
+        {{else if (hasPrefix .Dir "r/fabricatr")}}
+          <li class="nav-item"><a class="nav-link" href="/r/fabricatr/">fabricatr for R</a></li>
+          {{template "menu_items_template" dict "section" "fabricatr" "context" .}}
+        {{else if (hasPrefix .Dir "r/estimatr")}}
+          <li class="nav-item"><a class="nav-link" href="/r/estimatr/">estimatr for R</a></li>
+          {{template "menu_items_template" dict "section" "estimatr" "context" .}}
+        {{else if (hasPrefix .Dir "library")}}
+          <li class="nav-item"><a class="nav-link" href="/library/">Design Library</a></li>
+          {{template "menu_items_template" dict "section" "library" "context" .}}
+        {{end}}
+      </ul>
+    </nav>
+  </div>
 </div>

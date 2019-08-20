@@ -5,12 +5,14 @@
   {{$menu_items := index .context.Site.Menus .section}}
   {{range $menu_items.ByWeight}}
     {{if .HasChildren}}
-      <li class="nav-item"><span class="nav-link">{{.Name}}</span></li>
-      <ul class="nav nav-pills flex-column">
-      {{range .Children}}
-        <li class="nav-item ml-3"><a href="{{.URL}}" class="nav-link">{{.Name}}</a></li>
-      {{end}}
-      </ul>
+      <li class="nav-item">
+        <span class="nav-link">{{.Name}}</span>
+        <ul class="nav nav-pills flex-column">
+          {{range .Children}}
+            <li class="nav-item ml-3"><a href="{{.URL}}" class="nav-link">{{.Name}}</a></li>
+          {{end}}
+        </ul>
+      </li>
     {{else}}
       <li class="nav-item"><a class="nav-link" href="{{.URL}}">{{.Name}}</a></li>
     {{end}}

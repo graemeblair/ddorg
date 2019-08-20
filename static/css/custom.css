@@ -1,4 +1,4 @@
-/*+++++Generel Settiing++++++*/
+/*+++++General Settings++++++*/
 
 body {
     font-family: 'Roboto', sans-serif;
@@ -225,6 +225,10 @@ a:hover, a:focus {
     border-style: solid;
     border-width: 1px 1px 4px 1px;
     display: block;
+}
+
+#TOC > .navbar > a {
+    color: var(--primary);
 }
 
 .pill_badge {

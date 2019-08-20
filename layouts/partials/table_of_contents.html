@@ -22,34 +22,45 @@
 {{/* ------------------------------------------------------------------------------------------------------- */}}
 <div class="col-lg-3" id="toc_column">
   <div id="TOC" class="mb-3">
-    <nav class="navbar navbar-light bg-light"><a class="navbar-brand" href="#">Table of Contents</a>
-      <ul class="nav nav-pills flex-column">
-        {{/* Unique menu items */}}
-        {{if (hasPrefix .Dir "r/declaredesign")}}
-          <li class="nav-item"><a class="nav-link" href="/r/declaredesign/">DeclareDesign for R</a></li>
+    <nav class="navbar navbar-light bg-light">
+      {{if (hasPrefix .Dir "r/declaredesign")}}
+        <a class="navbar-brand" href="/r/declaredesign/">DeclareDesign for R</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
-        {{else if (hasPrefix .Dir "r/randomizr")}}
-          <li class="nav-item"><a class="nav-link" href="/r/randomizr/">randomizr for R</a></li>
+        </ul>
+      {{else if (hasPrefix .Dir "r/randomizr")}}
+        <a class="navbar-brand" href="/r/randomizr/">randomizr for R</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "randomizr" "context" .}}
-        {{else if (hasPrefix .Dir "stata/randomizr")}}
-          <li class="nav-item"><a class="nav-link" href="/stata/randomizr/">randomizr for Stata</a></li>
+        </ul>
+      {{else if (hasPrefix .Dir "stata/randomizr")}}
+        <a class="navbar-brand" href="/stata/randomizr/">randomizr for Stata</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "strandomizr" "context" .}}
-        {{else if (hasPrefix .Dir "r/fabricatr")}}
-          <li class="nav-item"><a class="nav-link" href="/r/fabricatr/">fabricatr for R</a></li>
+        </ul>
+      {{else if (hasPrefix .Dir "r/fabricatr")}}
+        <a class="navbar-brand" href="/r/fabricatr/">fabricatr for R</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "fabricatr" "context" .}}
-        {{else if (hasPrefix .Dir "r/estimatr")}}
-          <li class="nav-item"><a class="nav-link" href="/r/estimatr/">estimatr for R</a></li>
+        </ul>
+      {{else if (hasPrefix .Dir "r/estimatr")}}
+        <a class="navbar-brand" href="/r/estimatr/">estimatr for R</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "estimatr" "context" .}}
-        {{else if (hasPrefix .Dir "library")}}
-          <li class="nav-item"><a class="nav-link" href="/library/">Design Library</a></li>
+        </ul>
+      {{else if (hasPrefix .Dir "library")}}
+        <a class="navbar-brand" href="/library/">Design Library</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "library" "context" .}}
-        {{else if (hasPrefix .Dir "blog")}}
-          <div></div> {{/* Empty table of contents. */}}
-        {{else}}
-          <li class="nav-item"><a class="nav-link" href="/r/declaredesign/">DeclareDesign for R</a></li>
+        </ul>
+      {{else if (hasPrefix .Dir "blog")}}
+        <div></div> {{/* Empty table of contents. */}}
+      {{else}}
+        <a class="navbar-brand" href="/r/declaredesign/">DeclareDesign for R</a>
+        <ul class="nav nav-pills flex-column">
           {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
-        {{end}}
-      </ul>
+        </ul>
+      {{end}}
     </nav>
   </div>
 </div>

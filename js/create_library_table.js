@@ -102,7 +102,7 @@ const table = $(`<table id="design_library_list">
     </tbody>
 </table>`);
 
-$("body > div > main > article").append(table);
+$("#content_column > article").append(table);
 
 for (const row of library_table_rows)
 {

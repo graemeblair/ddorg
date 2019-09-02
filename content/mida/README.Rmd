@@ -12,6 +12,7 @@ set.seed(42)
 options(digits=2)
 library(knitr)
 library(DeclareDesign)
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
 The idea motivating **DeclareDesign** is that the core analytic features of research designs can be declared in a complete manner and saved as an object. Once properly declared, a design can easily be shared, modified, improved, and used. A design contains the information needed to implement key parts of data generation and subsequent analysis. It also contains enough information to allow researchers or third parties to query it and determine whether it can support the claims it makes. We describe this framework in greater detail in [our paper](https://declaredesign.org/declare.pdf).

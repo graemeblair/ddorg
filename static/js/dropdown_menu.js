@@ -14,7 +14,7 @@ function handle_dropdown(event)
 
     // In 300 milliseconds, check whether the mouse is over the menu. If it is, keep showing the menu with the
     // "show" class. If it's not, remove the "show" class. This prevents the menu from looking jittery.
-    setTimeout(function ()
+    setTimeout(() =>
     {
         if (dropdown.is(':hover'))
         {
@@ -31,7 +31,7 @@ function handle_dropdown(event)
 }
 
 // Add the "dropdown" class to the nav-item that you want to drop down.
-jQuery(function ()
+jQuery(() =>
 {
     jQuery("body").on("mouseenter mouseleave", ".dropdown", handle_dropdown);
 });

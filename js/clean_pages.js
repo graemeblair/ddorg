@@ -45,36 +45,6 @@ function clean_code_blocks()
     });
 }
 
-function create_toc()
-{
-    // Count the number of items that would be in the TOC. If there's one or fewer items,
-    // don't create a TOC. Just create one column of length 12 that will hold our article.
-    if ($("li", "#TOC").length <= 1)
-    {
-        $("#TOC").remove();
-        $(".article").wrap("<div class='row justify-content-between'><div class='col-lg-12' id='content_column'></div>");
-        return;
-    }
-
-    // Create the main content column, which will be 8 units big.
-    $(".article").wrap("<div class='row justify-content-between'><div class='col-lg-8' id='content_column'></div>");
-
-    // Create the table of contents column, which will take up 3 units.
-    $("#content_column").after("<div class='col-lg-3 d-none d-lg-block' id='toc_column'></div>");
-
-    // Move the table of contents into the second column
-    $("#TOC").appendTo("#toc_column");
-    $("#TOC").addClass("mb-3"); // Add some spacing below the TOC.
-
-    // Add all the properties Bootstrap expects to be on the column
-    $("#TOC > ul").wrap("<nav class='navbar navbar-light bg-light'></nav>");
-    $("#TOC > nav > ul").before("<a class='navbar-brand' href='#'>Table of Contents</a>");
-    $("#TOC ul").addClass("nav nav-pills flex-column");
-    $("#TOC ul > li").addClass("nav-item");
-    $("#TOC ul > li > a").addClass("nav-link ");
-    $("#TOC > nav > ul ul > li").addClass("ml-3"); // Only add an indent to level 2 links.
-}
-
 function add_twitter_card_image()
 {
     const first_image                = $("img", ".article-content").eq(0);
@@ -88,14 +58,13 @@ function add_twitter_card_image()
     {
         const page_head  = $("head");
         const card_image = `<meta name="twitter:image" content="${BASE_URL + first_image_source}">`;
-      
+
         page_head.append(card_image);
     }
 }
 
 clean_tables();
 clean_code_blocks();
-create_toc();
 add_twitter_card_image();
 
 fs.writeFileSync(HTML_FILE_NAME, $.html());

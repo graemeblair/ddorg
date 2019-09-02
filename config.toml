@@ -17,26 +17,6 @@ paginate = 5 # Default number of blog posts per page in pagination.
 # Important! No two menu items can have the same name (even two submenu items from two different menus)
 ###########################################
 
-# Home
-#################
- [[menu.main]]
-     name = "Blog"
-     url = "/blog/"
-     weight = 1
-
-[[menu.main]]
-  name = "MIDA"
-  url = "/mida/"
-  weight = 2
-[[menu.main]]
-  name = "Design Library"
-  url = "/library/"
-  weight = 3
-[[menu.main]]
-  name = "About"
-  url = "/about/"
-  weight = 5
-
 # Design Library
 #################
 [[menu.library]]
@@ -62,6 +42,10 @@ paginate = 5 # Default number of blog posts per page in pagination.
   name = "Reference"
   url = "/r/declaredesign/reference/"
   weight = 3
+[[menu.declaredesign]]
+  name = "About"
+  url = "/about/"
+  weight = 4
 
 # randomizr for R
 #################
@@ -196,47 +180,6 @@ paginate = 5 # Default number of blog posts per page in pagination.
   name = "Reference"
   url = "/r/estimatr/reference/"
   weight = 3
-
-# Package List
-#################
-[[menu.general]]
-  identifier = "package_list"
-  name = "Software"
-  weight = 1
-  [[menu.general]]
-    parent = "package_list"
-    name = "DeclareDesign"
-    url = "/r/declaredesign/"
-    weight = 1
-  [[menu.general]]
-    parent = "package_list"
-    name = "randomizr for R"
-    url = "/r/randomizr/"
-    weight = 2
-  [[menu.general]]
-    parent = "package_list"
-    name = "randomizr for Stata"
-    url = "/stata/randomizr/"
-    weight = 3
-  [[menu.general]]
-    parent = "package_list"
-    name = "fabricatr"
-    url = "/r/fabricatr/"
-    weight = 4
-  [[menu.general]]
-    parent = "package_list"
-    name = "estimatr"
-    url = "/r/estimatr/"
-    weight = 5
-  [[menu.general]]
-    parent = "package_list"
-    name = "DesignLibrary"
-    url = "/library/"
-    weight = 6
-[[menu.general]]
-  name = "Ask for Help"
-  url = "http://discuss.declaredesign.org"
-  weight = 2
 
 [params]
     description = "Declare and diagnose research designs to understand and improve them"

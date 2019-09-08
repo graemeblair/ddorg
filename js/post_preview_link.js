@@ -51,7 +51,6 @@ function callback(error, response, body)
     {
         throw new Error(`Could not post the URL preview as a comment on GitHub. Failed with response code ${response.statusCode}.`);
     }
-
 }
 
 request.post(options, callback);

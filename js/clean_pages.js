@@ -9,6 +9,16 @@ const BASE_URL       = process.argv[3];
 const WEB_PAGE = fs.readFileSync(HTML_FILE_NAME, "utf8");
 const $        = cheerio.load(WEB_PAGE);
 
+function clean_toc()
+{
+    // Remove the table of contents if there are fewer than 2 items.
+    if ($("li", "#TOC").length <= 1)
+    {
+        $("#toc_column").remove();
+        $("#content_column").toggleClass("col-lg-8 col-lg-12");
+    }
+}
+
 function clean_tables()
 {
     $("table").addClass("table table-striped");
@@ -63,6 +73,7 @@ function add_twitter_card_image()
     }
 }
 
+clean_toc();
 clean_tables();
 clean_code_blocks();
 add_twitter_card_image();

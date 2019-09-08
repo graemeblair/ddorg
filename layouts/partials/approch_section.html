@@ -1,11 +1,11 @@
 <!--Approach Section Start-->
-{{ $paginator := .Paginate }}
+
 <section>
     <div class="approach-panel">
       <div class="container">
         <h2 class="text-center mb-5">See our approach in action:</h2>
         <ul class="row list-unstyled">
-          {{range ($paginator 3).Pages.ByPublishDate.Reverse}}
+          {{range (.Paginator 3).Pages.ByPublishDate.Reverse}}
             <li class="col-lg-4">
               <div class="card p-4 aprch-block">
                 <div class="card-header bg-white border-0 pb-0">
@@ -26,7 +26,7 @@
                 <div class="card-footer bg-white border-0 pt-0"> <a href="{{.RelPermalink}}" class="read-more">READ MORE</a> </div>
               </div>
             </li>
-
+          
             <!-- <article class="archive-item">
               <a href="{{.RelPermalink}}" class="archive-item-link">{{.Title | markdownify}}</a>
               <span class="archive-item-date">
@@ -41,5 +41,5 @@
       </div>
     </div>
   </section>
-
-  <!--Approach Section End-->
+  
+  <!--Approach Section End--> 

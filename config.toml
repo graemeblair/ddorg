@@ -20,19 +20,12 @@ paginate = 5 # Default number of blog posts per page in pagination.
 # Design Library
 #################
 [[menu.library]]
-  name = "Contributing"
-  url = "/library/articles/how_to_write_and_contribute_designers.html"
-  weight = 1
 
 # DeclareDesign
 #################
 [[menu.declaredesign]]
-  name = "MIDA"
-  url = "/mida/"
-  weight = 1
-[[menu.declaredesign]]
   name = "Using DeclareDesign"
-  weight = 2
+  weight = 1
   [[menu.declaredesign]]
     parent = "Using DeclareDesign"
     name = "Custom Functions"
@@ -42,10 +35,6 @@ paginate = 5 # Default number of blog posts per page in pagination.
   name = "Reference"
   url = "/r/declaredesign/reference/"
   weight = 3
-[[menu.declaredesign]]
-  name = "About"
-  url = "/about/"
-  weight = 4
 
 # randomizr for R
 #################

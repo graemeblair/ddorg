@@ -51,17 +51,11 @@
           {{template "menu_items_template" dict "section" "estimatr" "context" .}}
         </ul>
       {{else if (hasPrefix .Dir "library")}}
-        <a class="navbar-brand" href="/library/">Design Library</a>
-        <ul class="nav nav-pills flex-column">
-          {{template "menu_items_template" dict "section" "library" "context" .}}
-        </ul>
+        <div></div> {{/* Empty table of contents. */}}
       {{else if (hasPrefix .Dir "blog")}}
         <div></div> {{/* Empty table of contents. */}}
       {{else}}
-        <a class="navbar-brand" href="/r/declaredesign/">DeclareDesign for R</a>
-        <ul class="nav nav-pills flex-column">
-          {{template "menu_items_template" dict "section" "declaredesign" "context" .}}
-        </ul>
+        <div></div> {{/* Empty table of contents. */}}
       {{end}}
     </nav>
   </div>

@@ -15,7 +15,9 @@ function clean_toc()
     if ($("li", "#TOC").length <= 1)
     {
         $("#toc_column").remove();
-        $("#content_column").toggleClass("col-lg-8 col-lg-12");
+
+        $("#content_column").removeClass("col-lg-8")
+                            .addClass("col-lg-12");
     }
 }
 

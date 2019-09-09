@@ -155,6 +155,6 @@ else
   echo "A package's files have been built. Moving the cache back so that Travis can upload it..."
   mv --verbose "${CONTENT_FOLDER}/${HOME_FOLDER}/cache/" ~/
 
-  # Removing index.html
+  echo "Removing index.html..."
   rm -rf 'public/index.html'
 fi

@@ -146,10 +146,15 @@ echo "Running js/move_pill_badges.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/ind
 node js/move_pill_badges.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
 
 # After the cache has been updated, move it back so that Travis can upload it for next time.
+# Also, remove the index.html page for all packages besides the blog. The blog package builds
+# the official index.html.
 if [ -z "$PACKAGE" ]; then
   echo 'The blog posts have been built. Moving the cache back so that Travis can upload it...'
   mv --verbose "${CONTENT_FOLDER}/cache/" ~/
 else
   echo "A package's files have been built. Moving the cache back so that Travis can upload it..."
   mv --verbose "${CONTENT_FOLDER}/${HOME_FOLDER}/cache/" ~/
+
+  # Removing index.html
+  rm -rf 'public/index.html'
 fi

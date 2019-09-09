@@ -11,8 +11,8 @@ const $        = cheerio.load(WEB_PAGE);
 
 function clean_toc()
 {
-    // Remove the table of contents if there are fewer than 2 items.
-    if ($("li", "#TOC").length <= 1)
+    // Remove the table of contents if there are no items.
+    if ($("li", "#TOC").length === 0)
     {
         $("#toc_column").remove();
 

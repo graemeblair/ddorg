@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "dependencies": {
     "cheerio": "^1.0.0-rc.3",
-    "csv-parse": "^4.4.5",
+    "csv-parse": "^4.5.0",
     "js-yaml": "^3.13.1",
-    "netlify-cli": "^2.13.1",
+    "netlify-cli": "^2.15.0",
     "request": "^2.88.0"
   }
 }

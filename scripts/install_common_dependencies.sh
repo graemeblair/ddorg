@@ -8,7 +8,7 @@ start=$SECONDS
 
 echo 'Entering the script to install common dependencies...'
 Rscript 'R/install_common_dependencies.R'
-Rscript -e 'blogdown::install_hugo()'
+Rscript -e 'blogdown::install_hugo(version = "0.58.3")'
 
 # If it took longer than 2 minutes (120 seconds) to install the dependencies, kill the
 # build so that the cache has a chance to upload.

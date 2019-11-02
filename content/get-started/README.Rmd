@@ -11,6 +11,8 @@ vignette: >
 set.seed(42)
 options(digits=2)
 library(knitr)
+library(kableExtra)
+library(gridExtra)
 library(DeclareDesign)
 library(tidyverse)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, message = FALSE)

@@ -18,9 +18,16 @@ library(tidyverse)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, message = FALSE)
 ```
 
-DeclareDesign is a system for describing research designs in code and simulating them in order to understand their properties. Because DeclareDesign employs a consistent grammar of designs, you can focus on the intellectually challenging part – designing good research studies – without having to code up simulations from scratch.
+DeclareDesign is a system for describing research designs in code and simulating them in order to understand their properties. Because DeclareDesign employs a consistent grammar of designs, you can focus on the intellectually challenging part – designing good research studies – without having to code up simulations from scratch. DeclareDesign is based on the Model-Inquiry-Data Strategy-Answer Strategy (MIDA) framework for describing designs and a declare-diagnose-redesign workflow for improving research designs before implementing them.
 
-You can [read our paper](https://declaredesign.org/declare.pdf) for an overview of the ideas behind `DeclareDesign` -- including the Model-Inquiry-Data Strategy-Answer Strategy (MIDA) framework for describing designs and the declare-diagnose-redesign workflow for improving research designs before implementing them. For a shorter introduction, read our [MIDA guide](/mida). Then continue reading this guide to the DeclareDesign software.
+You can find a few different entry points into these ideas and the software tools:
+
+- Short introduction to the [MIDA framework](/mida/)
+- Short introduction to DeclareDesign on the [World Bank Development Impact blog](https://blogs.worldbank.org/impactevaluations/declaring-and-diagnosing-research-designs)
+- Our paper in the [*American Political Science Review*](/declare.pdf) ([appendices](/declare_SI.pdf))
+- [Library of research designs](/library), which includes a range of canonical designs that can be declared with a single line of code and then tailored for your own uses
+- [Blog](/blog/) series that demonstrates how DeclareDesign can be used to shed light on a range of tricky design choices, which includes declarations of many designs 
+- In this short guide, we introduce the software itself step by step.
 
 We wrote `DeclareDesign` in the R statistical environment because of the availability of other tools for implementing research designs and because it is free-to-use. You could, however, implement the MIDA framework in any programming language. Indeed, a design could be declared in writing or mathematical notation and then diagnosed using analytical formula.^[However, analytical diagnoses may not be ideal for typical designs in the social sciences: they do not account for the specific features of research designs such as varying numbers of units per cluster and the interaction of choices about a data strategy and an answer strategy.]  We have [translated](https://declaredesign.org/pap) of core parts of the declaration and diagnosis process into Stata, Python, and Excel.
 

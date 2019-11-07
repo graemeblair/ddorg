@@ -18,19 +18,17 @@ library(tidyverse)
 knitr::opts_chunk$set(message = FALSE, warning = FALSE, message = FALSE)
 ```
 
-You can implement the MIDA framework in any software package. Indeed, a design could be declared in writing or mathematical notation and then diagnosed using analytical formula.^[However, analytical diagnoses may not be ideal for typical designs in the social sciences: they do not account for the specific features of research designs such as varying numbers of units per cluster and the interaction of choices about a data strategy and an answer strategy.] 
+DeclareDesign is a system for describing research designs in code and simulating them in order to understand their properties. Because DeclareDesign employs a consistent grammar of designs, you can focus on the intellectually challenging part – designing good research studies – without having to code up simulations from scratch.
 
-Social scientists use [a number of tools](https://stackoverflow.blog/2017/10/10/impressive-growth-r) for conducting statistical analysis: Stata, R, Python, Julia, SPSS, SAS, Mathematica, and more. Stata and R are most commonly used.
+You can [read our paper](https://declaredesign.org/declare.pdf) for an overview of the ideas behind `DeclareDesign` -- including the Model-Inquiry-Data Strategy-Answer Strategy (MIDA) framework for describing designs and the declare-diagnose-redesign workflow for improving research designs before implementing them. For a shorter introduction, read our [MIDA guide](/mida). Then continue reading this guide to the DeclareDesign software.
 
-We wrote `DeclareDesign` in the R statistical environment because of the availability of other tools for implementing research designs and because it is free-to-use. 
+We wrote `DeclareDesign` in the R statistical environment because of the availability of other tools for implementing research designs and because it is free-to-use. You could, however, implement the MIDA framework in any programming language. Indeed, a design could be declared in writing or mathematical notation and then diagnosed using analytical formula.^[However, analytical diagnoses may not be ideal for typical designs in the social sciences: they do not account for the specific features of research designs such as varying numbers of units per cluster and the interaction of choices about a data strategy and an answer strategy.]  We have [translated](https://declaredesign.org/pap) of core parts of the declaration and diagnosis process into Stata, Python, and Excel.
 
-On our Web site, we have a [translation](https://declaredesign.org/pap) of core parts of the declaration and diagnosis process into Stata, Python, and Excel.
-
-In this section, we introduce you to `DeclareDesign` for R and how each step of the design-diagnose-redesign process can be implemented in it.
+In this guide, we introduce you to `DeclareDesign` for R and how each step of the design-diagnose-redesign process can be implemented in it.
 
 ## Installing R 
 
-To get stared, install the statistical computing environment R, which you can download for free from [CRAN](https://cran.r-project.org). We also recommend the free program [RStudio](https://www.rstudio.com/products/rstudio/download), which provides a friendly interface to R.^[Both R and RStudio are available on Windows, Mac, and Linux.]
+To get started, install the statistical computing environment R, which you can download for free from [CRAN](https://cran.r-project.org). We also recommend the free program [RStudio](https://www.rstudio.com/products/rstudio/download), which provides a friendly interface to R.^[Both R and RStudio are available on Windows, Mac, and Linux.]
 
 Once you've got RStudio installed, open it up and install `DeclareDesign` and its  related packages. These include three packages that enable specific steps in the research process (`fabricatr` for simulating social science data; `randomizr`, for random sampling and random assignment; and `estimatr` for design-based estimators). You can also install `DesignLibrary`, which gets standard designs up-and-running in one line. To install them, you can type:
 
@@ -44,7 +42,7 @@ We also recommend you install and get to know the `tidyverse` suite of packages 
 install.packages("tidyverse")
 ```
 
-In this chapter, we will introduce the `DeclareDesign` software and how to implement the MIDA framework within it. We will not provide a general introduction to R or to the `tidyverse`, because there are already many terrific introductions. We especially recommend [`R for Data Science`](https://r4ds.had.co.nz), available for free on the Web.
+In this guide, we will introduce the `DeclareDesign` software and how to implement the MIDA framework within it. We will not provide a general introduction to R or to the `tidyverse`, because there are already many terrific introductions. We especially recommend [`R for Data Science`](https://r4ds.had.co.nz), available for free on the Web.
 
 ## Where we are going
 
@@ -94,7 +92,7 @@ simple_design <-
 
 ### Diagnosis
 
-To diagnose the design, we first define a set of diagnosands (see Section XX), which are statistical properties of the design. In this case, we select the bias (difference between the estimate and the estimand, which is the PATE); the root mean-squared error; and the statistical power of the design.
+To diagnose the design, we first define a set of diagnosands, which are statistical properties of the design. In this case, we select the bias (difference between the estimate and the estimand, which is the PATE); the root mean-squared error; and the statistical power of the design.
 
 ```{r}
 # Select diagnosands
@@ -466,6 +464,7 @@ population + potential_outcomes + estimand + sampling + assignment + reveal + es
 ```
 
 The order encodes several important aspects of the design:
+
 - First, the fact that the estimand follows the potential outcomes and comes before sampling and assignment means it is a *population* estimand, the population average treatment effect. This is because it is calculated on the data created *so far*. 
 - The estimator comes after the assignment and reveal outcomes steps. If it didn't, our difference-in-means would not work, because it wouldn't have access to the treatment variable and the realized outcomes.
 
@@ -500,7 +499,7 @@ population() %>% potential_outcomes %>% sampling %>%  assignment %>% reveal %>% 
 
 ### In `DeclareDesign`
 
-With simple design defined as an object, we can easily learn about what kind of data it generates, the values of its estimand and estimates, and other features with simple funtions in `DeclareDesign`. They chain together functions in a similar way to the `dplyr` pipelines above.
+With simple design defined as an object, we can easily learn about what kind of data it generates, the values of its estimand and estimates, and other features with simple functions in `DeclareDesign`. They chain together functions in a similar way to the `dplyr` pipelines above.
 
 To draw simulated data based on the design, we use `draw_data`:
 

@@ -3,6 +3,7 @@ title: "Getting Started with DeclareDesign"
 output:
   blogdown::html_page:
     toc: true
+    toc_depth: 1
 vignette: >
   %\VignetteIndexEntry{MIDA}
   %\VignetteEngine{knitr::rmarkdown}

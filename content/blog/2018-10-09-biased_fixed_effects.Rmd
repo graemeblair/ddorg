@@ -155,8 +155,8 @@ In addition to block-wise difference-in-means, there are many other solutions th
 Less clear, however, is how these different approaches compare against each other.
 
 ```{r, include = FALSE}
-if(!("bfe" %in% row.names(installed.packages()))) devtools::install_github('gibbonscharlie/bfe')
-library(bfe)
+# if(!("bfe" %in% row.names(installed.packages()))) devtools::install_github('gibbonscharlie/bfe')
+# library(bfe)
 ```
 
 We can address this question for any design using design diagnosis. We add the different estimation approaches to our design:
@@ -178,22 +178,22 @@ A6 <- declare_estimator(Y ~ Z, fixed_effects = ~block, estimand = Q,
 A7 <- declare_estimator(Y ~ Z, estimand = Q, blocks = block, simple = FALSE,
                         model = horvitz_thompson, condition_prs = prob,
                         label = "A7: Horvitz-Thompson")
-IWE <- function(data) {
-          M <- EstimateIWE("Y", "Z", "block", controls = NULL, data = data)
-          data.frame(term = "Z" ,estimate = M$swe.est, std.error = M$swe.var^.5)}
+# IWE <- function(data) {
+#           M <- EstimateIWE("Y", "Z", "block", controls = NULL, data = data)
+#           data.frame(term = "Z" ,estimate = M$swe.est, std.error = M$swe.var^.5)}
+# 
+# RWE <- function(data) {
+#           M <- EstimateRWE("Y", "Z", "block", controls = NULL, data = data)
+#           data.frame(term = "Z", estimate = M$swe.est, std.error = M$swe.var^.5)}
 
-RWE <- function(data) {
-          M <- EstimateRWE("Y", "Z", "block", controls = NULL, data = data)
-          data.frame(term = "Z", estimate = M$swe.est, std.error = M$swe.var^.5)}
-
-A8 <- declare_estimator(handler = tidy_estimator(IWE), estimand = Q,
-                        label = "A8: IWE")
-A9 <- declare_estimator(handler = tidy_estimator(RWE), estimand = Q,
-                        label = "A9: RWE")
+# A8 <- declare_estimator(handler = tidy_estimator(IWE), estimand = Q,
+#                         label = "A8: IWE")
+# A9 <- declare_estimator(handler = tidy_estimator(RWE), estimand = Q,
+#                         label = "A9: RWE")
 
 # Augmented Design ---------------------------------------------------------------
 
-design <- design + A3 + A4 + A5 + A6 + A7 + A8 + A9
+design <- design + A3 + A4 + A5 + A6 + A7 #+ A8 + A9
 ```
 
 And we can then simulate and plot the estimates:

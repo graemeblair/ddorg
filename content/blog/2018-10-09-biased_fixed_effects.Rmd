@@ -155,8 +155,7 @@ In addition to block-wise difference-in-means, there are many other solutions th
 Less clear, however, is how these different approaches compare against each other.
 
 ```{r, include = FALSE}
-# if(!("bfe" %in% row.names(installed.packages()))) devtools::install_github('gibbonscharlie/bfe')
-# library(bfe)
+# install bfe and library here
 ```
 
 We can address this question for any design using design diagnosis. We add the different estimation approaches to our design:

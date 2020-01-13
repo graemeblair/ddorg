@@ -5,13 +5,14 @@ packages <- c(
   "diffobj",
   "formatR",
   "testthat",
-  "texreg"
+  "texreg",
+  "broom",
+  "pkgdown"
 )
 
 packages_github <- c(
-  # "gibbonscharlie/bfe",
-  "Nick-Rivera/pkgdown",
-  "tidymodels/broom"
+  "gibbonscharlie/bfe"
+  # "Nick-Rivera/pkgdown"
 )
 
 not_installed_packages <- packages[!packages %in% installed.packages()]
@@ -28,5 +29,6 @@ update.packages(ask = FALSE, repos = "https://cloud.r-project.org")
 if (length(not_installed_packages_github) > 0)
 {
   print("Installing common dependencies from GitHub...")
-  devtools::install_github(not_installed_packages_github)
+  for(pkg in not_installed_packages_github)
+    remotes::install_github(pkg)
 }

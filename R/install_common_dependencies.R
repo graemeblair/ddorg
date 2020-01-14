@@ -11,8 +11,8 @@ packages <- c(
 )
 
 packages_github <- c(
-  "gibbonscharlie/bfe"
-  # "Nick-Rivera/pkgdown"
+  "gibbonscharlie/bfe",
+  "Nick-Rivera/pkgdown"
 )
 
 not_installed_packages <- packages[!packages %in% installed.packages()]

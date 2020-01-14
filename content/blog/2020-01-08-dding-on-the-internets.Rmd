@@ -1,5 +1,5 @@
 ---
-title: "Now there's a web interface for declaring and diagnosing research designs"
+title: "Now there is a web interface for declaring and diagnosing research designs"
 author: "Clara Bicalho, Sisi Huang, Markus Konrad"
 date: "2020-01-08"
 output:
@@ -15,7 +15,7 @@ By Clara Bicalho, Sisi Huang, and Markus Konrad
 
 That's the good news. The bad news is that 'DeclareDesign' is all set up in R. Great for some, but a dealbreaker for many.    
 
-That's why we created [DDWizard](https://eos.wzb.eu/ipi/DDWizard). DDWizard is a web interface that lets you select any design from a growing library of templates, the [DesignLibrary](https://cran.r-project.org/web/packages/DesignLibrary/DesignLibrary.pdf), customize them, and interrogate them.  All without ever having to write any R code.
+That's why we created [DDWizard](https://eos.wzb.eu/ipi/DDWizard). DDWizard is a (shiny) web interface that lets you select any design from a growing library of templates, the [DesignLibrary](https://cran.r-project.org/web/packages/DesignLibrary/DesignLibrary.pdf), customize them, and interrogate them.  All without ever having to write any R code.
 
 The wizard has a `Design` tab and a `Diagnose` tab. The `Design` tab lets you load and customize a design; the `Diagnose` tab lets you interrogate the design---generating nice plots showing how the design performs compared to other similar designs.
 

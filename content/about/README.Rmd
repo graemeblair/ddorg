@@ -21,7 +21,7 @@ DeclareDesign has benefited from the contributions of many researchers and coder
 
 `DeclareDesignWizard`: [Clara Bicalho](https://polisci.berkeley.edu/people/person/clara-bicalho-maia-correia), [Markus Konrad](https://twitter.com/_knrd), and [Sisi Huang](https://twitter.com/zerinahuang)
 
-`DesignLibrary`: [Clara Bicalho](https://polisci.berkeley.edu/people/person/clara-bicalho-maia-correia) and [Lily Medina](lilymiru)
+`DesignLibrary`: [Clara Bicalho](https://polisci.berkeley.edu/people/person/clara-bicalho-maia-correia) and [Lily Medina](https://twitter.com/lilymiru)
 
 `declaredesign.org`: Nicholas Rivera
 

@@ -17,7 +17,6 @@ r_packages:
   - testthat
   - texreg
   - broom
-  - pkgdown
 
 r_github_packages:
   - gibbonscharlie/bfe

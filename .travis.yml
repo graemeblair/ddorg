@@ -8,8 +8,6 @@ cache:
     - "$HOME/bin"
     - "$HOME/cache"
 
-bioc_packages: Biobase
-
 env:
   global:
     # CONTENT_FOLDERS are the folders that we want to be cleared out and recreated every time the build runs. Put a folder
@@ -101,7 +99,6 @@ notifications:
     recipients:
     - alex.coppock@yale.edu
     - graeme.blair@ucla.edu
-    - jaspercooper@gmail.com
     on_success: change
     on_failure: change
 

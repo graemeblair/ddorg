@@ -82,6 +82,7 @@ before_install:
   - npm install
 
 script:
+  - export R_LIBS_USER=~/R/Library
   - ./scripts/install_common_dependencies.sh && ./scripts/run_build_travis.sh
 
 # Unfortunately, the default name in Travis for the stage that uses all the

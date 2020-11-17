@@ -7,6 +7,21 @@ cache:
   directories:
     - "$HOME/bin"
     - "$HOME/cache"
+    
+r_packages:
+  - blogdown
+  - checkpoint
+  - devtools
+  - diffobj
+  - formatR
+  - testthat
+  - texreg
+  - broom
+  - pkgdown
+
+r_github_packages:
+  - gibbonscharlie/bfe
+  - Nick-Rivera/pkgdown
 
 env:
   global:
@@ -82,7 +97,6 @@ before_install:
   - npm install
 
 script:
-  - export R_LIBS_USER=~/R/Library
   - ./scripts/install_common_dependencies.sh && ./scripts/run_build_travis.sh
 
 # Unfortunately, the default name in Travis for the stage that uses all the

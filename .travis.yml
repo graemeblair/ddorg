@@ -8,6 +8,12 @@ cache:
     - "$HOME/bin"
     - "$HOME/cache"
     
+addons:
+  apt:
+    packages:
+    - libharfbuzz-dev 
+    - libfribidi-dev
+    
 r_packages:
   - blogdown
   - checkpoint

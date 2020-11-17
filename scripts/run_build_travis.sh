@@ -111,39 +111,39 @@ for toplevel_folder in $TOPLEVEL_FOLDERS; do
 done
 
 
-# Runs custom steps for individual packages.
-# For example, the Design Library package uses a custom script to build its interactive library table.
-if [ -n "$CUSTOM_SCRIPT" ]; then
-  source "scripts/${CUSTOM_SCRIPT}"
-fi
+# # Runs custom steps for individual packages.
+# # For example, the Design Library package uses a custom script to build its interactive library table.
+# if [ -n "$CUSTOM_SCRIPT" ]; then
+#   source "scripts/${CUSTOM_SCRIPT}"
+# fi
 
-# Finds all .html files in our content folder and runs the clean_pages.js script on them. This script
-# (1) Adds Bootstrap styling to all tables
-# (2) Fixes code blocks on reference pages
-# (3) Creates the table of contents on all pages
-# The goofy IFS=$'\n'; set -f line prevents problems when using the find command with for loops in bash.
-# See https://stackoverflow.com/a/5247919.
-IFS=$'\n'; set -f
-for file in $(find $(pwd)/"${PUBLISH_FOLDER}" -type f -name '*.html'); do
-  echo "Cleaning $file"
-  node js/clean_pages.js "$file" "$BASE_URL"
-done
-unset IFS; set +f
+# # Finds all .html files in our content folder and runs the clean_pages.js script on them. This script
+# # (1) Adds Bootstrap styling to all tables
+# # (2) Fixes code blocks on reference pages
+# # (3) Creates the table of contents on all pages
+# # The goofy IFS=$'\n'; set -f line prevents problems when using the find command with for loops in bash.
+# # See https://stackoverflow.com/a/5247919.
+# IFS=$'\n'; set -f
+# for file in $(find $(pwd)/"${PUBLISH_FOLDER}" -type f -name '*.html'); do
+#   echo "Cleaning $file"
+#   node js/clean_pages.js "$file" "$BASE_URL"
+# done
+# unset IFS; set +f
 
-# Adds authors to the homepage of the entire website (i.e. https://declaredesign.org/index.html).
-# This is a little bit of a cheat. I'm running the same script as I run for all the homepages of the other packages,
-# except instead of passing in the name of a package to the script, I pass in the string 'Home'. In the author.yml
-# file I have a section titled Home, which has the authors' university affiliations for the home page.
-echo "Running add_authors.js $(pwd)/${PUBLISH_FOLDER}/index.html 'Home' $(pwd)/authors.yml Authors"
-node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
-
-# Adds developer names to each of the package homepages. Edit these names in the authors.yml file.
-echo "Running add_authors.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html ${PACKAGE} $(pwd)/authors.yml Developers"
-node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html" "${PACKAGE}" "$(pwd)/authors.yml" 'Developers'
-
-# Move pill badges to a sidebar on the package homepages.
-echo "Running js/move_pill_badges.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
-node js/move_pill_badges.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
+# # Adds authors to the homepage of the entire website (i.e. https://declaredesign.org/index.html).
+# # This is a little bit of a cheat. I'm running the same script as I run for all the homepages of the other packages,
+# # except instead of passing in the name of a package to the script, I pass in the string 'Home'. In the author.yml
+# # file I have a section titled Home, which has the authors' university affiliations for the home page.
+# echo "Running add_authors.js $(pwd)/${PUBLISH_FOLDER}/index.html 'Home' $(pwd)/authors.yml Authors"
+# node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/index.html" 'Home' "$(pwd)/authors.yml" 'Authors'
+# 
+# # Adds developer names to each of the package homepages. Edit these names in the authors.yml file.
+# echo "Running add_authors.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html ${PACKAGE} $(pwd)/authors.yml Developers"
+# node js/add_authors.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html" "${PACKAGE}" "$(pwd)/authors.yml" 'Developers'
+# 
+# # Move pill badges to a sidebar on the package homepages.
+# echo "Running js/move_pill_badges.js $(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
+# node js/move_pill_badges.js "$(pwd)/${PUBLISH_FOLDER}/${HOME_FOLDER}/index.html"
 
 # After the cache has been updated, move it back so that Travis can upload it for next time.
 # Also, remove the index.html page for all packages besides the blog. The blog package builds
